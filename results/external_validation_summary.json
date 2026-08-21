@@ -1,0 +1,22 @@
+{
+  "part_a": {
+    "pool": "blitz",
+    "lichess_n": 12,
+    "lichess_mean_bias": 126.29166666666667,
+    "lichess_mae": 211.375,
+    "chesscom_n": 61,
+    "chesscom_mean_bias": 372.76229508196724,
+    "chesscom_mae": 434.38524590163934
+  },
+  "part_b": {
+    "n_players": 61,
+    "n_splits": 5,
+    "mae_raw": 434.38524590163934,
+    "mae_isotonic": 193.31159378984242,
+    "mae_linear": 223.00199950564476,
+    "bias_raw": 372.76229508196724,
+    "bias_isotonic": 17.902719360237835,
+    "bias_linear": 0.5285609608417984
+  },
+  "winner": "isotonic"
+}

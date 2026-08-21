@@ -1,0 +1,167 @@
+{
+  "summary": {
+    "n_games": 50,
+    "chance_baseline": 0.14285714285714285,
+    "injection": {
+      "magnitude": "winprob",
+      "rate": 0.7,
+      "wp_lo": 0.1,
+      "wp_hi": 0.3,
+      "cp_lo": 120,
+      "cp_hi": 400,
+      "depth": 12,
+      "min_elo": 2000
+    },
+    "per_category": {
+      "opening_acpl": {
+        "sensitivity_top1": 0.86,
+        "sensitivity_top2": 0.88,
+        "ci95": [
+          0.76,
+          0.94
+        ],
+        "mean_feature_delta": 41.62249589259022,
+        "mean_injected_plies": 11.1
+      },
+      "middlegame_acpl": {
+        "sensitivity_top1": 0.54,
+        "sensitivity_top2": 0.84,
+        "ci95": [
+          0.4,
+          0.66
+        ],
+        "mean_feature_delta": 84.19842181248356,
+        "mean_injected_plies": 11.86
+      },
+      "endgame_acpl": {
+        "sensitivity_top1": 0.06,
+        "sensitivity_top2": 0.12,
+        "ci95": [
+          0.0,
+          0.12
+        ],
+        "mean_feature_delta": 26.82824358974359,
+        "mean_injected_plies": 1.42
+      },
+      "conversion_acpl": {
+        "sensitivity_top1": 0.02,
+        "sensitivity_top2": 0.08,
+        "ci95": [
+          0.0,
+          0.06
+        ],
+        "mean_feature_delta": 73.45577203478359,
+        "mean_injected_plies": 5.36
+      },
+      "defense_acpl": {
+        "sensitivity_top1": 0.32,
+        "sensitivity_top2": 0.38,
+        "ci95": [
+          0.2,
+          0.44
+        ],
+        "mean_feature_delta": 31.748634600669725,
+        "mean_injected_plies": 2.44
+      },
+      "blunder_rate": {
+        "sensitivity_top1": 0.0,
+        "sensitivity_top2": 0.38,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean_feature_delta": 0.11514432892706218,
+        "mean_injected_plies": 24.82
+      },
+      "hanging_rate": {
+        "sensitivity_top1": 0.0,
+        "sensitivity_top2": 0.06,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean_feature_delta": 0.2618955468025414,
+        "mean_injected_plies": 10.86
+      }
+    },
+    "overall_top1": 0.2571428571428571,
+    "overall_ci95": [
+      0.06564285714285714,
+      0.5000714285714282
+    ],
+    "baseline_detect_profile": {
+      "opening_acpl": 13,
+      "middlegame_acpl": 11,
+      "endgame_acpl": 4,
+      "conversion_acpl": 0,
+      "defense_acpl": 16,
+      "blunder_rate": 0,
+      "hanging_rate": 6
+    }
+  },
+  "confusion": {
+    "opening_acpl": {
+      "opening_acpl": 43,
+      "middlegame_acpl": 1,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 4,
+      "blunder_rate": 0,
+      "hanging_rate": 2
+    },
+    "middlegame_acpl": {
+      "opening_acpl": 14,
+      "middlegame_acpl": 27,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 4,
+      "blunder_rate": 4,
+      "hanging_rate": 1
+    },
+    "endgame_acpl": {
+      "opening_acpl": 13,
+      "middlegame_acpl": 11,
+      "endgame_acpl": 3,
+      "conversion_acpl": 1,
+      "defense_acpl": 14,
+      "blunder_rate": 0,
+      "hanging_rate": 8
+    },
+    "conversion_acpl": {
+      "opening_acpl": 14,
+      "middlegame_acpl": 23,
+      "endgame_acpl": 2,
+      "conversion_acpl": 1,
+      "defense_acpl": 6,
+      "blunder_rate": 0,
+      "hanging_rate": 4
+    },
+    "defense_acpl": {
+      "opening_acpl": 12,
+      "middlegame_acpl": 15,
+      "endgame_acpl": 2,
+      "conversion_acpl": 0,
+      "defense_acpl": 16,
+      "blunder_rate": 0,
+      "hanging_rate": 5
+    },
+    "blunder_rate": {
+      "opening_acpl": 50,
+      "middlegame_acpl": 0,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 0,
+      "blunder_rate": 0,
+      "hanging_rate": 0
+    },
+    "hanging_rate": {
+      "opening_acpl": 25,
+      "middlegame_acpl": 19,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 3,
+      "blunder_rate": 3,
+      "hanging_rate": 0
+    }
+  }
+}

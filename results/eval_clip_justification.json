@@ -1,0 +1,13 @@
+{
+  "pool": "blitz",
+  "games_analyzed": 120,
+  "games_scanned_to_find_them": 229,
+  "n_positions": 8523,
+  "pct_over_2000cp": 5.807814149947202,
+  "max_abs_cp": 99999,
+  "analyzer_settings": {
+    "time_limit": 0.05,
+    "multipv": 1,
+    "eval_cap_used_for_measurement": 100000
+  }
+}

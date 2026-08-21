@@ -1,0 +1,68 @@
+{
+  "pool": "blitz",
+  "seeds": 10,
+  "min_games": 4,
+  "n_splits": 21590,
+  "n_players": 2159,
+  "bootstrap": 400,
+  "results": {
+    "modal": {
+      "agreement": 0.3687818434460398,
+      "chance": 0.15044612843550947,
+      "kappa": 0.2567559970560589,
+      "categories": 24,
+      "top_category": "avg_think_time",
+      "top_share": 0.24983788791106995,
+      "ci95": [
+        0.2407624448366859,
+        0.2717222255236946
+      ]
+    },
+    "aggr0": {
+      "agreement": 0.41320055581287635,
+      "chance": 0.1422734093911095,
+      "kappa": 0.31403785854261634,
+      "categories": 24,
+      "top_category": "avg_think_time",
+      "top_share": 0.2509031959240389,
+      "ci95": [
+        0.2981921887187499,
+        0.33148302999614
+      ]
+    },
+    "aggr0.5": {
+      "agreement": 0.3473367299675776,
+      "chance": 0.11020714262881813,
+      "kappa": 0.2649254967132839,
+      "categories": 28,
+      "top_category": "avg_think_time",
+      "top_share": 0.20597498842056508,
+      "ci95": [
+        0.25040860230757583,
+        0.2794262215709885
+      ]
+    },
+    "aggr1": {
+      "agreement": 0.1684576192681797,
+      "chance": 0.05178630080443552,
+      "kappa": 0.12284856189039373,
+      "categories": 29,
+      "top_category": "avg_think_time",
+      "top_share": 0.10416859657248727,
+      "ci95": [
+        0.1125359939488473,
+        0.13319820770795537
+      ]
+    }
+  },
+  "headline": {
+    "baseline": "modal",
+    "candidate": "aggr0",
+    "delta_kappa": 0.05728186148655745,
+    "ci95": [
+      0.04247501902981222,
+      0.07338203450628211
+    ],
+    "p_delta_gt_0": 1.0
+  }
+}
