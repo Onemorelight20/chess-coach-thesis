@@ -1,0 +1,113 @@
+{
+  "n_games": 20,
+  "unit": "standard deviations of the pool",
+  "matrix": {
+    "opening_acpl": {
+      "opening_acpl": 0.722966439496903,
+      "middlegame_acpl": 0.02113137377159075,
+      "endgame_acpl": 0.1887565593593895,
+      "conversion_acpl": 0.16267519273131045,
+      "defense_acpl": 0.3858490461357877,
+      "blunder_rate": 0.3722932684774921,
+      "hanging_rate": 0.02822243733867492
+    },
+    "middlegame_acpl": {
+      "opening_acpl": 0.0,
+      "middlegame_acpl": 1.143599387845191,
+      "endgame_acpl": 0.4827368902763253,
+      "conversion_acpl": 0.9096352029082219,
+      "defense_acpl": 1.1729574279172081,
+      "blunder_rate": 0.693009184433029,
+      "hanging_rate": 0.060776622740029165
+    },
+    "endgame_acpl": {
+      "opening_acpl": 0.0,
+      "middlegame_acpl": 0.0,
+      "endgame_acpl": 0.7554805924537162,
+      "conversion_acpl": 0.29635143425896865,
+      "defense_acpl": 0.5026672791705046,
+      "blunder_rate": 0.21448368081422794,
+      "hanging_rate": 0.05780382339929493
+    },
+    "conversion_acpl": {
+      "opening_acpl": 0.04021698466930362,
+      "middlegame_acpl": 0.5680426510752437,
+      "endgame_acpl": 0.6490477213176764,
+      "conversion_acpl": 0.8449709447911982,
+      "defense_acpl": 0.622709140731867,
+      "blunder_rate": 0.5516296479901909,
+      "hanging_rate": 0.004003763415498737
+    },
+    "defense_acpl": {
+      "opening_acpl": 0.055496614368202926,
+      "middlegame_acpl": 0.12025343825342076,
+      "endgame_acpl": 0.11258360933898585,
+      "conversion_acpl": 0.02066251868022699,
+      "defense_acpl": 0.1105298804722313,
+      "blunder_rate": 0.10969125223178278,
+      "hanging_rate": 0.07572142584705273
+    },
+    "blunder_rate": {
+      "opening_acpl": 1.35168170396936,
+      "middlegame_acpl": 2.154536223360693,
+      "endgame_acpl": 2.6073966427981285,
+      "conversion_acpl": 2.1373700408006937,
+      "defense_acpl": 1.5399189097272914,
+      "blunder_rate": 2.3202694416825094,
+      "hanging_rate": 0.2537840049826342
+    },
+    "hanging_rate": {
+      "opening_acpl": 0.29958370995719746,
+      "middlegame_acpl": 1.223907399551432,
+      "endgame_acpl": 0.5537536004599907,
+      "conversion_acpl": 0.6853522505185137,
+      "defense_acpl": 1.0039403318263291,
+      "blunder_rate": 0.8829371918341359,
+      "hanging_rate": 1.547820941947258
+    }
+  },
+  "leakage": {
+    "opening_acpl": {
+      "own_shift_sd": 0.722966439496903,
+      "largest_other": "defense_acpl",
+      "largest_other_shift_sd": 0.3858490461357877,
+      "ratio_own_to_other": 1.873702803563436
+    },
+    "middlegame_acpl": {
+      "own_shift_sd": 1.143599387845191,
+      "largest_other": "defense_acpl",
+      "largest_other_shift_sd": 1.1729574279172081,
+      "ratio_own_to_other": 0.974970924457039
+    },
+    "endgame_acpl": {
+      "own_shift_sd": 0.7554805924537162,
+      "largest_other": "defense_acpl",
+      "largest_other_shift_sd": 0.5026672791705046,
+      "ratio_own_to_other": 1.5029436443533803
+    },
+    "conversion_acpl": {
+      "own_shift_sd": 0.8449709447911982,
+      "largest_other": "endgame_acpl",
+      "largest_other_shift_sd": 0.6490477213176764,
+      "ratio_own_to_other": 1.3018625858138204
+    },
+    "defense_acpl": {
+      "own_shift_sd": 0.1105298804722313,
+      "largest_other": "middlegame_acpl",
+      "largest_other_shift_sd": 0.12025343825342076,
+      "ratio_own_to_other": 0.9191411245913973
+    },
+    "blunder_rate": {
+      "own_shift_sd": 2.3202694416825094,
+      "largest_other": "endgame_acpl",
+      "largest_other_shift_sd": 2.6073966427981285,
+      "ratio_own_to_other": 0.8898797381255011
+    },
+    "hanging_rate": {
+      "own_shift_sd": 1.547820941947258,
+      "largest_other": "middlegame_acpl",
+      "largest_other_shift_sd": 1.223907399551432,
+      "ratio_own_to_other": 1.2646552692748991
+    }
+  }
+}

@@ -144,11 +144,16 @@ def build_treatment(analyzer, game, color, clean, initial_eval, cat, rate, rng,
     return out, n_injected
 
 
-def detect(model, features):
-    """Detector's chosen weakness, argmin SHAP restricted to the injectable set."""
+def rank_categories(model, features):
+    """Injectable categories ordered from most to least weakening (argmin first)."""
     shap = model.predict_and_explain(features)["shap_values"]
     cands = [c for c in CATS if c in shap]
-    return min(cands, key=lambda c: shap[c])
+    return sorted(cands, key=lambda c: shap[c])
+
+
+def detect(model, features):
+    """Detector's chosen weakness, argmin SHAP restricted to the injectable set."""
+    return rank_categories(model, features)[0]
 
 
 def parse_bands(spec):
@@ -231,12 +236,17 @@ def main():
                          "an equal quota of games is taken per band and sensitivity is also "
                          "reported per band. Overrides --min-elo.")
     ap.add_argument("--outdir", default="results")
+    ap.add_argument("--cats", default=None,
+                    help="comma-separated subset of CATS to inject (default: all seven)")
     ap.add_argument("--tag", default="", help="suffix for the output files")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
     os.makedirs(args.outdir, exist_ok=True)
     rng = random.Random(args.seed)
     bands = parse_bands(args.elo_bands) if args.elo_bands else None
+    cats = [c.strip() for c in args.cats.split(",")] if args.cats else list(CATS)
+    unknown = [c for c in cats if c not in CATS]
+    assert not unknown, f"unknown categories: {unknown}"
 
     scope = (f"bands {args.elo_bands}" if bands else f"Elo >= {args.min_elo}")
     print(f"Streaming up to {args.games} clean '{args.event}' games ({scope})...")
@@ -254,28 +264,37 @@ def main():
     analyzer = EngineAnalyzer(depth=args.depth)
     model = ELOModel(pool=args.event)  # pool-specific model, matching the injected games' time control
 
-    confusion = {gt: {pred: 0 for pred in CATS} for gt in CATS}
-    hits_by_game = {c: [] for c in CATS}          # for bootstrap CI
-    top2_hits = {c: [] for c in CATS}
-    manip = {c: [] for c in CATS}                  # injected-feature delta
-    n_inj = {c: [] for c in CATS}                  # plies actually substituted
+    # rows: injected subset; columns: everything the detector may answer (all seven)
+    confusion = {gt: {pred: 0 for pred in CATS} for gt in cats}
+    hits_by_game = {c: [] for c in cats}          # for bootstrap CI
+    top2_hits = {c: [] for c in cats}
+    manip = {c: [] for c in cats}                  # injected-feature delta
+    n_inj = {c: [] for c in cats}                  # plies actually substituted
     baseline_detect = {c: 0 for c in CATS}         # specificity / null profile
 
-    by_band = {} if bands is None else {b: {c: [] for c in CATS} for b in bands}
+    by_band = {} if bands is None else {b: {c: [] for c in cats} for b in bands}
+    # rank of the injected category, in the treated game and in the untouched one:
+    # together they give coverage@k against the detector's own prior.
+    rank_treated = {c: [] for c in cats}
+    rank_clean = {c: [] for c in cats}
 
     for gi, (game, color, elo, band) in enumerate(games, 1):
         clean = analyzer.analyze_game(game)
         initial_eval = analyzer._capped_white_cp(
             analyzer.engine.analyse(game.board(), analyzer._limit()))
         base_feats = FeatureExtractor(color).extract(clean)
-        baseline_detect[detect(model, base_feats)] += 1
+        base_rank = rank_categories(model, base_feats)
+        baseline_detect[base_rank[0]] += 1
 
-        for cat in CATS:
+        for cat in cats:
             treat, k = build_treatment(analyzer, game, color, clean, initial_eval,
                                        cat, args.rate, rng, args.magnitude,
                                        args.loss_lo, args.loss_hi, args.wp_lo, args.wp_hi)
             feats = FeatureExtractor(color).extract(treat)
-            pred = detect(model, feats)
+            ranked = rank_categories(model, feats)
+            pred = ranked[0]
+            rank_treated[cat].append(ranked.index(cat) + 1)
+            rank_clean[cat].append(base_rank.index(cat) + 1)
             confusion[cat][pred] += 1
             hits_by_game[cat].append(int(pred == cat))
             # top-2: re-rank candidates by SHAP, check membership
@@ -292,12 +311,12 @@ def main():
 
     # ---- aggregate ----
     summary = {"n_games": len(games), "chance_baseline": 1.0 / len(CATS),
-               "injection": {"magnitude": args.magnitude, "rate": args.rate,
+               "injection": {"categories": cats, "magnitude": args.magnitude, "rate": args.rate,
                              "wp_lo": args.wp_lo, "wp_hi": args.wp_hi,
                              "cp_lo": args.loss_lo, "cp_hi": args.loss_hi,
                              "depth": args.depth, "min_elo": args.min_elo},
                "per_category": {}}
-    for c in CATS:
+    for c in cats:
         sens = float(np.mean(hits_by_game[c])) if hits_by_game[c] else 0.0
         summary["per_category"][c] = {
             "sensitivity_top1": sens,
@@ -306,18 +325,26 @@ def main():
             "mean_feature_delta": float(np.nanmean(manip[c])) if manip[c] else 0.0,
             "mean_injected_plies": float(np.mean(n_inj[c])) if n_inj[c] else 0.0,
         }
-    overall = [h for c in CATS for h in hits_by_game[c]]
+    overall = [h for c in cats for h in hits_by_game[c]]
     summary["overall_top1"] = float(np.mean(overall)) if overall else 0.0
     summary["overall_ci95"] = bootstrap_ci(list(hits_by_game.values()))
     summary["baseline_detect_profile"] = baseline_detect
+    summary["coverage_at_k"] = {
+        c: {"treated": [float(np.mean([r <= k for r in rank_treated[c]])) for k in (1, 2, 3)],
+            "clean":   [float(np.mean([r <= k for r in rank_clean[c]])) for k in (1, 2, 3)]}
+        for c in cats}
+    summary["coverage_at_k_overall"] = {
+        "treated": [float(np.mean([r <= k for c in cats for r in rank_treated[c]])) for k in (1, 2, 3)],
+        "clean":   [float(np.mean([r <= k for c in cats for r in rank_clean[c]])) for k in (1, 2, 3)],
+        "chance":  [k / len(CATS) for k in (1, 2, 3)]}
     if bands:
         summary["elo_bands"] = {
             f"{lo}-{hi}": {
-                "n_games": len(by_band[(lo, hi)][CATS[0]]),
-                "overall_top1": float(np.mean([h for c in CATS for h in by_band[(lo, hi)][c]]))
-                                if by_band[(lo, hi)][CATS[0]] else 0.0,
+                "n_games": len(by_band[(lo, hi)][cats[0]]),
+                "overall_top1": float(np.mean([h for c in cats for h in by_band[(lo, hi)][c]]))
+                                if by_band[(lo, hi)][cats[0]] else 0.0,
                 "per_category": {c: float(np.mean(by_band[(lo, hi)][c]))
-                                 if by_band[(lo, hi)][c] else 0.0 for c in CATS},
+                                 if by_band[(lo, hi)][c] else 0.0 for c in cats},
             } for lo, hi in bands}
 
     name = f"synthetic_validation{args.tag}.json"
@@ -330,7 +357,7 @@ def main():
     print(f"\n=== Injection criterion: {crit} ===")
     print("=== Manipulation check (did the injected feature actually rise?) ===")
     print(f"{'category':22s}{'feat delta':>12}{'inj plies':>11}{'sens@1':>9}{'sens@2':>9}")
-    for c in CATS:
+    for c in cats:
         s = summary["per_category"][c]
         print(f"{DISPLAY_NAMES.get(c, c)[:21]:22s}{s['mean_feature_delta']:>12.1f}"
               f"{s['mean_injected_plies']:>11.1f}{s['sensitivity_top1']:>9.2f}{s['sensitivity_top2']:>9.2f}")
@@ -338,6 +365,19 @@ def main():
     print(f"\nOverall top-1 sensitivity: {summary['overall_top1']:.2f} "
           f"(95% CI {lo:.2f}-{hi:.2f}) vs chance {summary['chance_baseline']:.2f}")
     print(f"Baseline (no injection) detector picks: {baseline_detect}")
+
+    cov = summary["coverage_at_k_overall"]
+    print("\n=== Coverage@k: injected category among the k weakest ===")
+    print(f"{'k':<4}{'treated':>10}{'clean':>10}{'lift':>9}{'chance':>9}")
+    for i, k in enumerate((1, 2, 3)):
+        print(f"{k:<4}{cov['treated'][i]:>10.3f}{cov['clean'][i]:>10.3f}"
+              f"{cov['treated'][i] - cov['clean'][i]:>+9.3f}{cov['chance'][i]:>9.3f}")
+    print(f"\n{'category':<22}{'@1':>7}{'@2':>7}{'@3':>7}{'  (clean: @1/@2/@3)':>22}")
+    for c in cats:
+        b = summary["coverage_at_k"][c]
+        print(f"{DISPLAY_NAMES.get(c, c)[:21]:<22}"
+              f"{b['treated'][0]:>7.2f}{b['treated'][1]:>7.2f}{b['treated'][2]:>7.2f}"
+              f"   {b['clean'][0]:.2f} / {b['clean'][1]:.2f} / {b['clean'][2]:.2f}")
 
     if bands:
         print(f"\n=== Sensitivity by Elo band ===")
@@ -349,14 +389,15 @@ def main():
                   + f"{blk['overall_top1']:>9.2f}")
 
     # ---- confusion figure ----
-    mat = np.array([[confusion[gt][pr] for pr in CATS] for gt in CATS])
+    mat = np.array([[confusion[gt][pr] for pr in CATS] for gt in cats])
     fig, ax = plt.subplots(figsize=(7.5, 6.5))
     im = ax.imshow(mat, cmap="Greens")
-    labs = [DISPLAY_NAMES.get(c, c) for c in CATS]
-    ax.set_xticks(range(len(CATS))); ax.set_yticks(range(len(CATS)))
-    ax.set_xticklabels(labs, rotation=45, ha="right", fontsize=7)
-    ax.set_yticklabels(labs, fontsize=7)
-    for i in range(len(CATS)):
+    xlabs = [DISPLAY_NAMES.get(c, c) for c in CATS]
+    ylabs = [DISPLAY_NAMES.get(c, c) for c in cats]
+    ax.set_xticks(range(len(CATS))); ax.set_yticks(range(len(cats)))
+    ax.set_xticklabels(xlabs, rotation=45, ha="right", fontsize=7)
+    ax.set_yticklabels(ylabs, fontsize=7)
+    for i in range(len(cats)):
         for j in range(len(CATS)):
             ax.text(j, i, mat[i, j], ha="center", va="center", fontsize=8)
     ax.set_xlabel("Detected (single-game SHAP)")

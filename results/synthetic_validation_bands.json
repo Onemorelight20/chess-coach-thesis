@@ -3,6 +3,15 @@
     "n_games": 80,
     "chance_baseline": 0.14285714285714285,
     "injection": {
+      "categories": [
+        "opening_acpl",
+        "middlegame_acpl",
+        "endgame_acpl",
+        "conversion_acpl",
+        "defense_acpl",
+        "blunder_rate",
+        "hanging_rate"
+      ],
       "magnitude": "winprob",
       "rate": 0.7,
       "wp_lo": 0.1,
@@ -97,6 +106,109 @@
       "defense_acpl": 28,
       "blunder_rate": 1,
       "hanging_rate": 8
+    },
+    "coverage_at_k": {
+      "opening_acpl": {
+        "treated": [
+          0.9125,
+          0.9125,
+          0.9125
+        ],
+        "clean": [
+          0.2375,
+          0.25,
+          0.2625
+        ]
+      },
+      "middlegame_acpl": {
+        "treated": [
+          0.625,
+          0.9375,
+          0.9625
+        ],
+        "clean": [
+          0.2875,
+          0.475,
+          0.5375
+        ]
+      },
+      "endgame_acpl": {
+        "treated": [
+          0.0,
+          0.1375,
+          0.4125
+        ],
+        "clean": [
+          0.0125,
+          0.2,
+          0.5
+        ]
+      },
+      "conversion_acpl": {
+        "treated": [
+          0.0,
+          0.0125,
+          0.175
+        ],
+        "clean": [
+          0.0,
+          0.1125,
+          0.4125
+        ]
+      },
+      "defense_acpl": {
+        "treated": [
+          0.3125,
+          0.3375,
+          0.375
+        ],
+        "clean": [
+          0.35,
+          0.425,
+          0.5125
+        ]
+      },
+      "blunder_rate": {
+        "treated": [
+          0.0125,
+          0.4,
+          0.8625
+        ],
+        "clean": [
+          0.0125,
+          0.1125,
+          0.2125
+        ]
+      },
+      "hanging_rate": {
+        "treated": [
+          0.0125,
+          0.025,
+          0.125
+        ],
+        "clean": [
+          0.1,
+          0.425,
+          0.5625
+        ]
+      }
+    },
+    "coverage_at_k_overall": {
+      "treated": [
+        0.26785714285714285,
+        0.39464285714285713,
+        0.5464285714285714
+      ],
+      "clean": [
+        0.14285714285714285,
+        0.2857142857142857,
+        0.42857142857142855
+      ],
+      "chance": [
+        0.14285714285714285,
+        0.2857142857142857,
+        0.42857142857142855
+      ]
     },
     "elo_bands": {
       "1000-1400": {

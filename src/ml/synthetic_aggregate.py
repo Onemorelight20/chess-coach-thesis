@@ -73,6 +73,10 @@ def main():
 
     per_game = {c: [] for c in CATS}     # one entry per treated game
     aggreg = {c: [] for c in CATS}       # one entry per pseudo-player
+    # the same two detectors on UNTOUCHED games: without this prior, a hit rate
+    # cannot be told apart from the detector's habit of naming a given feature.
+    per_game_base = {c: [] for c in CATS}
+    aggreg_base = {c: [] for c in CATS}
     conf = {k: {gt: {p: 0 for p in CATS} for gt in CATS} for k in ("per_game", "aggregated")}
 
     for gi, group in enumerate(groups, 1):
@@ -83,7 +87,13 @@ def main():
                 analyzer.engine.analyse(game.board(), analyzer._limit()))
             prepared.append((game, color, clean, initial))
 
+        clean_feats = [FeatureExtractor(color).extract(clean)
+                       for _game, color, clean, _initial in prepared]
+        base_pg = [detect(model, f) for f in clean_feats]
+        base_agg = detect(model, aggregate_features(clean_feats, "mean"))
         for cat in CATS:
+            per_game_base[cat].extend(int(b == cat) for b in base_pg)
+            aggreg_base[cat].append(int(base_agg == cat))
             feats = []
             for game, color, clean, initial in prepared:
                 treat, _ = build_treatment(analyzer, game, color, clean, initial, cat,
@@ -112,9 +122,13 @@ def main():
         "per_category": {}, "confusion": conf,
     }
     for c in CATS:
+        pg = float(np.mean(per_game[c])) if per_game[c] else 0.0
+        ag = float(np.mean(aggreg[c])) if aggreg[c] else 0.0
+        pg_b = float(np.mean(per_game_base[c])) if per_game_base[c] else 0.0
+        ag_b = float(np.mean(aggreg_base[c])) if aggreg_base[c] else 0.0
         result["per_category"][c] = {
-            "per_game": float(np.mean(per_game[c])) if per_game[c] else 0.0,
-            "aggregated": float(np.mean(aggreg[c])) if aggreg[c] else 0.0,
+            "per_game": pg, "per_game_clean": pg_b, "per_game_lift": pg - pg_b,
+            "aggregated": ag, "aggregated_clean": ag_b, "aggregated_lift": ag - ag_b,
             "aggregated_ci95": bootstrap_ci([[h] for h in aggreg[c]]),
         }
     result["overall_per_game"] = float(np.mean([h for c in CATS for h in per_game[c]]))
@@ -125,11 +139,11 @@ def main():
     with open(out, "w") as fh:
         json.dump(result, fh, indent=2)
 
-    print(f"\n{'category':24}{'per-game':>10}{'aggregated':>12}{'delta':>9}")
+    print(f"\n{'category':24}{'per-game':>9}{'(lift)':>9}{'aggreg':>9}{'(lift)':>9}")
     for c in CATS:
         b = result["per_category"][c]
-        print(f"{DISPLAY_NAMES.get(c, c)[:23]:24}{b['per_game']:>10.2f}"
-              f"{b['aggregated']:>12.2f}{b['aggregated'] - b['per_game']:>+9.2f}")
+        print(f"{DISPLAY_NAMES.get(c, c)[:23]:24}{b['per_game']:>9.2f}{b['per_game_lift']:>+9.2f}"
+              f"{b['aggregated']:>9.2f}{b['aggregated_lift']:>+9.2f}")
     print(f"{'OVERALL':24}{result['overall_per_game']:>10.2f}"
           f"{result['overall_aggregated']:>12.2f}"
           f"{result['overall_aggregated'] - result['overall_per_game']:>+9.2f}")

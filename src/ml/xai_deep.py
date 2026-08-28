@@ -80,9 +80,11 @@ def dependence_plots(Xi, sv, y, outdir, feats=("opening_acpl", "avg_think_time",
 
 
 def reliability_vs_n(df, outdir, ns=(1, 2, 3, 4, 5, 6), seeds=range(8)):
-    """Reference weakness = aggregated population-z over half A; estimate = modal
-    single-game SHAP weakness over N games of half B, compared against an
-    aggregated-z estimator."""
+    """Reference weakness = aggregated population-z over half A. Two estimators are
+    scored against it on N games of half B: the modal per-game SHAP answer, and the
+    SAME population-z rule that built the reference. The second arm is the reference
+    rule's own test-retest -- a ceiling for this sample size, not the SHAP mechanism.
+    Neither arm varies the attribution order; that is detector_order.py."""
     cand = WEAKNESS_CANDIDATES
     pm = df[cand].mean(); ps = df[cand].std(ddof=0).replace(0, 1)
     orient = pd.Series(FEATURE_ORIENTATION)[cand]  # so idxmax always means "weakest"
@@ -117,11 +119,12 @@ def reliability_vs_n(df, outdir, ns=(1, 2, 3, 4, 5, 6), seeds=range(8)):
     tab = pd.DataFrame(rows)
     tab.to_csv(os.path.join(outdir, "xai_reliability_vs_n.csv"), index=False)
     fig, ax = plt.subplots(figsize=(7, 4.5))
-    ax.plot(tab["n_games"], tab["agreement_single_shap"], "o-", label="modal single-game SHAP")
-    ax.plot(tab["n_games"], tab["agreement_aggregated_z"], "s--", label="aggregated z-score")
+    ax.plot(tab["n_games"], tab["agreement_single_shap"], "o-", label="modal per-game SHAP")
+    ax.plot(tab["n_games"], tab["agreement_aggregated_z"], "s--",
+            label="reference rule on N games (ceiling)")
     ax.axhline(1 / len(cand), color="grey", ls=":", label="chance")
     ax.set_xlabel("games used to estimate weakness (N)"); ax.set_ylabel("agreement with reference")
-    ax.set_title("Weakness detection becomes more reliable with more games")
+    ax.set_title("Agreement with the reference weakness vs games used")
     ax.legend(); fig.tight_layout()
     fig.savefig(os.path.join(outdir, "fig_xai_reliability.png")); plt.close(fig)
     print("== Reliability vs N games ==")
