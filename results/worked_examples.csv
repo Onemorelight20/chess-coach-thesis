@@ -1,0 +1,10 @@
+гравець,факт,прогноз,№,напрям,z,тема,задача,рейт.
+Aldo333,838,985,1,king_danger,-1.98,exposedKing,1vYZi,947
+Aldo333,838,985,2,inaccuracy_rate,-1.69,quietMove,5lC41,972
+Aldo333,838,985,3,conversion_acpl,-1.15,crushing,q7cRj,1022
+AB9920,1468,1762,1,endgame_acpl,-1.94,endgame,Nb7Y5,1701
+AB9920,1468,1762,2,mobility_avg,-1.46,advancedPawn,fkO9w,1812
+AB9920,1468,1762,3,hanging_rate,-0.86,trappedPiece,6JivJ,1716
+AAPA23,2315,2359,1,middlegame_acpl,-1.87,middlegame,Xx4MQ,2305
+AAPA23,2315,2359,2,king_danger,-0.87,exposedKing,IlMYF,2432
+AAPA23,2315,2359,3,material_volatility,-0.65,sacrifice,MWRRN,2371

@@ -144,15 +144,29 @@ def build_treatment(analyzer, game, color, clean, initial_eval, cat, rate, rng,
     return out, n_injected
 
 
+# Which rule ranks the categories. "raw" is the original argmin over the SHAP
+# values; "standardised" first z-scores each contribution against players of the
+# same predicted-rating band, which is what the app now does. Set once from --rule.
+RULE = "raw"
+
+
 def rank_categories(model, features):
-    """Injectable categories ordered from most to least weakening (argmin first)."""
-    shap = model.predict_and_explain(features)["shap_values"]
+    """Injectable categories ordered from most to least weakening (worst first)."""
+    out = model.predict_and_explain(features)
+    shap = out["shap_values"]
     cands = [c for c in CATS if c in shap]
+    if RULE == "standardised" and getattr(model, "_shap_reference", None) is not None:
+        from src.ml import build_shap_reference as B
+        mu, sd = B.stats_at(model._shap_reference, out["predicted_elo"])
+        usable = [c for c in cands if c in mu.index]
+        if usable:
+            score = {c: (shap[c] - float(mu[c])) / float(sd[c]) for c in usable}
+            return sorted(usable, key=score.get)
     return sorted(cands, key=lambda c: shap[c])
 
 
 def detect(model, features):
-    """Detector's chosen weakness, argmin SHAP restricted to the injectable set."""
+    """Detector's chosen weakness, restricted to the injectable set."""
     return rank_categories(model, features)[0]
 
 
@@ -238,9 +252,14 @@ def main():
     ap.add_argument("--outdir", default="results")
     ap.add_argument("--cats", default=None,
                     help="comma-separated subset of CATS to inject (default: all seven)")
+    ap.add_argument("--rule", default="raw", choices=["raw", "standardised"],
+                    help="how contributions are ranked; see RULE")
     ap.add_argument("--tag", default="", help="suffix for the output files")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
+    global RULE
+    RULE = args.rule
+    print(f"Ranking rule: {RULE}")
     os.makedirs(args.outdir, exist_ok=True)
     rng = random.Random(args.seed)
     bands = parse_bands(args.elo_bands) if args.elo_bands else None

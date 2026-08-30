@@ -47,8 +47,9 @@ This tool runs an explainable ML pipeline over **several of a player's games**:
 1. **Engine analysis** - Stockfish evaluates every move of each game.
 2. **Feature extraction**.
 3. **Aggregation** — the per-game vectors are averaged, since a single game is a noisy snapshot of skill.
-4. **ML prediction + SHAP** — a per-game-type XGBoost model estimates Elo and pinpoints the weakness.
-5. **Adaptive training** — recommends an Elo-matched Lichess puzzle.
+4. **ML prediction + SHAP** — a per-game-type XGBoost model estimates Elo, then the feature
+   contributions are compared against players at the same predicted level to pick the weakest areas.
+5. **Adaptive training** — recommends an Elo-matched Lichess puzzle for each area.
 """)
 
 st.info(
@@ -126,9 +127,9 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
                     recal_info = recal
 
             progress.write("\U0001f7e2 Generating adaptive recommendation...")
-            recommendation = RecommenderEngine().get_recommendation(
+            plan = RecommenderEngine().get_plan(
                 predicted_elo=raw_elo,
-                weakest_feature=prediction_data["weakest_feature"],
+                weaknesses=prediction_data["weaknesses"],
             )
             status.update(label="Pipeline complete!", state="complete", expanded=False)
         except Exception as e:  # noqa: BLE001
@@ -158,7 +159,15 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
     else:
         st.caption("⚖️ Predicted Elo is on the **Lichess** rating scale.")
 
-    st.info(f"**Identified weakness:** {prediction_data['weakest_display']}")
+    ws = prediction_data["weaknesses"]
+    st.info("**Priority training areas:** " + " · ".join(w["display"] for w in ws))
+    if prediction_data.get("weakness_rule") == "band-standardised":
+        st.caption(
+            "Ranked by how unusual each contribution is **for players of your predicted "
+            "level**, not by its raw size. Several areas are listed on purpose: on split "
+            "halves of the same player the single top pick repeats 11% of the time, the "
+            "top-3 set 57%."
+        )
 
     st.subheader("SHAP Interpretability")
     st.markdown("How each feature pushed the predicted Elo up (positive) or down (negative).")
@@ -179,25 +188,26 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
     st.altair_chart(shap_chart, width="stretch")
 
     st.divider()
-    st.markdown(f"### Next Steps \U0001f680\n{recommendation['message']}")
+    st.markdown("### Next Steps \U0001f680")
     if recal_info is not None:
         st.caption(
             f"ℹ️ Your Elo above is adjusted for Chess.com's scale. The puzzle below is matched "
             f"to your Lichess-equivalent rating (~{raw_elo}) instead, since Lichess's puzzles "
             "use that same scale."
         )
-    if recommendation.get("puzzle_id"):
-        st.markdown(
-            f"[**\U0001f449 Solve this {recommendation['puzzle_theme']} puzzle "
-            f"(rating {recommendation['puzzle_rating']}) on Lichess**]"
-            f"({recommendation['link']})"
-        )
-        st.caption("Puzzle themes: " + ", ".join(recommendation["puzzle_themes"]))
-    else:
-        st.markdown(
-            f"[**\U0001f449 Train {recommendation['puzzle_theme']} puzzles on Lichess**]"
-            f"({recommendation['link']})"
-        )
+    for rec in plan:
+        area = DISPLAY_NAMES.get(rec["weakness_identified"], rec["weakness_identified"])
+        st.markdown(f"**{rec['priority']}. {area}**")
+        if rec.get("puzzle_id"):
+            st.markdown(
+                f"[\U0001f449 Solve this {rec['puzzle_theme']} puzzle "
+                f"(rating {rec['puzzle_rating']}) on Lichess]({rec['link']})"
+            )
+            st.caption("Puzzle themes: " + ", ".join(rec["puzzle_themes"]))
+        else:
+            st.markdown(
+                f"[\U0001f449 Train {rec['puzzle_theme']} puzzles on Lichess]({rec['link']})"
+            )
 
 
 def render_fetch_tab():

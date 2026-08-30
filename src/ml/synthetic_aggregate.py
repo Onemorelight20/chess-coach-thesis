@@ -44,9 +44,13 @@ def main():
     ap.add_argument("--loss-lo", type=int, default=120)
     ap.add_argument("--loss-hi", type=int, default=400)
     ap.add_argument("--outdir", default="results")
+    ap.add_argument("--rule", default="raw", choices=["raw", "standardised"])
     ap.add_argument("--tag", default="")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
+    import src.ml.synthetic_validation as SV
+    SV.RULE = getattr(args, "rule", "raw")
+    print(f"Ranking rule: {SV.RULE}")
     os.makedirs(args.outdir, exist_ok=True)
     rng = random.Random(args.seed)
     bands = parse_bands(args.elo_bands) if args.elo_bands else None

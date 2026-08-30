@@ -24,6 +24,21 @@ FEATURE_NAMES = [
 # Every feature maps to a Lichess puzzle theme (RecommenderEngine.feature_to_tag).
 WEAKNESS_CANDIDATES = list(FEATURE_NAMES)
 
+# Subset a player can actually train. The rest of FEATURE_NAMES are indicators of
+# strength rather than skills: `avg_move_rank`, `top1_agree`, `engine_match_rate`
+# measure accuracy itself, and the timing features describe pace, not a topic a
+# puzzle can drill. Leaving them in the candidate pool let the mechanism answer
+# "average think time" for 27% of players -- true about the prediction, useless as
+# advice. Restricting the pool is the first of the three corrections in 3.3.
+TRAINABLE_CANDIDATES = [
+    "opening_acpl", "middlegame_acpl", "endgame_acpl",      # фази гри
+    "conversion_acpl", "defense_acpl", "acpl_critical",     # ситуативна гра
+    "blunder_rate", "mistake_rate", "inaccuracy_rate",      # тактичні помилки
+    "hanging_rate", "pin_exposure", "king_danger",          # тактичні патерни
+    "center_control_avg", "mobility_avg",                   # позиційна гра
+    "material_volatility", "capture_rate", "check_given_rate",
+]
+
 DISPLAY_NAMES = {
     "acpl": "Average Centipawn Loss",
     "inaccuracy_rate": "Inaccuracy Rate",

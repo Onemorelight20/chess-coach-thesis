@@ -132,6 +132,29 @@ class RecommenderEngine:
         except (requests.RequestException, ValueError):
             return None
 
+    def get_plan(self, predicted_elo: int, weaknesses: list, color: str = None) -> list:
+        """
+        A short training plan instead of one puzzle.
+
+        `weaknesses` is the ranked list from ELOModel.predict_and_explain. Naming a
+        single category is not reproducible -- split halves of the same player agree
+        on the top pick 11% of the time but on the top-3 set 57% -- so the app offers
+        the whole shortlist and lets the player choose. Themes are de-duplicated:
+        several features can map to the same Lichess theme, and repeating it would
+        look like two separate recommendations for one gap.
+        """
+        plan, seen = [], set()
+        for i, w in enumerate(weaknesses, 1):
+            tag = self.feature_to_tag.get(w["feature"], "mix")
+            if tag in seen:
+                continue
+            seen.add(tag)
+            rec = self.get_recommendation(predicted_elo, w["feature"], color)
+            rec["priority"] = i
+            rec["weakness_score"] = w.get("score")
+            plan.append(rec)
+        return plan
+
     def get_recommendation(self, predicted_elo: int, weakest_feature: str,
                            color: str = None) -> dict:
         tag = self.feature_to_tag.get(weakest_feature, "mix")
