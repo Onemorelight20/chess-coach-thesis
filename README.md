@@ -1,9 +1,10 @@
-# Інтелектуальна система шахового тренера на основі методів машинного навчання та пояснювального ШІ
+# Метод підбору тренувальних задач на основі інтерпретації прогнозу шахового рейтингу
 
-Explainable ML-система, що оцінює рейтинг Elo шахіста за партіями (без доступу до
-його реального рейтингу) та визначає його найслабшу тренувальну категорію —
-виключно на основі аналізу рушієм Stockfish, без нейромереж (Maia тощо) чи
-сторонніх моделей людської гри.
+Explainable ML-метод, що оцінює рейтинг Elo шахіста за його партіями (без доступу
+до реального рейтингу), інтерпретує цей прогноз і за відхиленням внесків ознак від
+типових для гравців того самого рівня визначає напрями тренування — виключно на
+основі аналізу рушієм Stockfish, без нейромереж (Maia тощо) чи сторонніх моделей
+людської гри.
 
 ```
 PGN → Stockfish (MultiPV) → вектор із 29 ознак → XGBoost (Elo) → SHAP, нормований
@@ -79,7 +80,7 @@ src/
   ml/
     train.py                      Тренування XGBoost-моделі на пул
     model.py                      Завантаження моделі + SHAP-прогноз
-    recommender.py                 SHAP-слабкість → пазл
+    recommender.py                 напрями тренування → теми пазлів Lichess
     evaluate.py                    Основний евалюаційний харнес (Розділ "Експерименти")
     calibration.py                  Каліброваційне дослідження (стара vs стратиф. вибірка)
     aggregation_methods.py          Порівняння стратегій агрегації (mean/median/...)
@@ -95,7 +96,6 @@ src/
     external_validation.py          Зовнішня валідація: held-out Lichess vs Chess.com + рекалібрування
     production_bias.py              Поза-фолдове зміщення поточної продакшн-моделі за діапазонами Elo
     eval_clip_stats.py              Обґрунтування клипу оцінки ±1000 cp (частка позицій понад 2000 cp)
-    plot_architecture.py            Схема конвеєра (fig_architecture.png), без залежності від даних
     models/                        Треновані моделі (xgboost_elo_<pool>.json + метрики)
       chesscom_recalibration_<pool>.pkl  Калібрувальна функція Lichess-scale -> Chess.com-scale
       shap_reference_<pool>.pkl          Середнє й σ внеску кожної ознаки за 8 діапазонами рейтингу
@@ -185,7 +185,7 @@ test), XGBoost (`n_estimators=300, max_depth=5, learning_rate=0.05`), окрем
 | `python -m src.ml.aggregation_curve --pools data/dataset_bullet_2k.parquet,data/dataset_blitz_2k.parquet,data/dataset_rapid_2k.parquet,data/dataset_classical_2k.parquet --outdir results` | `aggregation_curve_by_pool.json` + `fig_aggregation_by_pool.png` (та сама mean-агрегація, окремо на кожен з 4 пулів) |
 | `python -m src.ml.production_bias --outdir results` | `oof_bias_by_band.json`, `oof_bias_by_band.csv` (поза-фолдові прогнози повної 29-ознакової продакшн-моделі, GroupKFold(5), зміщення за діапазонами рейтингу) |
 | `python -m src.ml.eval_clip_stats lichess_db_standard_rated_2026-01.pgn --games 120 --event blitz --outdir results` | `eval_clip_justification.json` (частка позицій понад ±2000 cp і максимальна оцінка на вибірці послідовних партій; обґрунтування обмеження оцінки ±1000 cp, ~5-10 хв) |
-| `python -m src.ml.plot_architecture --outdir results` | `fig_architecture.png` (схема конвеєра; не залежить від жодних даних чи попередніх результатів) |
+| draw.io: `results/fig_pipeline_train.drawio`, `results/fig_pipeline_run.drawio` | `fig_pipeline_train.png`, `fig_pipeline_run.png` (схеми конвеєрів навчання та роботи системи, рисунки 2.1 і 2.2; редагуються в draw.io, експорт `--format png --scale 2`) |
 | `python -m src.ml.learning_curve data/dataset_blitz_2k.parquet --outdir results` | `learning_curve.json` + `fig_learning_curve.png` |
 | `python -m src.ml.build_shap_reference data/dataset_<pool>_2k.parquet --pool <pool>` | `src/ml/models/shap_reference_<pool>.pkl` (потрібен для інференсу; без нього `model.py` мовчки відкочується на сирий `argmin` і повідомляє про це полем `weakness_rule`) |
 | `python -m src.ml.validate_xai data/dataset_<pool>_2k.parquet --rule <raw\|trainable\|standardised> --suffix _<pool>_<rule> --outdir results/rules` | `xai_validation*.json`, `xai_groundtruth_vs_pred*.csv` + `fig_xai_confusion*.png` (~2–4 хв на прогін) |

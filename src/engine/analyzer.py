@@ -4,7 +4,7 @@ import math
 import os
 
 # Clip before computing centipawn loss: an unclipped forced mate produces
-# five-figure "losses" that dominate every average. +/-1000 cp ~ a rook.
+# five-figure "losses" that dominate every average. +/-1000 cp = ten pawns.
 EVAL_CAP = 1000
 MATE_SCORE = 100000  # sentinel so mate keeps the correct sign before capping
 
