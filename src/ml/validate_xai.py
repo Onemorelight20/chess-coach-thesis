@@ -28,6 +28,7 @@ import xgboost as xgb
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.features.extractor import (FEATURE_NAMES, DISPLAY_NAMES, WEAKNESS_CANDIDATES,
                                     TRAINABLE_CANDIDATES, FEATURE_ORIENTATION)
+from src.ml import build_shap_reference
 from src.ml import plotstyle
 plotstyle.apply()
 
@@ -62,7 +63,9 @@ def _rank(sv_sub, pred_elo=None, k=1):
                               for j in range(score.shape[1])])
         sd = np.column_stack([np.interp(pred_elo, x, BAND_REF["std"][:, j])
                               for j in range(score.shape[1])])
-        score = (score - mu) / sd
+        # Same helper as production, so a zero-variance band is treated the same
+        # way here as in model.py instead of being scored un-normalised.
+        score = build_shap_reference.standardise_matrix(score, mu, sd)
     ranked = score.argsort(axis=1)[:, :k]
     names = np.array(CANDS)[ranked]
     return names[:, 0] if k == 1 else names
@@ -76,17 +79,32 @@ def build_band_ref(explainer, stacked, n_bands=8):
     edges = np.quantile(pred, np.linspace(0, 1, n_bands + 1))
     edges[0], edges[-1] = -np.inf, np.inf
     b = np.clip(np.searchsorted(edges, pred, side="right") - 1, 0, n_bands - 1)
-    mean = np.vstack([sub[b == i].mean(axis=0) for i in range(n_bands)])
-    std = np.vstack([sub[b == i].std(axis=0) for i in range(n_bands)])
-    centres = np.array([pred[b == i].mean() for i in range(n_bands)])
-    return {"edges": edges, "centres": centres, "mean": mean,
-            "std": np.where(std == 0, 1.0, std)}
+    # Duplicate quantile edges (a small or heavily tied prediction distribution)
+    # leave bands empty. Keeping them would put NaN into `centres`, breaking
+    # np.interp's monotonic-xp precondition for EVERY later call -- silently,
+    # since only a numpy warning would reach stderr. Drop them instead.
+    filled = [i for i in range(n_bands) if np.any(b == i)]
+    mean = np.vstack([sub[b == i].mean(axis=0) for i in filled])
+    std = np.vstack([sub[b == i].std(axis=0) for i in filled])
+    centres = np.array([pred[b == i].mean() for i in filled])
+    return {"edges": edges, "centres": centres, "mean": mean, "std": std}
+
+
+def _predictions(explainer, sv):
+    """Model output reconstructed from the explanation, or None under the raw
+    rule (where no rating band is needed)."""
+    return (np.asarray(explainer.expected_value) + sv.sum(axis=1)
+            if BAND_REF is not None else None)
 
 
 def per_game_weakness(explainer, Xi):
     """For each game, the candidate feature whose SHAP value most lowers Elo."""
-    sub = explainer.shap_values(Xi)[:, [FEATURE_NAMES.index(c) for c in CANDS]]
-    return _rank(sub, k=1)
+    sv = explainer.shap_values(Xi)
+    sub = sv[:, [FEATURE_NAMES.index(c) for c in CANDS]]
+    # The predicted rating has to be passed, or --rule standardised silently
+    # degrades to the raw rule here while the aggregate path standardises --
+    # and the modal-vote comparison would then contrast two different mechanisms.
+    return _rank(sub, _predictions(explainer, sv), k=1)
 
 
 def modal(series):
@@ -101,8 +119,7 @@ def aggregate_weakness(explainer, Xi, groups, k=1):
                            columns=Xi.columns)
     sv = explainer.shap_values(stacked)
     sub = sv[:, [FEATURE_NAMES.index(c) for c in CANDS]]
-    pred = np.asarray(explainer.expected_value) + sv.sum(axis=1) if BAND_REF is not None else None
-    return _rank(sub, pred, k=k)
+    return _rank(sub, _predictions(explainer, sv), k=k)
 
 
 def _pair_scores(first, second):
@@ -124,8 +141,12 @@ def experiment_a(df, Xi, explainer, min_games=4, seeds=range(10), boot=1000):
             half = len(shuffled) // 2
             splits.append((player, shuffled[:half], shuffled[half:]))
 
-    aggregated = aggregate_weakness(
-        explainer, Xi, [h for _, a, b in splits for h in (a, b)])
+    # One SHAP pass over ~2*len(splits) aggregated vectors, sliced per k below.
+    # Re-calling aggregate_weakness for each k tripled the cost of the most
+    # expensive step for rankings that differ only by their prefix length.
+    ranked = aggregate_weakness(
+        explainer, Xi, [h for _, a, b in splits for h in (a, b)], k=3)
+    aggregated = ranked[:, 0]
     per_game = df["shap_weak"].to_numpy()
     rec = pd.DataFrame({
         "player": [s[0] for s in splits],
@@ -139,9 +160,7 @@ def experiment_a(df, Xi, explainer, min_games=4, seeds=range(10), boot=1000):
     # -- the halves rank the same areas and reorder neighbours.
     out["topk_overlap"] = {}
     for k in (2, 3):
-        ranked = aggregate_weakness(
-            explainer, Xi, [h for _, a, b in splits for h in (a, b)], k=k)
-        A, Bk = ranked[0::2], ranked[1::2]
+        A, Bk = ranked[0::2, :k], ranked[1::2, :k]
         out["topk_overlap"][str(k)] = float(
             np.mean([len(set(x) & set(y)) > 0 for x, y in zip(A, Bk)]))
     out["n_players"] = int(rec["player"].nunique())
@@ -177,18 +196,18 @@ def experiment_b(df, Xi, explainer):
     # Prediction: SHAP over each player's games aggregated the way app.py does.
     rows = df.groupby("player").indices
     players = pd.Index(list(rows), name="player")
-    ranked = aggregate_weakness(explainer, Xi, [rows[p] for p in players], k=2)
+    # One SHAP pass, sliced per k: the k=2 and k=3 rankings share a prefix, and
+    # `top2_accuracy` below is by definition `coverage_at_k["2"]`.
+    ranked = aggregate_weakness(explainer, Xi, [rows[p] for p in players], k=3)
     pred = pd.Series(ranked[:, 0], index=players, name="pred_weak")
-    # second guess: is GT among the two weakest candidates of the same vector?
-    top2 = pd.Series(list(ranked), index=players)
     merged = pd.concat([gt, pred], axis=1).dropna()
     top1 = float((merged["gt_weak"] == merged["pred_weak"]).mean())
+    # coverage: is GT among the k weakest candidates of the same vector?
     cover = {}
     for k in (2, 3):
-        rk = aggregate_weakness(explainer, Xi, [rows[p] for p in players], k=k)
-        sets = pd.Series(list(rk), index=players)
+        sets = pd.Series(list(ranked[:, :k]), index=players)
         cover[str(k)] = float(np.mean([gt.loc[p] in sets.loc[p] for p in merged.index]))
-    in_top2 = float(np.mean([gt.loc[p] in top2.loc[p] for p in merged.index]))
+    in_top2 = cover["2"]
     kappa = cohen_kappa_score(merged["gt_weak"], merged["pred_weak"],
                               labels=CANDS)
     # baselines

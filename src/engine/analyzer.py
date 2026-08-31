@@ -1,5 +1,6 @@
 import chess
 import chess.engine
+import chess.pgn        # only for the analyze_game annotation, but it must be imported
 import math
 import os
 
@@ -165,10 +166,17 @@ class EngineAnalyzer:
             board.push(move)
             hanging, pins, king_danger, center, material = self._positional_signals(board, mover)
 
+            # `played` sits below the clip in the fallback above (best - 2*cap
+            # marks an unanalysable move as maximally bad, which is a LOSS and is
+            # allowed that range), so clip again where the EVALUATION is stored:
+            # eval_cp must honour +/-eval_cap unconditionally, since the feature
+            # extractor reads it as a position score. cpl above is unaffected.
+            eval_cp = self._cap(played)
+
             results.append({
                 "move": move.uci(),
                 "turn": "white" if mover == chess.WHITE else "black",
-                "eval_cp": played if mover == chess.WHITE else -played,
+                "eval_cp": eval_cp if mover == chess.WHITE else -eval_cp,
                 "cpl": cpl,
                 "move_rank": rank,
                 "is_critical": is_critical,

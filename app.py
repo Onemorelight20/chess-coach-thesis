@@ -101,15 +101,21 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
     with st.status(f"Analysing {n_games} game(s)...", expanded=True) as status:
         try:
             analyzer = EngineAnalyzer(time_limit=0.05)  # matches the training-data budget
-            feats_list = []
-            progress = st.empty()  # one line, updated in place
-            for i, (g, color) in enumerate(games_with_color, 1):
-                progress.write(f"\U0001f7e2 Game {i}/{n_games}: Stockfish + feature extraction...")
-                inc = parse_increment(g.headers.get("TimeControl", "-"))
-                results = analyzer.analyze_game(g)
-                feats_list.append(
-                    FeatureExtractor(target_player_color=color).extract(results, increment=inc))
-            analyzer.close()
+            # finally, not a trailing close(): a failure anywhere in the loop
+            # would otherwise orphan the Stockfish process, and Streamlit reruns
+            # the script on every interaction, so retries pile them up.
+            try:
+                feats_list = []
+                progress = st.empty()  # one line, updated in place
+                for i, (g, color) in enumerate(games_with_color, 1):
+                    progress.write(
+                        f"\U0001f7e2 Game {i}/{n_games}: Stockfish + feature extraction...")
+                    inc = parse_increment(g.headers.get("TimeControl", "-"))
+                    results = analyzer.analyze_game(g)
+                    feats_list.append(
+                        FeatureExtractor(target_player_color=color).extract(results, increment=inc))
+            finally:
+                analyzer.close()
 
             progress.write("\U0001f7e2 Aggregating (mean) + predicting Elo + SHAP...")
             features = aggregate_features(feats_list, method="mean")
@@ -159,8 +165,11 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
     else:
         st.caption("⚖️ Predicted Elo is on the **Lichess** rating scale.")
 
-    ws = prediction_data["weaknesses"]
-    st.info("**Priority training areas:** " + " · ".join(w["display"] for w in ws))
+    # Listed from the plan, not from prediction_data["weaknesses"]: get_plan
+    # de-duplicates features that share a Lichess theme, and a banner naming an
+    # area that no puzzle block below it covers reads as a dropped recommendation.
+    st.info("**Priority training areas:** " + " · ".join(
+        DISPLAY_NAMES.get(r["weakness_identified"], r["weakness_identified"]) for r in plan))
     if prediction_data.get("weakness_rule") == "band-standardised":
         st.caption(
             "Ranked by how unusual each contribution is **for players of your predicted "

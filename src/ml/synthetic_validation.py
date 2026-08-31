@@ -158,10 +158,16 @@ def rank_categories(model, features):
     if RULE == "standardised" and getattr(model, "_shap_reference", None) is not None:
         from src.ml import build_shap_reference as B
         mu, sd = B.stats_at(model._shap_reference, out["predicted_elo"])
-        usable = [c for c in cands if c in mu.index]
-        if usable:
-            score = {c: (shap[c] - float(mu[c])) / float(sd[c]) for c in usable}
-            return sorted(usable, key=score.get)
+        # Same helper as model.py: candidates with a degenerate band std are
+        # dropped, not scored NaN. `sorted` compares NaN as False for every
+        # pair, so leaving them in would order the answer by input position.
+        score = B.standardised_scores(shap, mu, sd, cands)
+        if score:
+            # Un-standardisable candidates keep a place at the END of the
+            # ranking instead of vanishing: main() indexes this list by category
+            # to report coverage@k, so it has to cover every candidate.
+            rest = [c for c in cands if c not in score]
+            return sorted(score, key=score.get) + sorted(rest, key=lambda c: shap[c])
     return sorted(cands, key=lambda c: shap[c])
 
 

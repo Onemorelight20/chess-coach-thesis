@@ -9,6 +9,16 @@ import xgboost as xgb
 from src.features.extractor import FEATURE_NAMES, WEAKNESS_CANDIDATES, DISPLAY_NAMES
 from src.ml import build_shap_reference
 
+MODEL_PREFIX = "xgboost_elo_"
+
+
+def _pool_of_path(path):
+    """`.../xgboost_elo_blitz.json` -> `blitz`; None for a custom model path."""
+    if not path:
+        return None
+    stem = os.path.splitext(os.path.basename(path))[0]
+    return stem[len(MODEL_PREFIX):] if stem.startswith(MODEL_PREFIX) else None
+
 
 class ELOModel:
     def __init__(self, pool: str = None, model_path: str = None):
@@ -43,7 +53,13 @@ class ELOModel:
             self.is_mock = True
 
         self.explainer = shap.TreeExplainer(self.model)
-        self._shap_reference = None if self.is_mock else build_shap_reference.load(pool)
+        # Key the reference off the model that was actually LOADED, not the one
+        # requested: with no pool-specific model we fall back to blitz above, and
+        # z-scoring blitz contributions against another pool's population
+        # statistics would silently name the wrong training areas.
+        self.loaded_pool = _pool_of_path(self.model_path) or pool
+        self._shap_reference = (None if self.is_mock
+                                else build_shap_reference.load(self.loaded_pool))
 
     def _initialize_mock_model(self):
         self.feature_names = list(FEATURE_NAMES)
@@ -69,9 +85,10 @@ class ELOModel:
         candidates are limited to features a player can actually train, and each
         contribution is standardised against players of the same predicted-rating
         band, so the answer is "where is this player unusual for their level"
-        rather than "which feature has the largest raw contribution". Without the
-        reference file the method falls back to the raw rule and says so in
-        `weakness_rule`.
+        rather than "which feature has the largest raw contribution". Without a
+        USABLE reference the method falls back to the raw rule and says so in
+        `weakness_rule` -- a missing file and a file that no longer matches the
+        model's features are handled the same way.
         """
         row = {f: features.get(f, np.nan) for f in self.feature_names}
         x_input = pd.DataFrame([row], columns=self.feature_names)
@@ -82,14 +99,19 @@ class ELOModel:
         shap_dict = dict(zip(self.feature_names, [float(v) for v in shap_values]))
 
         ref = self._shap_reference
+        scored, rule = {}, "raw-argmin"
         if ref is not None:
-            cands = [c for c in ref["candidates"] if c in shap_dict]
             mu, sd = build_shap_reference.stats_at(ref, predicted_elo)
-            scored = {c: (shap_dict[c] - float(mu[c])) / float(sd[c])
-                      for c in cands if pd.notna(sd[c])}
+            scored = build_shap_reference.standardised_scores(
+                shap_dict, mu, sd, ref["candidates"])
             rule = "band-standardised"
-        else:
+        if not scored:
+            # No reference, or one stale enough that none of its candidates
+            # survives (renamed features, a reference built for the legacy
+            # 21-feature extractor). Ranking an empty dict would raise on
+            # `weaknesses[0]`, so take the raw rule instead of failing.
             scored = {c: shap_dict[c] for c in WEAKNESS_CANDIDATES if c in shap_dict}
+            scored = scored or dict(shap_dict)
             rule = "raw-argmin"
 
         # Report the k weakest, not one. Naming a single category throws away a

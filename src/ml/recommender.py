@@ -1,5 +1,6 @@
 import os
 import random
+from concurrent.futures import ThreadPoolExecutor
 
 import requests
 
@@ -43,6 +44,9 @@ class RecommenderEngine:
         self.timeout = timeout
         self.window = window                 # +/- rating band around predicted Elo
         self.rng = random.Random(seed)
+        # get_plan asks for the same rating window once per theme; the mask over
+        # the ~5M-row index does not depend on the theme, so compute it once.
+        self._band_cache = {}
         self.feature_to_tag = {
             # ---- accuracy ----
             "acpl": "mix",
@@ -84,14 +88,21 @@ class RecommenderEngine:
         }
 
     # ---- absolute-rating selection from the local puzzle index ----------------
+    def _rating_band(self, puzzles, predicted_elo: int, w: int):
+        """Puzzles rated within +/-w of predicted_elo, cached per (elo, window)."""
+        key = (predicted_elo, w)
+        if key not in self._band_cache:
+            self._band_cache[key] = puzzles[(puzzles.Rating >= predicted_elo - w)
+                                            & (puzzles.Rating <= predicted_elo + w)]
+        return self._band_cache[key]
+
     def _select_from_db(self, theme: str, predicted_elo: int):
         """Pick a puzzle of `theme` rated near predicted_elo. Returns (dict, window)."""
         puzzles = _load_puzzles()
         if puzzles is None:
             return None, None
         for w in (self.window, 150, 250, 400, 700):
-            band = puzzles[(puzzles.Rating >= predicted_elo - w)
-                           & (puzzles.Rating <= predicted_elo + w)]
+            band = self._rating_band(puzzles, predicted_elo, w)
             if band.empty:
                 continue
             themed = band[(" " + band.Themes + " ").str.contains(f" {theme} ", regex=False)]
@@ -143,20 +154,46 @@ class RecommenderEngine:
         several features can map to the same Lichess theme, and repeating it would
         look like two separate recommendations for one gap.
         """
-        plan, seen = [], set()
-        for i, w in enumerate(weaknesses, 1):
+        chosen, seen = [], set()
+        for w in weaknesses:
             tag = self.feature_to_tag.get(w["feature"], "mix")
             if tag in seen:
                 continue
             seen.add(tag)
-            rec = self.get_recommendation(predicted_elo, w["feature"], color)
+            chosen.append(w)
+
+        # The two sources are mutually exclusive per process: with a local index
+        # every lookup is a cached-band scan, without one every lookup is an
+        # independent API round trip that can burn the full timeout. Three of
+        # those in series would stack onto the end of an already slow analysis.
+        if _load_puzzles() is None and len(chosen) > 1:
+            with ThreadPoolExecutor(max_workers=len(chosen)) as ex:
+                plan = list(ex.map(
+                    lambda w: self.get_recommendation(predicted_elo, w["feature"], color),
+                    chosen))
+        else:
+            plan = [self.get_recommendation(predicted_elo, w["feature"], color)
+                    for w in chosen]
+
+        # Number the plan itself: the loop index over `weaknesses` would leave
+        # gaps wherever a theme was de-duplicated, reading as a dropped item.
+        for i, (rec, w) in enumerate(zip(plan, chosen), 1):
             rec["priority"] = i
             rec["weakness_score"] = w.get("score")
-            plan.append(rec)
         return plan
 
     def get_recommendation(self, predicted_elo: int, weakest_feature: str,
                            color: str = None) -> dict:
+        """
+        One puzzle for one named area, for headless callers as well as the app.
+
+        `message` deliberately does NOT claim the area is the largest drop in the
+        predicted rating: under the band-standardised rule the named feature is
+        the one that deviates most from same-level peers, which is routinely not
+        the loudest contribution (that is the whole point of
+        build_shap_reference.py). This method is not told which rule named the
+        feature, so the wording has to hold for both.
+        """
         tag = self.feature_to_tag.get(weakest_feature, "mix")
         display = DISPLAY_NAMES.get(weakest_feature, weakest_feature)
 
@@ -183,16 +220,16 @@ class RecommenderEngine:
                 puzzle_themes=puzzle["themes"],
                 source=source,
                 link=f"https://lichess.org/training/{puzzle['id']}",
-                message=(f"SHAP attributes the largest drop in your predicted rating to "
-                         f"**{display}**. Here is a '{tag}' puzzle {match} that targets "
+                message=(f"**{display}** came out as a priority training area for your "
+                         f"predicted level. Here is a '{tag}' puzzle {match} that targets "
                          f"exactly this gap."),
             )
         else:
             result.update(
                 puzzle_id=None, puzzle_rating=None, puzzle_themes=[tag], source="theme_page",
                 link=f"https://lichess.org/training/{tag}",
-                message=(f"SHAP attributes the largest drop in your predicted rating to "
-                         f"**{display}**. Drilling '{tag}' puzzles around {predicted_elo} "
+                message=(f"**{display}** came out as a priority training area for your "
+                         f"predicted level. Drilling '{tag}' puzzles around {predicted_elo} "
                          f"Elo targets this gap. (No local puzzle index and the Lichess API "
                          f"was unreachable; showing the theme trainer.)"),
             )

@@ -93,12 +93,57 @@ def stats_at(ref, predicted_elo):
     if not x:                                     # довідник старого формату
         b = band_of(ref, predicted_elo)
         return ref["mean"].iloc[b], ref["std"].iloc[b]
-    cands = ref["candidates"]
+    # Only candidates the stored frames actually carry: a reference built before
+    # a feature rename still lists the old name in `candidates`, and indexing
+    # `mean` with it would raise instead of letting the caller fall back.
+    cands = [c for c in ref["candidates"] if c in ref["mean"].columns]
     mu = pd.Series({c: float(np.interp(predicted_elo, x, ref["mean"][c].values))
                     for c in cands})
     sd = pd.Series({c: float(np.interp(predicted_elo, x, ref["std"][c].values))
                     for c in cands})
     return mu, sd
+
+
+def _degenerate(sd):
+    """Standard deviations that cannot standardise anything: zero variance
+    (`build` stores it as NaN) or a statistic that interpolation left missing."""
+    sd = np.asarray(sd, dtype=float)
+    return ~np.isfinite(sd) | (sd == 0)
+
+
+def standardised_scores(shap_dict, mu, sd, candidates):
+    """
+    (phi - mu) / sd per candidate -- the single definition of the
+    band-standardised rule, shared by model.py and the validation harnesses so
+    that they measure the same mechanism.
+
+    Candidates whose band statistics are degenerate are DROPPED rather than
+    scored: a contribution that cannot be standardised must not be namable.
+    Keeping it would put a NaN into `sorted(..., key=score.get)`, where every
+    comparison is False and the winner is decided by input order, silently.
+    """
+    scored = {}
+    for c in candidates:
+        if c not in shap_dict or c not in mu.index or _degenerate(sd[c]):
+            continue
+        scored[c] = (float(shap_dict[c]) - float(mu[c])) / float(sd[c])
+    return scored
+
+
+def standardise_matrix(values, mu, sd):
+    """
+    Array form of `standardised_scores` for the validation harnesses: a row of
+    contributions per player against mu/sd broadcast to the same shape.
+
+    Degenerate entries become NaN, which numpy's argsort places last -- the
+    array equivalent of dropping the candidate from the pool.
+    """
+    values = np.asarray(values, dtype=float)
+    mu = np.asarray(mu, dtype=float)
+    sd = np.asarray(sd, dtype=float)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        scores = (values - mu) / sd
+    return np.where(_degenerate(sd), np.nan, scores)
 
 
 def main():
