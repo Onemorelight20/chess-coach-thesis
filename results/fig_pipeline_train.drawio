@@ -5,20 +5,20 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="a1" value="&lt;b&gt;Партії Lichess&lt;/b&gt;&lt;br&gt;4 пули за контролем часу,&lt;br&gt;стратифікація 400–2800 Elo" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="20" y="60" width="195" height="100" as="geometry" />
+        <mxCell id="a1" value="&lt;b&gt;Партії Lichess&lt;/b&gt;&lt;br&gt;4 пули за контролем часу,&lt;br&gt;стратифікація 400–2800 Elo" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="20" parent="1">
+          <mxGeometry x="20" y="60" width="225" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="a2" value="&lt;b&gt;Аналіз рушієм&lt;/b&gt;&lt;br&gt;Stockfish, MultiPV = 5,&lt;br&gt;0,05 с на позицію" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="255" y="60" width="195" height="100" as="geometry" />
+        <mxCell id="a2" value="&lt;b&gt;Аналіз рушієм&lt;/b&gt;&lt;br&gt;Stockfish, MultiPV = 5,&lt;br&gt;0,05 с на позицію" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="285" parent="1">
+          <mxGeometry x="285" y="60" width="195" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="a3" value="&lt;b&gt;Вилучення ознак&lt;/b&gt;&lt;br&gt;вектор із 29&lt;br&gt;поведінкових ознак" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="490" y="60" width="195" height="100" as="geometry" />
+        <mxCell id="a3" value="&lt;b&gt;Вилучення ознак&lt;/b&gt;&lt;br&gt;вектор із 29&lt;br&gt;поведінкових ознак" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="520" parent="1">
+          <mxGeometry x="520" y="60" width="195" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="a4" value="&lt;b&gt;Навчання моделі&lt;/b&gt;&lt;br&gt;XGBoost окремо&lt;br&gt;на кожен пул" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="725" y="60" width="195" height="100" as="geometry" />
+        <mxCell id="a4" value="&lt;b&gt;Навчання моделі&lt;/b&gt;&lt;br&gt;XGBoost окремо&lt;br&gt;на кожен пул" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="755" parent="1">
+          <mxGeometry x="755" y="60" width="195" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="a5" value="&lt;b&gt;Модель і норми внесків&lt;/b&gt;&lt;br&gt;середні та відхилення&lt;br&gt;за інтервалами рейтингу" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="960" y="60" width="195" height="100" as="geometry" />
+        <mxCell id="a5" value="&lt;b&gt;Модель і норми внесків&lt;/b&gt;&lt;br&gt;середні та відхилення&lt;br&gt;за інтервалами рейтингу" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8E8E8;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="990" parent="1">
+          <mxGeometry x="990" y="60" width="195" height="100" as="geometry" />
         </mxCell>
 
         <mxCell id="ea12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" edge="1" parent="1" source="a1" target="a2"><mxGeometry relative="1" as="geometry" /></mxCell>

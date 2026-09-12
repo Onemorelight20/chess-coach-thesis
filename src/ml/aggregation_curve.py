@@ -133,10 +133,10 @@ def main():
     ax1.errorbar(ns, [c["r2"] for c in curve], yerr=[c["r2_std"] for c in curve],
                  marker="o", capsize=3, color="#1f77b4")
     ax1.set_xlabel("games aggregated per player (N)"); ax1.set_ylabel("CV R²")
-    ax1.set_title("Accuracy rises with more games/player"); ax1.grid(True, alpha=0.3)
+    ax1.grid(True, alpha=0.3)
     ax2.plot(ns, [c["mae"] for c in curve], marker="s", color="#d62728")
     ax2.set_xlabel("games aggregated per player (N)"); ax2.set_ylabel("CV MAE (Elo)")
-    ax2.set_title("Error falls with more games/player"); ax2.grid(True, alpha=0.3)
+    ax2.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.savefig(os.path.join(args.outdir, "fig_aggregation_curve.png"))
     plt.close(fig)

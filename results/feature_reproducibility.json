@@ -1,0 +1,98 @@
+{
+ "n4": {
+  "n_players": 2124,
+  "games_per_half": 4,
+  "raw": {
+   "opening_acpl": 0.7413812052579698,
+   "middlegame_acpl": 0.3734731453539868,
+   "endgame_acpl": 0.38105260681030134,
+   "conversion_acpl": 0.40401567068194477,
+   "defense_acpl": 0.1562108804324154,
+   "acpl_critical": 0.2662325307761246,
+   "blunder_rate": 0.55023346464567,
+   "mistake_rate": 0.5477344579388187,
+   "inaccuracy_rate": 0.3567866533253206,
+   "hanging_rate": 0.4259509822454521,
+   "pin_exposure": 0.13662350532244455,
+   "king_danger": 0.3943037909759215,
+   "center_control_avg": 0.49073670985855894,
+   "mobility_avg": 0.4139132292219446,
+   "material_volatility": 0.1078806781729348,
+   "capture_rate": 0.26039877048773485,
+   "check_given_rate": 0.2781084638430373
+  },
+  "residual": {
+   "opening_acpl": 0.44305876019743795,
+   "middlegame_acpl": 0.08947773297026683,
+   "endgame_acpl": 0.131987546424298,
+   "conversion_acpl": 0.14234688282321883,
+   "defense_acpl": 0.05052776783721519,
+   "acpl_critical": 0.010395519862904951,
+   "blunder_rate": 0.210112367993247,
+   "mistake_rate": 0.22712157167537048,
+   "inaccuracy_rate": 0.18499666634695025,
+   "hanging_rate": 0.338274782044973,
+   "pin_exposure": 0.11045664487325439,
+   "king_danger": 0.39450511009349204,
+   "center_control_avg": 0.3751744240320795,
+   "mobility_avg": 0.3791588745993609,
+   "material_volatility": 0.08768516425638039,
+   "capture_rate": 0.24057577927772236,
+   "check_given_rate": 0.2503475958382349
+  },
+  "raw_range": [
+   0.1078806781729348,
+   0.7413812052579698
+  ],
+  "raw_mean": 0.3697080438441518,
+  "residual_mean": 0.21565901124390627
+ },
+ "n8": {
+  "n_players": 398,
+  "games_per_half": 8,
+  "raw": {
+   "opening_acpl": 0.85931615545184,
+   "middlegame_acpl": 0.56781592824023,
+   "endgame_acpl": 0.6127712116175988,
+   "conversion_acpl": 0.56903865466193,
+   "defense_acpl": 0.3028960966097254,
+   "acpl_critical": 0.5578735068786145,
+   "blunder_rate": 0.7238939775980031,
+   "mistake_rate": 0.6582009150384149,
+   "inaccuracy_rate": 0.473880236880905,
+   "hanging_rate": 0.6233259605291896,
+   "pin_exposure": 0.22341420733525105,
+   "king_danger": 0.541468277863885,
+   "center_control_avg": 0.696642171153387,
+   "mobility_avg": 0.5695610227874978,
+   "material_volatility": 0.29390315409782714,
+   "capture_rate": 0.5344575825707173,
+   "check_given_rate": 0.48937076756672837
+  },
+  "residual": {
+   "opening_acpl": 0.6455486898025301,
+   "middlegame_acpl": 0.2514976900661635,
+   "endgame_acpl": 0.29066815768521265,
+   "conversion_acpl": 0.2538590310375992,
+   "defense_acpl": 0.14355547117716577,
+   "acpl_critical": 0.2671704148292725,
+   "blunder_rate": 0.41019815634050566,
+   "mistake_rate": 0.2933119134707096,
+   "inaccuracy_rate": 0.2909308008384181,
+   "hanging_rate": 0.5602085944090192,
+   "pin_exposure": 0.16720077650401363,
+   "king_danger": 0.5360375828236157,
+   "center_control_avg": 0.6067534171304007,
+   "mobility_avg": 0.5424676402305793,
+   "material_volatility": 0.2722654430972434,
+   "capture_rate": 0.5103472288533317,
+   "check_given_rate": 0.44484503631103306
+  },
+  "raw_range": [
+   0.22341420733525105,
+   0.85931615545184
+  ],
+  "raw_mean": 0.5469311662871614,
+  "residual_mean": 0.38158035556510667
+ }
+}

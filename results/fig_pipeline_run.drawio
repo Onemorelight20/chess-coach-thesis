@@ -5,23 +5,23 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="b1" value="&lt;b&gt;Партії гравця&lt;/b&gt;&lt;br&gt;формат PGN,&lt;br&gt;колір фігур" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b1" value="&lt;b&gt;Партії гравця&lt;/b&gt;&lt;br&gt;формат PGN,&lt;br&gt;колір фігур" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="35" y="30" width="195" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="b2" value="&lt;b&gt;Аналіз рушієм&lt;/b&gt;&lt;br&gt;ті самі налаштування,&lt;br&gt;що й при навчанні" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b2" value="&lt;b&gt;Аналіз рушієм&lt;/b&gt;&lt;br&gt;ті самі налаштування,&lt;br&gt;що й при навчанні" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="300" y="30" width="205" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="b3" value="&lt;b&gt;Вилучення ознак&lt;/b&gt;&lt;br&gt;той самий вектор,&lt;br&gt;усереднений за партіями" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b3" value="&lt;b&gt;Вилучення ознак&lt;/b&gt;&lt;br&gt;той самий вектор,&lt;br&gt;усереднений за партіями" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="570" y="30" width="215" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="b4" value="&lt;b&gt;Прогноз і пояснення&lt;/b&gt;&lt;br&gt;рейтинг Elo та&lt;br&gt;внески ознак за SHAP" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b4" value="&lt;b&gt;Прогноз і пояснення&lt;/b&gt;&lt;br&gt;рейтинг Elo та&lt;br&gt;внески ознак за SHAP" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="835" y="30" width="215" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="b5" value="&lt;b&gt;Напрями тренування&lt;/b&gt;&lt;br&gt;нормування внесків,&lt;br&gt;k = 3 за формулою (2.7)" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b5" value="&lt;b&gt;Напрями тренування&lt;/b&gt;&lt;br&gt;нормування внесків,&lt;br&gt;k = 3 за формулою (2.7)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="570" y="215" width="215" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="b6" value="&lt;b&gt;Тренувальні задачі&lt;/b&gt;&lt;br&gt;з бази Lichess,&lt;br&gt;за темою і рівнем" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="b6" value="&lt;b&gt;Тренувальні задачі&lt;/b&gt;&lt;br&gt;з бази Lichess,&lt;br&gt;за темою і рівнем" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8E8E8;strokeColor=#000000;fontColor=#000000;fontSize=15;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="835" y="215" width="215" height="100" as="geometry" />
         </mxCell>
 
@@ -39,7 +39,7 @@
         </mxCell>
         <mxCell id="eb56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" edge="1" parent="1" source="b5" target="b6"><mxGeometry relative="1" as="geometry" /></mxCell>
 
-        <mxCell id="e_loop" value="нові партії гравця – новий прохід конвеєра" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;endFill=1;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=2;verticalAlign=top;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="b6" target="b1">
+        <mxCell id="e_loop" value="нові партії гравця запускають новий прохід конвеєра" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;endFill=1;strokeColor=#000000;fontColor=#000000;fontSize=14;fontStyle=2;verticalAlign=top;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="b6" target="b1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="942" y="385" />

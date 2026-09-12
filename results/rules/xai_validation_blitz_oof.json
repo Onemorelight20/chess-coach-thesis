@@ -1,0 +1,11 @@
+{
+ "kappa": 0.049159492640994285,
+ "split_half_agreement": 0.11157943492357573,
+ "topk_overlap_3": 0.5878184344603984,
+ "top1_accuracy": 0.287962962962963,
+ "coverage_at_3": 0.48657407407407405,
+ "kappa_agreement": 0.23998297895704923,
+ "trivial_baseline": 0.13240740740740742,
+ "n_players": 2160,
+ "n_splits": 21590
+}

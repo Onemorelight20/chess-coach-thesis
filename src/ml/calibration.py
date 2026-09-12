@@ -142,7 +142,7 @@ def main():
         ax1.plot(t["actual_mean"], t["predicted_mean"], marker=marker, color=color, label=label)
     ax1.plot(lims, lims, "k--", lw=1, alpha=0.5, label="perfect calibration")
     ax1.set_xlabel("Actual Elo (band mean)"); ax1.set_ylabel("Predicted Elo (band mean)")
-    ax1.set_title("Sampling fix: skewed vs stratified training data")
+    ax1.set_title("Activity-based vs stratified sampling")
     ax1.legend(fontsize=8); ax1.set_xlim(lims); ax1.set_ylim(lims)
 
     for t, label, color, marker in [(tabs[1], "stratified, raw", "#4C72B0", "s"),
@@ -150,7 +150,7 @@ def main():
         ax2.plot(t["actual_mean"], t["predicted_mean"], marker=marker, color=color, label=label)
     ax2.plot(lims, lims, "k--", lw=1, alpha=0.5, label="perfect calibration")
     ax2.set_xlabel("Actual Elo (band mean)"); ax2.set_ylabel("Predicted Elo (band mean)")
-    ax2.set_title("Post-hoc isotonic recalibration")
+    ax2.set_title("Isotonic recalibration")
     ax2.legend(fontsize=8); ax2.set_xlim(lims); ax2.set_ylim(lims)
 
     fig.tight_layout()
