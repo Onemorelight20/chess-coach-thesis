@@ -1,0 +1,92 @@
+{
+  "n_games": 80,
+  "per_category": {
+    "opening_acpl": {
+      "d_pred": -420.625,
+      "share_pred_down": 0.9375,
+      "d_shap_target": -289.9979353249073,
+      "inverted": false,
+      "gain_rule27": 0.42,
+      "gain_rawfeat": 0.31
+    },
+    "middlegame_acpl": {
+      "d_pred": -273.1875,
+      "share_pred_down": 0.8625,
+      "d_shap_target": -21.635972642805427,
+      "inverted": false,
+      "gain_rule27": 0.21,
+      "gain_rawfeat": 0.07
+    },
+    "endgame_acpl": {
+      "d_pred": -48.6125,
+      "share_pred_down": 0.2375,
+      "d_shap_target": 5.159601137042046,
+      "inverted": true,
+      "gain_rule27": 0.01,
+      "gain_rawfeat": 0.09
+    },
+    "conversion_acpl": {
+      "d_pred": -146.25,
+      "share_pred_down": 0.5125,
+      "d_shap_target": 8.352286523301155,
+      "inverted": true,
+      "gain_rule27": -0.05,
+      "gain_rawfeat": 0.21
+    },
+    "defense_acpl": {
+      "d_pred": -76.0875,
+      "share_pred_down": 0.4125,
+      "d_shap_target": 5.9718019314110276,
+      "inverted": true,
+      "gain_rule27": -0.14,
+      "gain_rawfeat": 0.0
+    },
+    "blunder_rate": {
+      "d_pred": -731.8625,
+      "share_pred_down": 0.9875,
+      "d_shap_target": -20.83144337311387,
+      "inverted": false,
+      "gain_rule27": -0.05,
+      "gain_rawfeat": 0.12
+    },
+    "hanging_rate": {
+      "d_pred": -428.8625,
+      "share_pred_down": 0.9625,
+      "d_shap_target": 17.28517640568316,
+      "inverted": true,
+      "gain_rule27": -0.15,
+      "gain_rawfeat": 0.1
+    }
+  },
+  "spearman": {
+    "gain_rule27": {
+      "rho": -0.8829187134416479,
+      "p": 0.008450342381896611
+    },
+    "gain_rawfeat": {
+      "rho": -0.1785714285714286,
+      "p": 0.7016579425162728
+    }
+  },
+  "by_sign": {
+    "знак коректний": {
+      "categories": [
+        "opening_acpl",
+        "middlegame_acpl",
+        "blunder_rate"
+      ],
+      "mean_gain_rule27": 0.19333333333333333,
+      "mean_gain_rawfeat": 0.16666666666666666
+    },
+    "знак інвертований": {
+      "categories": [
+        "endgame_acpl",
+        "conversion_acpl",
+        "defense_acpl",
+        "hanging_rate"
+      ],
+      "mean_gain_rule27": -0.0825,
+      "mean_gain_rawfeat": 0.1
+    }
+  }
+}

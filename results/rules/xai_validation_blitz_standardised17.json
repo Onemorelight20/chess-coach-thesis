@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "rule": "standardised17",
+    "pool": "blitz",
+    "candidates": [
+      "opening_acpl",
+      "middlegame_acpl",
+      "endgame_acpl",
+      "conversion_acpl",
+      "defense_acpl",
+      "acpl_critical",
+      "blunder_rate",
+      "mistake_rate",
+      "inaccuracy_rate",
+      "hanging_rate",
+      "pin_exposure",
+      "king_danger",
+      "center_control_avg",
+      "mobility_avg",
+      "material_volatility",
+      "capture_rate",
+      "check_given_rate"
+    ],
+    "candidate_source": "fixed"
+  },
+  "experiment_a": {
+    "split_half_agreement": 0.11949976841130153,
+    "chance_agreement": 0.0733754733945454,
+    "cohen_kappa": 0.051196712091787666,
+    "n_categories": 17,
+    "topk_overlap": {
+      "2": 0.3680870773506253,
+      "3": 0.6107920333487726
+    },
+    "n_players": 2159,
+    "n_splits": 21590,
+    "modal_comparison": {
+      "split_half_agreement": 0.15581287633163501,
+      "chance_agreement": 0.12113302759477491,
+      "cohen_kappa": 0.03994188562083145,
+      "n_categories": 16,
+      "kappa_ci95": [
+        0.028228134089749484,
+        0.05044948961700693
+      ]
+    },
+    "kappa_ci95": [
+      0.04214112029610558,
+      0.06064730403203661
+    ],
+    "kappa_gain_over_modal": {
+      "delta": 0.011254826470956214,
+      "ci95": [
+        -0.001284945626959247,
+        0.024655716727223716
+      ],
+      "p_gt_0": 0.964
+    }
+  },
+  "experiment_b": {
+    "top1_accuracy": 0.21435185185185185,
+    "top2_accuracy": 0.31527777777777777,
+    "coverage_at_k": {
+      "2": 0.31527777777777777,
+      "3": 0.38472222222222224
+    },
+    "cohen_kappa": 0.16425783627979007,
+    "chance_baseline": 0.058823529411764705,
+    "majority_baseline": 0.13425925925925927,
+    "n_players": 2160,
+    "ref17": {
+      "top1_accuracy": 0.21435185185185185,
+      "top2_accuracy": 0.31527777777777777,
+      "coverage_at_k": {
+        "2": 0.31527777777777777,
+        "3": 0.38472222222222224
+      },
+      "cohen_kappa": 0.16425783627979007,
+      "chance_baseline": 0.058823529411764705,
+      "majority_baseline": 0.13425925925925927,
+      "share_outside_candidates": 0.0
+    }
+  }
+}

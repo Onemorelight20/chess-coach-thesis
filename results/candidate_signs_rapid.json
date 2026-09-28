@@ -1,0 +1,163 @@
+{
+ "pool": "rapid",
+ "n_players": 1998,
+ "signs": {
+  "opening_acpl": {
+   "rho_shap": -0.9936968579026212,
+   "correct_sign": true,
+   "rho_elo": -0.8796617665634986,
+   "rho_elo_given_acpl": -0.3754770591471365
+  },
+  "middlegame_acpl": {
+   "rho_shap": -0.878349885603387,
+   "correct_sign": true,
+   "rho_elo": -0.7644285370022917,
+   "rho_elo_given_acpl": 0.2508669910270059
+  },
+  "endgame_acpl": {
+   "rho_shap": 0.6842832868447077,
+   "correct_sign": false,
+   "rho_elo": -0.7799363425232769,
+   "rho_elo_given_acpl": 0.16844131861856046
+  },
+  "conversion_acpl": {
+   "rho_shap": 0.6674665408404339,
+   "correct_sign": false,
+   "rho_elo": -0.7325203078592091,
+   "rho_elo_given_acpl": 0.09032736701854184
+  },
+  "defense_acpl": {
+   "rho_shap": 0.5905907507922266,
+   "correct_sign": false,
+   "rho_elo": -0.5872751151663044,
+   "rho_elo_given_acpl": 0.167945051682113
+  },
+  "acpl_critical": {
+   "rho_shap": 0.8003129650491648,
+   "correct_sign": false,
+   "rho_elo": -0.7325174263844179,
+   "rho_elo_given_acpl": 0.07984642952076593
+  },
+  "blunder_rate": {
+   "rho_shap": -0.8731939192473758,
+   "correct_sign": true,
+   "rho_elo": -0.8388154041178337,
+   "rho_elo_given_acpl": 0.031586117765161216
+  },
+  "mistake_rate": {
+   "rho_shap": -0.9244880190451812,
+   "correct_sign": true,
+   "rho_elo": -0.7775021289433537,
+   "rho_elo_given_acpl": -0.09476963862043232
+  },
+  "inaccuracy_rate": {
+   "rho_shap": -0.029249310768638282,
+   "correct_sign": true,
+   "rho_elo": -0.4682763994015152,
+   "rho_elo_given_acpl": -0.04606237624173733
+  },
+  "hanging_rate": {
+   "rho_shap": 0.4895238885922259,
+   "correct_sign": false,
+   "rho_elo": -0.4494244614245884,
+   "rho_elo_given_acpl": 0.0011460592770276153
+  },
+  "pin_exposure": {
+   "rho_shap": -0.8690203012756689,
+   "correct_sign": true,
+   "rho_elo": -0.2580161281582883,
+   "rho_elo_given_acpl": -0.005540654480798063
+  },
+  "king_danger": {
+   "rho_shap": 0.9246896937247925,
+   "correct_sign": false,
+   "rho_elo": -0.006359373068944289,
+   "rho_elo_given_acpl": 0.13490689203332704
+  },
+  "center_control_avg": {
+   "rho_shap": 0.9244905527526055,
+   "correct_sign": true,
+   "rho_elo": 0.5175459298743226,
+   "rho_elo_given_acpl": 0.230888992957308
+  },
+  "mobility_avg": {
+   "rho_shap": 0.9593881536129574,
+   "correct_sign": true,
+   "rho_elo": 0.2739426574726718,
+   "rho_elo_given_acpl": 0.12463488876382353
+  },
+  "material_volatility": {
+   "rho_shap": 0.7372697304855971,
+   "correct_sign": false,
+   "rho_elo": 0.19402557230693057,
+   "rho_elo_given_acpl": 0.07851550590897229
+  },
+  "capture_rate": {
+   "rho_shap": -0.9527368364475951,
+   "correct_sign": true,
+   "rho_elo": -0.17024141526390357,
+   "rho_elo_given_acpl": -0.1917968379664425
+  },
+  "check_given_rate": {
+   "rho_shap": -0.9745168487802143,
+   "correct_sign": true,
+   "rho_elo": -0.21564243767579339,
+   "rho_elo_given_acpl": -0.14316339885458948
+  }
+ },
+ "passed": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "blunder_rate",
+  "mistake_rate",
+  "inaccuracy_rate",
+  "pin_exposure",
+  "center_control_avg",
+  "mobility_avg",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "excluded": [
+  "endgame_acpl",
+  "conversion_acpl",
+  "defense_acpl",
+  "acpl_critical",
+  "hanging_rate",
+  "king_danger",
+  "material_volatility"
+ ],
+ "reference_candidates": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "blunder_rate",
+  "mistake_rate",
+  "inaccuracy_rate",
+  "pin_exposure",
+  "center_control_avg",
+  "mobility_avg",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "all": {
+  "n_candidates": 17,
+  "reversed_share": 0.32882882882882886
+ },
+ "sign_filtered": {
+  "n_candidates": 10,
+  "reversed_share": 0.07607607607607608
+ },
+ "sensitivity_empirical_orientation": {
+  "disputed": {
+   "material_volatility": {
+    "declared": 1,
+    "empirical": -1
+   },
+   "king_danger": {
+    "declared": 1,
+    "empirical": 1
+   }
+  },
+  "all": 0.27627627627627627,
+  "sign_filtered": 0.07607607607607608
+ }
+}

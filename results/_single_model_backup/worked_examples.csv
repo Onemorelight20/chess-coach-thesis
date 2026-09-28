@@ -1,0 +1,10 @@
+гравець,факт,прогноз,№,напрям,напрям_укр,z,тема,задача,рейт.,джерело
+Aldo333,838,986,1,inaccuracy_rate,Частка неточностей,-1.69,quietMove,mIAtn,992,database
+Aldo333,838,986,2,pin_exposure,Схильність до зв’язок,-0.39,pin,BfD1B,922,database
+Aldo333,838,986,3,center_control_avg,Контроль центру,-0.36,opening,1cKbE,949,database
+AB9920,1468,1763,1,mobility_avg,Рухливість фігур,-1.47,advancedPawn,mAmtX,1713,database
+AB9920,1468,1763,2,inaccuracy_rate,Частка неточностей,-0.65,quietMove,UABGU,1767,database
+AB9920,1468,1763,3,material_volatility,Втрати матеріалу,-0.21,sacrifice,MOze9,1741,database
+AAPA23,2316,2360,1,middlegame_acpl,Точність у міттельшпілі,-1.87,middlegame,JWxGF,2339,database
+AAPA23,2316,2360,2,material_volatility,Втрати матеріалу,-0.65,sacrifice,CoprF,2336,database
+AAPA23,2316,2360,3,mistake_rate,Частка помилок,-0.53,advantage,Ap5pF,2360,database

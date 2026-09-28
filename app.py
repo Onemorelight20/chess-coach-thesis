@@ -174,9 +174,20 @@ def analyze_and_render(games_with_color, target, pool, key, platform=None):
         st.caption(
             "Ranked by how unusual each contribution is **for players of your predicted "
             "level**, not by its raw size. Several areas are listed on purpose: on split "
-            "halves of the same player the single top pick repeats 11% of the time, the "
-            "top-3 set 57%."
+            "halves of the same player the single top pick repeats 16% of the time, the "
+            "top-3 set shares an area 75% of the time."
         )
+        q = prediction_data.get("margin_quantile")
+        if q is not None:
+            gap = prediction_data["weakest_margin"]
+            where = ("the top 10%" if q <= 0.10 else "the top 25%" if q <= 0.25
+                     else "the top half" if q <= 0.50 else "the lower half")
+            st.caption(
+                f"Confidence in the first area: the gap to the second one is {gap:.2f} "
+                f"standard units, which puts it in {where} of players by gap size. "
+                "Reliability of the single top pick grows with this gap but stays modest "
+                "at 8 games; treat the list as a pointer, not a diagnosis."
+            )
 
     st.subheader("SHAP Interpretability")
     st.markdown("How each feature pushed the predicted Elo up (positive) or down (negative).")

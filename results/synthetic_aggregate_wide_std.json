@@ -12,84 +12,84 @@
   },
   "per_category": {
     "opening_acpl": {
-      "per_game": 0.3125,
-      "per_game_clean": 0.0375,
-      "per_game_lift": 0.275,
-      "aggregated": 0.6,
-      "aggregated_clean": 0.15,
-      "aggregated_lift": 0.44999999999999996,
+      "per_game": 0.4625,
+      "per_game_clean": 0.1,
+      "per_game_lift": 0.36250000000000004,
+      "aggregated": 0.7,
+      "aggregated_clean": 0.05,
+      "aggregated_lift": 0.6499999999999999,
       "aggregated_ci95": [
-        0.4,
-        0.8
+        0.5,
+        0.9
       ]
     },
     "middlegame_acpl": {
-      "per_game": 0.2125,
-      "per_game_clean": 0.0625,
-      "per_game_lift": 0.15,
-      "aggregated": 0.6,
-      "aggregated_clean": 0.05,
-      "aggregated_lift": 0.5499999999999999,
+      "per_game": 0.3,
+      "per_game_clean": 0.05,
+      "per_game_lift": 0.25,
+      "aggregated": 0.65,
+      "aggregated_clean": 0.1,
+      "aggregated_lift": 0.55,
       "aggregated_ci95": [
-        0.4,
-        0.8
+        0.45,
+        0.85
       ]
     },
     "endgame_acpl": {
-      "per_game": 0.075,
-      "per_game_clean": 0.075,
-      "per_game_lift": 0.0,
-      "aggregated": 0.05,
-      "aggregated_clean": 0.1,
-      "aggregated_lift": -0.05,
+      "per_game": 0.0375,
+      "per_game_clean": 0.0125,
+      "per_game_lift": 0.024999999999999998,
+      "aggregated": 0.15,
+      "aggregated_clean": 0.2,
+      "aggregated_lift": -0.05000000000000002,
       "aggregated_ci95": [
         0.0,
-        0.15
+        0.3
       ]
     },
     "conversion_acpl": {
-      "per_game": 0.0625,
-      "per_game_clean": 0.075,
-      "per_game_lift": -0.012499999999999997,
+      "per_game": 0.0,
+      "per_game_clean": 0.0125,
+      "per_game_lift": -0.0125,
       "aggregated": 0.0,
-      "aggregated_clean": 0.3,
-      "aggregated_lift": -0.3,
+      "aggregated_clean": 0.1,
+      "aggregated_lift": -0.1,
       "aggregated_ci95": [
         0.0,
         0.0
       ]
     },
     "defense_acpl": {
-      "per_game": 0.4,
+      "per_game": 0.4125,
       "per_game_clean": 0.5375,
-      "per_game_lift": -0.13749999999999996,
-      "aggregated": 0.15,
-      "aggregated_clean": 0.25,
-      "aggregated_lift": -0.1,
+      "per_game_lift": -0.125,
+      "aggregated": 0.25,
+      "aggregated_clean": 0.2,
+      "aggregated_lift": 0.04999999999999999,
       "aggregated_ci95": [
-        0.0,
-        0.3
+        0.05,
+        0.45
       ]
     },
     "blunder_rate": {
-      "per_game": 0.5125,
-      "per_game_clean": 0.1125,
-      "per_game_lift": 0.39999999999999997,
-      "aggregated": 0.5,
-      "aggregated_clean": 0.15,
-      "aggregated_lift": 0.35,
+      "per_game": 0.175,
+      "per_game_clean": 0.125,
+      "per_game_lift": 0.04999999999999999,
+      "aggregated": 0.05,
+      "aggregated_clean": 0.2,
+      "aggregated_lift": -0.15000000000000002,
       "aggregated_ci95": [
-        0.3,
-        0.7
+        0.0,
+        0.15
       ]
     },
     "hanging_rate": {
-      "per_game": 0.025,
-      "per_game_clean": 0.1,
-      "per_game_lift": -0.07500000000000001,
+      "per_game": 0.0,
+      "per_game_clean": 0.1625,
+      "per_game_lift": -0.1625,
       "aggregated": 0.0,
-      "aggregated_clean": 0.0,
-      "aggregated_lift": 0.0,
+      "aggregated_clean": 0.15,
+      "aggregated_lift": -0.15,
       "aggregated_ci95": [
         0.0,
         0.0
@@ -99,139 +99,139 @@
   "confusion": {
     "per_game": {
       "opening_acpl": {
-        "opening_acpl": 25,
-        "middlegame_acpl": 3,
-        "endgame_acpl": 14,
-        "conversion_acpl": 9,
-        "defense_acpl": 22,
+        "opening_acpl": 37,
+        "middlegame_acpl": 2,
+        "endgame_acpl": 8,
+        "conversion_acpl": 2,
+        "defense_acpl": 23,
         "blunder_rate": 5,
-        "hanging_rate": 2
+        "hanging_rate": 3
       },
       "middlegame_acpl": {
-        "opening_acpl": 2,
-        "middlegame_acpl": 17,
-        "endgame_acpl": 14,
-        "conversion_acpl": 3,
-        "defense_acpl": 14,
-        "blunder_rate": 21,
-        "hanging_rate": 9
+        "opening_acpl": 3,
+        "middlegame_acpl": 24,
+        "endgame_acpl": 6,
+        "conversion_acpl": 1,
+        "defense_acpl": 11,
+        "blunder_rate": 27,
+        "hanging_rate": 8
       },
       "endgame_acpl": {
-        "opening_acpl": 4,
+        "opening_acpl": 8,
         "middlegame_acpl": 3,
-        "endgame_acpl": 6,
-        "conversion_acpl": 6,
-        "defense_acpl": 36,
-        "blunder_rate": 16,
-        "hanging_rate": 9
+        "endgame_acpl": 3,
+        "conversion_acpl": 2,
+        "defense_acpl": 34,
+        "blunder_rate": 17,
+        "hanging_rate": 13
       },
       "conversion_acpl": {
-        "opening_acpl": 4,
+        "opening_acpl": 10,
         "middlegame_acpl": 16,
-        "endgame_acpl": 2,
-        "conversion_acpl": 5,
-        "defense_acpl": 24,
-        "blunder_rate": 19,
+        "endgame_acpl": 1,
+        "conversion_acpl": 0,
+        "defense_acpl": 21,
+        "blunder_rate": 22,
         "hanging_rate": 10
       },
       "defense_acpl": {
-        "opening_acpl": 4,
-        "middlegame_acpl": 14,
-        "endgame_acpl": 7,
-        "conversion_acpl": 7,
-        "defense_acpl": 32,
-        "blunder_rate": 8,
-        "hanging_rate": 8
+        "opening_acpl": 7,
+        "middlegame_acpl": 12,
+        "endgame_acpl": 4,
+        "conversion_acpl": 1,
+        "defense_acpl": 33,
+        "blunder_rate": 10,
+        "hanging_rate": 13
       },
       "blunder_rate": {
-        "opening_acpl": 13,
-        "middlegame_acpl": 13,
-        "endgame_acpl": 6,
-        "conversion_acpl": 2,
-        "defense_acpl": 2,
-        "blunder_rate": 41,
-        "hanging_rate": 3
+        "opening_acpl": 25,
+        "middlegame_acpl": 36,
+        "endgame_acpl": 2,
+        "conversion_acpl": 0,
+        "defense_acpl": 1,
+        "blunder_rate": 14,
+        "hanging_rate": 2
       },
       "hanging_rate": {
-        "opening_acpl": 9,
-        "middlegame_acpl": 17,
-        "endgame_acpl": 11,
+        "opening_acpl": 19,
+        "middlegame_acpl": 27,
+        "endgame_acpl": 7,
         "conversion_acpl": 4,
-        "defense_acpl": 6,
-        "blunder_rate": 31,
-        "hanging_rate": 2
+        "defense_acpl": 5,
+        "blunder_rate": 18,
+        "hanging_rate": 0
       }
     },
     "aggregated": {
       "opening_acpl": {
-        "opening_acpl": 12,
+        "opening_acpl": 14,
         "middlegame_acpl": 0,
-        "endgame_acpl": 3,
-        "conversion_acpl": 3,
-        "defense_acpl": 2,
+        "endgame_acpl": 4,
+        "conversion_acpl": 1,
+        "defense_acpl": 1,
         "blunder_rate": 0,
         "hanging_rate": 0
       },
       "middlegame_acpl": {
         "opening_acpl": 0,
-        "middlegame_acpl": 12,
+        "middlegame_acpl": 13,
         "endgame_acpl": 1,
-        "conversion_acpl": 1,
+        "conversion_acpl": 0,
         "defense_acpl": 0,
-        "blunder_rate": 4,
-        "hanging_rate": 2
+        "blunder_rate": 6,
+        "hanging_rate": 0
       },
       "endgame_acpl": {
         "opening_acpl": 3,
-        "middlegame_acpl": 2,
-        "endgame_acpl": 1,
-        "conversion_acpl": 3,
-        "defense_acpl": 2,
-        "blunder_rate": 6,
-        "hanging_rate": 3
+        "middlegame_acpl": 1,
+        "endgame_acpl": 3,
+        "conversion_acpl": 1,
+        "defense_acpl": 3,
+        "blunder_rate": 7,
+        "hanging_rate": 2
       },
       "conversion_acpl": {
-        "opening_acpl": 1,
-        "middlegame_acpl": 5,
-        "endgame_acpl": 1,
+        "opening_acpl": 0,
+        "middlegame_acpl": 6,
+        "endgame_acpl": 2,
         "conversion_acpl": 0,
-        "defense_acpl": 1,
+        "defense_acpl": 0,
         "blunder_rate": 9,
         "hanging_rate": 3
       },
       "defense_acpl": {
-        "opening_acpl": 2,
-        "middlegame_acpl": 4,
-        "endgame_acpl": 3,
-        "conversion_acpl": 3,
-        "defense_acpl": 3,
-        "blunder_rate": 4,
+        "opening_acpl": 3,
+        "middlegame_acpl": 3,
+        "endgame_acpl": 2,
+        "conversion_acpl": 1,
+        "defense_acpl": 5,
+        "blunder_rate": 5,
         "hanging_rate": 1
       },
       "blunder_rate": {
-        "opening_acpl": 5,
-        "middlegame_acpl": 4,
-        "endgame_acpl": 1,
+        "opening_acpl": 9,
+        "middlegame_acpl": 10,
+        "endgame_acpl": 0,
         "conversion_acpl": 0,
         "defense_acpl": 0,
-        "blunder_rate": 10,
+        "blunder_rate": 1,
         "hanging_rate": 0
       },
       "hanging_rate": {
-        "opening_acpl": 4,
-        "middlegame_acpl": 5,
+        "opening_acpl": 5,
+        "middlegame_acpl": 7,
         "endgame_acpl": 2,
         "conversion_acpl": 1,
         "defense_acpl": 0,
-        "blunder_rate": 8,
+        "blunder_rate": 5,
         "hanging_rate": 0
       }
     }
   },
-  "overall_per_game": 0.22857142857142856,
-  "overall_aggregated": 0.2714285714285714,
+  "overall_per_game": 0.1982142857142857,
+  "overall_aggregated": 0.2571428571428571,
   "overall_aggregated_ci95": [
-    0.08571428571428572,
+    0.07857142857142857,
     0.4714285714285714
   ]
 }

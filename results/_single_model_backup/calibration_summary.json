@@ -1,0 +1,9 @@
+{
+  "legacy_overall_MAE": 226.8576092477707,
+  "legacy_low_end_MAE": 529.6325168651911,
+  "stratified_overall_MAE": 291.63159005885694,
+  "stratified_low_end_MAE": 301.12678137483607,
+  "stratified_isotonic_overall_MAE": 286.8526706029302,
+  "stratified_isotonic_low_end_MAE": 276.2194538591819,
+  "low_end_MAE_reduction_pct": 43.14420437076699
+}

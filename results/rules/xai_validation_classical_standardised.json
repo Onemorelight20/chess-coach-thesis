@@ -1,48 +1,80 @@
 {
+  "meta": {
+    "rule": "standardised",
+    "pool": "classical",
+    "candidates": [
+      "opening_acpl",
+      "middlegame_acpl",
+      "acpl_critical",
+      "blunder_rate",
+      "mistake_rate",
+      "inaccuracy_rate",
+      "hanging_rate",
+      "pin_exposure",
+      "center_control_avg",
+      "mobility_avg",
+      "material_volatility",
+      "capture_rate",
+      "check_given_rate"
+    ],
+    "candidate_source": "shap_reference_classical.pkl"
+  },
   "experiment_a": {
-    "split_half_agreement": 0.1011023622047244,
-    "chance_agreement": 0.06738281356562713,
-    "cohen_kappa": 0.03767790817432948,
-    "n_categories": 17,
+    "split_half_agreement": 0.12464566929133858,
+    "chance_agreement": 0.08234386508773019,
+    "cohen_kappa": 0.04740883461764611,
+    "n_categories": 13,
     "topk_overlap": {
-      "2": 0.3240157480314961,
-      "3": 0.57
+      "2": 0.392755905511811,
+      "3": 0.6720472440944882
     },
     "n_players": 1270,
     "n_splits": 12700,
     "modal_comparison": {
-      "split_half_agreement": 0.16669291338582679,
-      "chance_agreement": 0.10487854175708351,
-      "cohen_kappa": 0.06631264878798859,
-      "n_categories": 17,
+      "split_half_agreement": 0.18976377952755905,
+      "chance_agreement": 0.12361979043958088,
+      "cohen_kappa": 0.07187250622064811,
+      "n_categories": 13,
       "kappa_ci95": [
-        0.050571430867759254,
-        0.0827557468204428
+        0.055146637351800795,
+        0.08808718720646037
       ]
     },
     "kappa_ci95": [
-      0.027239858682539565,
-      0.048313810108650934
+      0.035840918579372855,
+      0.059602150315348906
     ],
     "kappa_gain_over_modal": {
-      "delta": -0.028634740613659115,
+      "delta": -0.024463671603002002,
       "ci95": [
-        -0.04569865915647393,
-        -0.011269791230469528
+        -0.04234870701627854,
+        -0.0053715079118181784
       ],
-      "p_gt_0": 0.0
+      "p_gt_0": 0.005
     }
   },
   "experiment_b": {
+    "top1_accuracy": 0.3535433070866142,
+    "top2_accuracy": 0.5165354330708661,
     "coverage_at_k": {
-      "2": 0.3661417322834646,
-      "3": 0.4393700787401575
+      "2": 0.5165354330708661,
+      "3": 0.6188976377952756
     },
+    "cohen_kappa": 0.3031184458699875,
+    "chance_baseline": 0.07692307692307693,
+    "majority_baseline": 0.13858267716535433,
     "n_players": 1270,
-    "top1_accuracy": 0.2566929133858268,
-    "top2_accuracy": 0.3661417322834646,
-    "cohen_kappa": 0.21282197753133592,
-    "chance_baseline": 0.058823529411764705,
-    "majority_baseline": 0.11968503937007874
+    "ref17": {
+      "top1_accuracy": 0.29448818897637796,
+      "top2_accuracy": 0.421259842519685,
+      "coverage_at_k": {
+        "2": 0.421259842519685,
+        "3": 0.49763779527559054
+      },
+      "cohen_kappa": 0.25172975681480125,
+      "chance_baseline": 0.058823529411764705,
+      "majority_baseline": 0.11968503937007874,
+      "share_outside_candidates": 0.19921259842519684
+    }
   }
 }

@@ -1,0 +1,230 @@
+{
+ "table": [
+  {
+   "feature": "opening_acpl",
+   "bullet": -0.9603304611494665,
+   "bullet_ok": true,
+   "blitz": -0.9890445423573218,
+   "blitz_ok": true,
+   "rapid": -0.9927627952827333,
+   "rapid_ok": true,
+   "classical": -0.9877682095905044,
+   "classical_ok": true
+  },
+  {
+   "feature": "middlegame_acpl",
+   "bullet": -0.8538987005755878,
+   "bullet_ok": true,
+   "blitz": -0.8457561862188899,
+   "blitz_ok": true,
+   "rapid": -0.8069050465058183,
+   "rapid_ok": true,
+   "classical": -0.9133766087632503,
+   "classical_ok": true
+  },
+  {
+   "feature": "endgame_acpl",
+   "bullet": 0.7839143817818601,
+   "bullet_ok": false,
+   "blitz": 0.9398697918769082,
+   "blitz_ok": false,
+   "rapid": 0.8488057955573385,
+   "rapid_ok": false,
+   "classical": 0.05286339182492122,
+   "classical_ok": false
+  },
+  {
+   "feature": "conversion_acpl",
+   "bullet": 0.7764130237892035,
+   "bullet_ok": false,
+   "blitz": 0.7434302266916256,
+   "blitz_ok": false,
+   "rapid": 0.5869374700222272,
+   "rapid_ok": false,
+   "classical": 0.7371256108596514,
+   "classical_ok": false
+  },
+  {
+   "feature": "defense_acpl",
+   "bullet": 0.4317327823369287,
+   "bullet_ok": false,
+   "blitz": 0.5445473072637023,
+   "blitz_ok": false,
+   "rapid": 0.6614815347742689,
+   "rapid_ok": false,
+   "classical": 0.9082932418070336,
+   "classical_ok": false
+  },
+  {
+   "feature": "acpl_critical",
+   "bullet": -0.11066434982531256,
+   "bullet_ok": true,
+   "blitz": 0.5602718257392447,
+   "blitz_ok": false,
+   "rapid": 0.7750610074355216,
+   "rapid_ok": false,
+   "classical": -0.14689185518202977,
+   "classical_ok": true
+  },
+  {
+   "feature": "blunder_rate",
+   "bullet": -0.9271534100281456,
+   "bullet_ok": true,
+   "blitz": -0.916494637145042,
+   "blitz_ok": true,
+   "rapid": -0.9098163225874111,
+   "rapid_ok": true,
+   "classical": -0.7273999311256735,
+   "classical_ok": true
+  },
+  {
+   "feature": "mistake_rate",
+   "bullet": -0.9258124535130612,
+   "bullet_ok": true,
+   "blitz": -0.9493557799926178,
+   "blitz_ok": true,
+   "rapid": -0.9617863355081208,
+   "rapid_ok": true,
+   "classical": -0.9411498031668148,
+   "classical_ok": true
+  },
+  {
+   "feature": "inaccuracy_rate",
+   "bullet": 0.7065631711563118,
+   "bullet_ok": false,
+   "blitz": -0.9294356451693913,
+   "blitz_ok": true,
+   "rapid": -0.5332964308774196,
+   "rapid_ok": true,
+   "classical": -0.7458083713722636,
+   "classical_ok": true
+  },
+  {
+   "feature": "hanging_rate",
+   "bullet": 0.653938956060603,
+   "bullet_ok": false,
+   "blitz": 0.6797451778908179,
+   "blitz_ok": false,
+   "rapid": 0.17603512967444304,
+   "rapid_ok": false,
+   "classical": -0.282339076515782,
+   "classical_ok": true
+  },
+  {
+   "feature": "pin_exposure",
+   "bullet": 0.8431889728296825,
+   "bullet_ok": false,
+   "blitz": -0.41369561611979216,
+   "blitz_ok": true,
+   "rapid": -0.8959623642630458,
+   "rapid_ok": true,
+   "classical": -0.18325129759871467,
+   "classical_ok": true
+  },
+  {
+   "feature": "king_danger",
+   "bullet": 0.9509341129619306,
+   "bullet_ok": false,
+   "blitz": 0.9129581039147743,
+   "blitz_ok": false,
+   "rapid": 0.9259195940449106,
+   "rapid_ok": false,
+   "classical": 0.8943902062629702,
+   "classical_ok": false
+  },
+  {
+   "feature": "center_control_avg",
+   "bullet": 0.9093831193142061,
+   "bullet_ok": true,
+   "blitz": 0.9328869490641323,
+   "blitz_ok": true,
+   "rapid": 0.8389860162163438,
+   "rapid_ok": true,
+   "classical": 0.6885000277755845,
+   "classical_ok": true
+  },
+  {
+   "feature": "mobility_avg",
+   "bullet": 0.9502172947035503,
+   "bullet_ok": true,
+   "blitz": 0.9653374363672871,
+   "blitz_ok": true,
+   "rapid": 0.9573851581332536,
+   "rapid_ok": true,
+   "classical": 0.7580824468689241,
+   "classical_ok": true
+  },
+  {
+   "feature": "material_volatility",
+   "bullet": -0.6334690301804466,
+   "bullet_ok": true,
+   "blitz": -0.5220322704726521,
+   "blitz_ok": true,
+   "rapid": -0.2705749714122725,
+   "rapid_ok": true,
+   "classical": -0.20280621659812906,
+   "classical_ok": true
+  },
+  {
+   "feature": "capture_rate",
+   "bullet": -0.9509758265087596,
+   "bullet_ok": true,
+   "blitz": -0.962251461292656,
+   "blitz_ok": true,
+   "rapid": -0.9351626851601543,
+   "rapid_ok": true,
+   "classical": -0.9494607384532764,
+   "classical_ok": true
+  },
+  {
+   "feature": "check_given_rate",
+   "bullet": -0.9479231779976597,
+   "bullet_ok": true,
+   "blitz": -0.9670714359598112,
+   "blitz_ok": true,
+   "rapid": -0.943251103254771,
+   "rapid_ok": true,
+   "classical": -0.9369403215995906,
+   "classical_ok": true
+  }
+ ],
+ "n_candidates": {
+  "bullet": 10,
+  "blitz": 11,
+  "rapid": 11,
+  "classical": 13
+ },
+ "excluded": {
+  "bullet": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "inaccuracy_rate",
+   "hanging_rate",
+   "pin_exposure",
+   "king_danger"
+  ],
+  "blitz": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "acpl_critical",
+   "hanging_rate",
+   "king_danger"
+  ],
+  "rapid": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "acpl_critical",
+   "hanging_rate",
+   "king_danger"
+  ],
+  "classical": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "king_danger"
+  ]
+ }
+}

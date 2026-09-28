@@ -1,0 +1,74 @@
+{
+ "n4": {
+  "n_players": 2124,
+  "games_per_half": 4,
+  "raw": {
+   "opening_acpl": 0.7413812052579698,
+   "middlegame_acpl": 0.3734731453539868,
+   "blunder_rate": 0.55023346464567,
+   "mistake_rate": 0.5477344579388187,
+   "inaccuracy_rate": 0.3567866533253206,
+   "pin_exposure": 0.13662350532244455,
+   "center_control_avg": 0.49073670985855894,
+   "mobility_avg": 0.4139132292219446,
+   "material_volatility": 0.1078806781729348,
+   "capture_rate": 0.26039877048773485,
+   "check_given_rate": 0.2781084638430373
+  },
+  "residual": {
+   "opening_acpl": 0.44305876019743795,
+   "middlegame_acpl": 0.08947773297026683,
+   "blunder_rate": 0.210112367993247,
+   "mistake_rate": 0.22712157167537048,
+   "inaccuracy_rate": 0.18499666634695025,
+   "pin_exposure": 0.11045664487325439,
+   "center_control_avg": 0.3751744240320795,
+   "mobility_avg": 0.3791588745993609,
+   "material_volatility": 0.08768516425638039,
+   "capture_rate": 0.24057577927772236,
+   "check_given_rate": 0.2503475958382349
+  },
+  "raw_range": [
+   0.1078806781729348,
+   0.7413812052579698
+  ],
+  "raw_mean": 0.3870245712207655,
+  "residual_mean": 0.23619687109639137
+ },
+ "n8": {
+  "n_players": 398,
+  "games_per_half": 8,
+  "raw": {
+   "opening_acpl": 0.85931615545184,
+   "middlegame_acpl": 0.56781592824023,
+   "blunder_rate": 0.7238939775980031,
+   "mistake_rate": 0.6582009150384149,
+   "inaccuracy_rate": 0.473880236880905,
+   "pin_exposure": 0.22341420733525105,
+   "center_control_avg": 0.696642171153387,
+   "mobility_avg": 0.5695610227874978,
+   "material_volatility": 0.29390315409782714,
+   "capture_rate": 0.5344575825707173,
+   "check_given_rate": 0.48937076756672837
+  },
+  "residual": {
+   "opening_acpl": 0.6455486898025301,
+   "middlegame_acpl": 0.2514976900661635,
+   "blunder_rate": 0.41019815634050566,
+   "mistake_rate": 0.2933119134707096,
+   "inaccuracy_rate": 0.2909308008384181,
+   "pin_exposure": 0.16720077650401363,
+   "center_control_avg": 0.6067534171304007,
+   "mobility_avg": 0.5424676402305793,
+   "material_volatility": 0.2722654430972434,
+   "capture_rate": 0.5103472288533317,
+   "check_given_rate": 0.44484503631103306
+  },
+  "raw_range": [
+   0.22341420733525105,
+   0.85931615545184
+  ],
+  "raw_mean": 0.5536778289746184,
+  "residual_mean": 0.40321516296772075
+ }
+}

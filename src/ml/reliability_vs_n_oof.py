@@ -21,6 +21,7 @@ import xgboost as xgb
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.features.extractor import (FEATURE_NAMES, TRAINABLE_CANDIDATES,
                                     FEATURE_ORIENTATION)
+from src.ml.mixed_training import mixed_training_set
 
 C = list(TRAINABLE_CANDIDATES)
 SEEDS, RNG, NB = range(10), 42, 8
@@ -66,9 +67,11 @@ def main():
 
     Xtr = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(tr[FEATURE_NAMES]),
                        columns=FEATURE_NAMES)
+    frame = Xtr.copy(); frame["target_elo"] = tr["target_elo"].values; frame["player"] = tr["player"].values
+    Xm, ym, _, _ = mixed_training_set(frame)          # змішаний набір, як у train.py
     m = xgb.XGBRegressor(n_estimators=300, max_depth=5, learning_rate=0.05,
                          subsample=0.8, colsample_bytree=0.8, random_state=RNG)
-    m.fit(Xtr, tr["target_elo"])
+    m.fit(Xm, ym)
     import shap
     expl = shap.TreeExplainer(m)
     ci = [FEATURE_NAMES.index(c) for c in C]

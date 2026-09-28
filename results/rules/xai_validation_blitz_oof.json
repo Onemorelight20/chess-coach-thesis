@@ -1,11 +1,85 @@
 {
- "kappa": 0.049159492640994285,
- "split_half_agreement": 0.11157943492357573,
- "topk_overlap_3": 0.5878184344603984,
- "top1_accuracy": 0.287962962962963,
- "coverage_at_3": 0.48657407407407405,
- "kappa_agreement": 0.23998297895704923,
- "trivial_baseline": 0.13240740740740742,
+ "kappa": 0.07053116075253718,
+ "split_half_agreement": 0.1619731357109773,
+ "topk_overlap_3": 0.7450208429828624,
+ "top1_accuracy": 0.425462962962963,
+ "coverage_at_3": 0.7101851851851851,
+ "kappa_agreement": 0.3676659860273942,
+ "trivial_baseline": 0.15462962962962962,
+ "ref17": {
+  "top1_accuracy": 0.27361111111111114,
+  "coverage_at_3": 0.4398148148148148,
+  "kappa_agreement": 0.23019367816796898,
+  "trivial_baseline": 0.13240740740740742
+ },
+ "candidates_per_fold": [
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ]
+ ],
  "n_players": 2160,
  "n_splits": 21590
 }

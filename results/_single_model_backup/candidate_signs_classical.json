@@ -1,0 +1,166 @@
+{
+ "pool": "classical",
+ "n_players": 1270,
+ "signs": {
+  "opening_acpl": {
+   "rho_shap": -0.9877682095905044,
+   "correct_sign": true,
+   "rho_elo": -0.8545061841661569,
+   "rho_elo_given_acpl": -0.315863001765789
+  },
+  "middlegame_acpl": {
+   "rho_shap": -0.9133766087632503,
+   "correct_sign": true,
+   "rho_elo": -0.7563150467618384,
+   "rho_elo_given_acpl": 0.16827780728155584
+  },
+  "endgame_acpl": {
+   "rho_shap": 0.05286339182492122,
+   "correct_sign": false,
+   "rho_elo": -0.7585065494419795,
+   "rho_elo_given_acpl": 0.17552634879241968
+  },
+  "conversion_acpl": {
+   "rho_shap": 0.7371256108596514,
+   "correct_sign": false,
+   "rho_elo": -0.736222655678814,
+   "rho_elo_given_acpl": 0.0335494117104823
+  },
+  "defense_acpl": {
+   "rho_shap": 0.9082932418070336,
+   "correct_sign": false,
+   "rho_elo": -0.5730889322135103,
+   "rho_elo_given_acpl": 0.14405787245524784
+  },
+  "acpl_critical": {
+   "rho_shap": -0.14689185518202977,
+   "correct_sign": true,
+   "rho_elo": -0.7164266919744574,
+   "rho_elo_given_acpl": -0.011982089881264464
+  },
+  "blunder_rate": {
+   "rho_shap": -0.7273999311256735,
+   "correct_sign": true,
+   "rho_elo": -0.802921934866874,
+   "rho_elo_given_acpl": 0.013532332179119758
+  },
+  "mistake_rate": {
+   "rho_shap": -0.9411498031668148,
+   "correct_sign": true,
+   "rho_elo": -0.7567989616681408,
+   "rho_elo_given_acpl": -0.07013949787572064
+  },
+  "inaccuracy_rate": {
+   "rho_shap": -0.7458083713722636,
+   "correct_sign": true,
+   "rho_elo": -0.49602250957255656,
+   "rho_elo_given_acpl": -0.06479412506769429
+  },
+  "hanging_rate": {
+   "rho_shap": -0.282339076515782,
+   "correct_sign": true,
+   "rho_elo": -0.4160996629614411,
+   "rho_elo_given_acpl": -0.03590274260061868
+  },
+  "pin_exposure": {
+   "rho_shap": -0.18325129759871467,
+   "correct_sign": true,
+   "rho_elo": -0.2162137817818488,
+   "rho_elo_given_acpl": 0.053616819751658294
+  },
+  "king_danger": {
+   "rho_shap": 0.8943902062629702,
+   "correct_sign": false,
+   "rho_elo": -0.1455760544491959,
+   "rho_elo_given_acpl": 0.07044287492253702
+  },
+  "center_control_avg": {
+   "rho_shap": 0.6885000277755845,
+   "correct_sign": true,
+   "rho_elo": 0.42924329820683316,
+   "rho_elo_given_acpl": 0.22711330568253013
+  },
+  "mobility_avg": {
+   "rho_shap": 0.7580824468689241,
+   "correct_sign": true,
+   "rho_elo": 0.3054856469231596,
+   "rho_elo_given_acpl": 0.16042226562917059
+  },
+  "material_volatility": {
+   "rho_shap": -0.20280621659812906,
+   "correct_sign": true,
+   "rho_elo": 0.20249480800841532,
+   "rho_elo_given_acpl": 0.07763906095764679
+  },
+  "capture_rate": {
+   "rho_shap": -0.9494607384532764,
+   "correct_sign": true,
+   "rho_elo": 0.08587827151830753,
+   "rho_elo_given_acpl": -0.05257741973709168
+  },
+  "check_given_rate": {
+   "rho_shap": -0.9369403215995906,
+   "correct_sign": true,
+   "rho_elo": -0.08475457397087847,
+   "rho_elo_given_acpl": -0.08000144875340202
+  }
+ },
+ "passed": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "acpl_critical",
+  "blunder_rate",
+  "mistake_rate",
+  "inaccuracy_rate",
+  "hanging_rate",
+  "pin_exposure",
+  "center_control_avg",
+  "mobility_avg",
+  "material_volatility",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "excluded": [
+  "endgame_acpl",
+  "conversion_acpl",
+  "defense_acpl",
+  "king_danger"
+ ],
+ "reference_candidates": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "acpl_critical",
+  "blunder_rate",
+  "mistake_rate",
+  "inaccuracy_rate",
+  "hanging_rate",
+  "pin_exposure",
+  "center_control_avg",
+  "mobility_avg",
+  "material_volatility",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "all": {
+  "n_candidates": 17,
+  "reversed_share": 0.2968503937007874
+ },
+ "sign_filtered": {
+  "n_candidates": 13,
+  "reversed_share": 0.15669291338582678
+ },
+ "sensitivity_empirical_orientation": {
+  "disputed": {
+   "material_volatility": {
+    "declared": 1,
+    "empirical": -1
+   },
+   "king_danger": {
+    "declared": 1,
+    "empirical": 1
+   }
+  },
+  "all": 0.3094488188976378,
+  "sign_filtered": 0.16771653543307086
+ }
+}

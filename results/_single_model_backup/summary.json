@@ -1,0 +1,46 @@
+{
+  "n_rows": 17234,
+  "n_players": 2160,
+  "elo_mean": 1603.9365208309157,
+  "elo_std": 672.1671482959357,
+  "leakage": [
+    {
+      "cv_scheme": "Random KFold (LEAKY)",
+      "MAE": 275.58966064453125,
+      "RMSE": 354.8512329101562,
+      "R2": 0.7210400938987732
+    },
+    {
+      "cv_scheme": "Player GroupKFold",
+      "MAE": 277.2796997070312,
+      "RMSE": 355.88404541015626,
+      "R2": 0.7180130958557129
+    }
+  ],
+  "best_model": "XGBoost",
+  "best_model_MAE": 277.2796997070312,
+  "aggregation_best_R2": 0.8772069882070674,
+  "additive_ablation": [
+    {
+      "stage": "base (21 features)",
+      "n_features": 21,
+      "MAE": 291.0536254882812,
+      "R2": 0.6905168890953064,
+      "delta_MAE_vs_base": 0.0
+    },
+    {
+      "stage": "+ win-probability (24)",
+      "n_features": 24,
+      "MAE": 288.965673828125,
+      "R2": 0.6953353762626648,
+      "delta_MAE_vs_base": -2.08795166015625
+    },
+    {
+      "stage": "+ engine agreement (29, full)",
+      "n_features": 29,
+      "MAE": 277.2796997070312,
+      "R2": 0.7180130958557129,
+      "delta_MAE_vs_base": -13.77392578125
+    }
+  ]
+}

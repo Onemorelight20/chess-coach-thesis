@@ -2,7 +2,7 @@
 Reference SHAP statistics per rating band, so the live app can rank a single player.
 
 Why this exists. `predict_and_explain` used to pick the weakness as the raw
-`argmin` of the SHAP values. Two things made that answer wrong as *advice*:
+`argmin` of the SHAP values. Three things made that answer wrong as *advice*:
 
   1. Features are not on a common scale. `opening_acpl` carries the largest
      xgb_gain (0.298), so its contributions are systematically the largest in
@@ -11,15 +11,20 @@ Why this exists. `predict_and_explain` used to pick the weakness as the raw
      player is below average on everything, so the most negative contribution goes
      to whichever feature has the steepest population gradient -- the same one for
      nearly everybody at that level. Hence `avg_think_time` for 27% of players.
+  3. For some features the model links a WORSE value to a HIGHER contribution
+     (collinearity inside the move-quality block: at a fixed overall ACPL a high
+     endgame ACPL means the mistakes were not made in the opening). The minimum
+     then lands on a player who is unusually good at that feature.
 
-Both are fixed by standardising each feature's contribution against players of the
-SAME predicted-rating band: the question becomes "where is this player unusual for
-their level", which is what a training recommendation actually needs. Measured on
-blitz (2160 players), agreement with the deviation-based reference rises 0.052 ->
-0.327 and Cohen's kappa +0.009 -> +0.285, and it holds out of sample (0.344).
+(1) and (2) are fixed by standardising each feature's contribution against players
+of the SAME predicted-rating band; (3) by keeping only candidates whose sign passes
+`candidate_signs.sign_test` on this pool's training players. On blitz (2160 players,
+validate_xai protocol) agreement with the deviation-based reference over the same
+candidate set rises 0.052 -> 0.508 (trivial baseline 0.170) and, measured against
+the fixed 17-class reference, 0.052 -> 0.38.
 
 A single player cannot supply those statistics, so they are computed once over the
-training population and stored next to the model.
+training population and stored next to the model, together with the candidate list.
 
 Usage:
     python -m src.ml.build_shap_reference data/dataset_blitz_2k.parquet --pool blitz
@@ -32,23 +37,35 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from src.features.extractor import TRAINABLE_CANDIDATES
+from src.features.extractor import THEMED_CANDIDATES, TRAINABLE_CANDIDATES, FEATURE_ORIENTATION
 
 REF_PATH_TMPL = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              "models", "shap_reference_{pool}.pkl")
 
 
-def build(parquet, pool, n_bands=8):
+def build(parquet, pool, n_bands=8, sign_filter=True, all_themed=False, out_path=None):
     from src.ml.model import ELOModel      # локально: model.py імпортує цей модуль
+    from src.ml.candidate_signs import sign_test
     df = pd.read_parquet(parquet)
+    df = df[df["target_elo"].between(400, 3000)]
     model = ELOModel(pool=pool)
     feats = model.feature_names
 
     # one aggregated vector per player, exactly as app.py builds it
     agg = df.groupby("player")[feats].mean()
     pred = pd.Series(model.model.predict(agg), index=agg.index)
-    shap = pd.DataFrame(model.explainer.shap_values(agg),
-                        index=agg.index, columns=feats)[TRAINABLE_CANDIDATES]
+    sv = model.explainer.shap_values(agg)
+
+    # Condition 2 of the candidate pool: the sign test, evaluated on THIS pool's
+    # model. Falls back to the documented blitz list only when asked to.
+    if all_themed:                       # diagnostic reference: all 17 themed features, no sign test
+        candidates, signs = list(THEMED_CANDIDATES), {}
+    elif sign_filter:
+        candidates, signs = sign_test(agg, sv, feats, THEMED_CANDIDATES, FEATURE_ORIENTATION)
+    else:
+        candidates, signs = list(TRAINABLE_CANDIDATES), {}
+    excluded = [c for c in THEMED_CANDIDATES if c not in candidates]
+    shap = pd.DataFrame(sv, index=agg.index, columns=feats)[candidates]
 
     band = pd.qcut(pred, n_bands, labels=False, duplicates="drop")
     edges = [float(x) for x in pd.qcut(pred, n_bands, retbins=True,
@@ -62,14 +79,16 @@ def build(parquet, pool, n_bands=8):
     # a small change in the predicted rating produce a small change in the score.
     centres = pred.groupby(band).mean().reindex(mean.index)
 
-    ref = {"pool": pool, "candidates": list(TRAINABLE_CANDIDATES),
+    ref = {"pool": pool, "candidates": list(candidates), "sign_excluded": excluded,
+           "sign_test": signs,
            "band_edges": edges, "band_centres": [float(x) for x in centres],
            "mean": mean, "std": std,
            "n_players": int(len(agg)), "n_bands": int(mean.shape[0])}
-    path = REF_PATH_TMPL.format(pool=pool)
+    path = out_path or REF_PATH_TMPL.format(pool=pool)
     joblib.dump(ref, path)
-    print(f"{len(agg)} players, {mean.shape[0]} bands "
-          f"[{edges[0]:.0f}…{edges[-1]:.0f}] -> {path}")
+    print(f"{pool}: {len(agg)} players, {mean.shape[0]} bands "
+          f"[{edges[0]:.0f}…{edges[-1]:.0f}], {len(candidates)} candidates "
+          f"(sign test excluded: {', '.join(excluded) or 'none'}) -> {path}")
     return ref
 
 
@@ -151,8 +170,15 @@ def main():
     ap.add_argument("parquet")
     ap.add_argument("--pool", required=True, choices=["bullet", "blitz", "rapid", "classical"])
     ap.add_argument("--bands", type=int, default=8)
+    ap.add_argument("--no-sign-filter", action="store_true",
+                    help="skip the sign test and store the documented blitz list (11)")
+    ap.add_argument("--all-themed", action="store_true",
+                    help="diagnostic: keep all 17 themed candidates (no sign test); use with --out so the "
+                         "production reference is not overwritten (synthetic_validation --reference)")
+    ap.add_argument("--out", default=None, help="write the reference here instead of models/shap_reference_<pool>.pkl")
     args = ap.parse_args()
-    build(args.parquet, args.pool, args.bands)
+    build(args.parquet, args.pool, args.bands, sign_filter=not args.no_sign_filter,
+          all_themed=args.all_themed, out_path=args.out)
 
 
 if __name__ == "__main__":

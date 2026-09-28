@@ -2,22 +2,22 @@
   "reliability_vs_n": [
     {
       "n_games": 1,
-      "agreement_single_shap": 0.04050925925925926,
+      "agreement_single_shap": 0.04045138888888889,
       "agreement_aggregated_z": 0.10572916666666667
     },
     {
       "n_games": 2,
-      "agreement_single_shap": 0.03520148216767022,
+      "agreement_single_shap": 0.035259379342288094,
       "agreement_aggregated_z": 0.1322950440018527
     },
     {
       "n_games": 3,
-      "agreement_single_shap": 0.03672381835032437,
+      "agreement_single_shap": 0.035507414272474516,
       "agreement_aggregated_z": 0.15373030583873956
     },
     {
       "n_games": 4,
-      "agreement_single_shap": 0.03660546139359699,
+      "agreement_single_shap": 0.0361346516007533,
       "agreement_aggregated_z": 0.17296374764595104
     }
   ]

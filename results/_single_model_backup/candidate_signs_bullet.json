@@ -1,0 +1,163 @@
+{
+ "pool": "bullet",
+ "n_players": 2056,
+ "signs": {
+  "opening_acpl": {
+   "rho_shap": -0.9603304611494665,
+   "correct_sign": true,
+   "rho_elo": -0.5928077995811857,
+   "rho_elo_given_acpl": -0.38208255079298464
+  },
+  "middlegame_acpl": {
+   "rho_shap": -0.8538987005755878,
+   "correct_sign": true,
+   "rho_elo": -0.3810362696238632,
+   "rho_elo_given_acpl": 0.09162461817524033
+  },
+  "endgame_acpl": {
+   "rho_shap": 0.7839143817818601,
+   "correct_sign": false,
+   "rho_elo": -0.35425084330269957,
+   "rho_elo_given_acpl": 0.11242183749671884
+  },
+  "conversion_acpl": {
+   "rho_shap": 0.7764130237892035,
+   "correct_sign": false,
+   "rho_elo": -0.3877162195537626,
+   "rho_elo_given_acpl": -0.03420147429103573
+  },
+  "defense_acpl": {
+   "rho_shap": 0.4317327823369287,
+   "correct_sign": false,
+   "rho_elo": -0.15995048092518072,
+   "rho_elo_given_acpl": 0.1558522824873811
+  },
+  "acpl_critical": {
+   "rho_shap": -0.11066434982531256,
+   "correct_sign": true,
+   "rho_elo": -0.27285794115551354,
+   "rho_elo_given_acpl": 0.16202962784366756
+  },
+  "blunder_rate": {
+   "rho_shap": -0.9271534100281456,
+   "correct_sign": true,
+   "rho_elo": -0.4111785675710348,
+   "rho_elo_given_acpl": 0.11247515478548105
+  },
+  "mistake_rate": {
+   "rho_shap": -0.9258124535130612,
+   "correct_sign": true,
+   "rho_elo": -0.4737174397570511,
+   "rho_elo_given_acpl": -0.20059336626334642
+  },
+  "inaccuracy_rate": {
+   "rho_shap": 0.7065631711563118,
+   "correct_sign": false,
+   "rho_elo": -0.3225648640754845,
+   "rho_elo_given_acpl": -0.16590169462820065
+  },
+  "hanging_rate": {
+   "rho_shap": 0.653938956060603,
+   "correct_sign": false,
+   "rho_elo": -0.17547735446173876,
+   "rho_elo_given_acpl": 0.11585031382778464
+  },
+  "pin_exposure": {
+   "rho_shap": 0.8431889728296825,
+   "correct_sign": false,
+   "rho_elo": -0.11516756744631335,
+   "rho_elo_given_acpl": -0.04697678684129036
+  },
+  "king_danger": {
+   "rho_shap": 0.9509341129619306,
+   "correct_sign": false,
+   "rho_elo": 0.29223912422942444,
+   "rho_elo_given_acpl": 0.41543261087521083
+  },
+  "center_control_avg": {
+   "rho_shap": 0.9093831193142061,
+   "correct_sign": true,
+   "rho_elo": 0.24821514024849461,
+   "rho_elo_given_acpl": 0.028741666558853855
+  },
+  "mobility_avg": {
+   "rho_shap": 0.9502172947035503,
+   "correct_sign": true,
+   "rho_elo": 0.023745090710285528,
+   "rho_elo_given_acpl": -0.16886220629633342
+  },
+  "material_volatility": {
+   "rho_shap": -0.6334690301804466,
+   "correct_sign": true,
+   "rho_elo": 0.1409998595099245,
+   "rho_elo_given_acpl": 0.15765347070558441
+  },
+  "capture_rate": {
+   "rho_shap": -0.9509758265087596,
+   "correct_sign": true,
+   "rho_elo": -0.206878362632836,
+   "rho_elo_given_acpl": -0.2908770218336334
+  },
+  "check_given_rate": {
+   "rho_shap": -0.9479231779976597,
+   "correct_sign": true,
+   "rho_elo": -0.04580243761907527,
+   "rho_elo_given_acpl": -0.06990503392113152
+  }
+ },
+ "passed": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "acpl_critical",
+  "blunder_rate",
+  "mistake_rate",
+  "center_control_avg",
+  "mobility_avg",
+  "material_volatility",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "excluded": [
+  "endgame_acpl",
+  "conversion_acpl",
+  "defense_acpl",
+  "inaccuracy_rate",
+  "hanging_rate",
+  "pin_exposure",
+  "king_danger"
+ ],
+ "reference_candidates": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "acpl_critical",
+  "blunder_rate",
+  "mistake_rate",
+  "center_control_avg",
+  "mobility_avg",
+  "material_volatility",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "all": {
+  "n_candidates": 17,
+  "reversed_share": 0.43142023346303504
+ },
+ "sign_filtered": {
+  "n_candidates": 10,
+  "reversed_share": 0.08025291828793775
+ },
+ "sensitivity_empirical_orientation": {
+  "disputed": {
+   "material_volatility": {
+    "declared": 1,
+    "empirical": -1
+   },
+   "king_danger": {
+    "declared": 1,
+    "empirical": -1
+   }
+  },
+  "all": 0.3842412451361868,
+  "sign_filtered": 0.10408560311284047
+ }
+}

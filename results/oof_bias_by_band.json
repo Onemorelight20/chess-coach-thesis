@@ -1,10 +1,22 @@
 {
-  "model": "XGBoost, 29 features, GroupKFold(5) out-of-fold predictions, pool=blitz",
-  "n_rows": 17234,
+  "model": "XGBoost, 29 features, mixed training set, GroupKFold(5) out-of-fold predictions, pool=blitz",
+  "n_games": 17234,
+  "n_rows": 34440,
   "n_players": 2160,
-  "overall_MAE": 276.8036533801506,
-  "pearson_r": 0.8485191693672128,
-  "spearman_rho": 0.8494751603228301,
-  "slope": 0.713229950430923,
-  "intercept": 461.72896792166466
+  "N1": {
+    "overall_MAE": 278.8291507989663,
+    "n_rows": 17234,
+    "pearson_r": 0.8453981124011543,
+    "spearman_rho": 0.8460561191041436,
+    "slope": 0.7182581688951489,
+    "intercept": 432.81706085687716
+  },
+  "N8": {
+    "overall_MAE": 166.28618275557983,
+    "n_rows": 4248,
+    "pearson_r": 0.9484105781922276,
+    "spearman_rho": 0.9483741618215341,
+    "slope": 0.8697278840679115,
+    "intercept": 237.4468244253215
+  }
 }

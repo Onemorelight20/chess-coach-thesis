@@ -4,7 +4,9 @@
 П'ять ідей на спільній основі (пул бліц, той самий протокол, що у validate_xai):
   base       — поточне правило: z за прогнозованим рейтингом половини, argmin
   stability  — відбір за стабільністю: leave-one-out підвибірки половини, голосування
-  grouped    — z усереднюється в межах 6 тем, ранжуються теми
+  grouped    — z усереднюється в межах 5 тем, ранжуються теми (перетин трійок
+               для 5 тем завжди дорівнює 1, тож для цього варіанта інформативна
+               лише κ)
   fixedelo   — r̂ береться з усіх партій гравця, а не з половини (діагностика)
   noopening  — opening_acpl виключено з кандидатів
   abstain    — крива «надійність проти покриття» за порогом відриву δ
@@ -21,25 +23,30 @@ import xgboost as xgb
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.features.extractor import (FEATURE_NAMES, TRAINABLE_CANDIDATES,
                                     FEATURE_ORIENTATION)
+from src.ml.mixed_training import mixed_training_set
 
 RNG, SEEDS, PARQUET = 42, range(10), "data/dataset_blitz_2k.parquet"
 C = list(TRAINABLE_CANDIDATES)
+# Теми над кандидатами, що лишилися після фільтра знака (розд. 2.3.2); перелік
+# C — бліцовий (TRAINABLE_CANDIDATES), бо весь скрипт працює лише на пулі бліц.
 GROUPS = {
-    "фази гри":        ["opening_acpl", "middlegame_acpl", "endgame_acpl"],
-    "ситуативна гра":  ["conversion_acpl", "defense_acpl", "acpl_critical"],
+    "точність за фазами й ситуаціями": ["opening_acpl", "middlegame_acpl", "acpl_critical"],
     "тактичні помилки":["blunder_rate", "mistake_rate", "inaccuracy_rate"],
-    "тактичні патерни":["hanging_rate", "pin_exposure", "king_danger"],
+    "зв'язки":         ["pin_exposure"],
     "позиційна гра":   ["center_control_avg", "mobility_avg"],
-    "матеріал і стиль":["material_volatility", "capture_rate", "check_given_rate"],
+    "стиль гри":       ["capture_rate", "check_given_rate"],
 }
 assert sorted(sum(GROUPS.values(), [])) == sorted(C)
 
 
-def fit(X, y):
+def fit(X, y, groups):
+    """Модель у конфігурації застосунку: змішаний набір (одиничні партії + серії)."""
     Xi = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(X), columns=X.columns)
+    frame = Xi.copy(); frame["target_elo"] = y.values; frame["player"] = groups.values
+    Xm, ym, _, _ = mixed_training_set(frame)
     m = xgb.XGBRegressor(n_estimators=300, max_depth=5, learning_rate=0.05,
                          subsample=0.8, colsample_bytree=0.8, random_state=RNG)
-    m.fit(Xi, y)
+    m.fit(Xm, ym)
     import shap
     return shap.TreeExplainer(m), Xi
 
@@ -78,7 +85,7 @@ def main():
 
     df = pd.read_parquet(PARQUET)
     df = df[df["target_elo"].between(400, 3000)].reset_index(drop=True)
-    expl, Xi = fit(df[FEATURE_NAMES], df["target_elo"])
+    expl, Xi = fit(df[FEATURE_NAMES], df["target_elo"], df["player"])
     # еталон будується на агрегованих векторах гравців — саме до таких
     # застосовується правило; на окремих партіях розкид інший (див. validate_xai)
     agg = Xi.groupby(df['player'].values).mean()[FEATURE_NAMES]

@@ -1,0 +1,237 @@
+{
+ "pool": "bullet",
+ "protocol": "GroupKFold(5) за гравцями; модель, довідники, критерій знака й популяція правила відхилень — лише на навчальних гравцях блоку",
+ "candidates_per_fold": [
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ]
+ ],
+ "n_players": 2056,
+ "n_splits": 20560,
+ "rules": {
+  "raw": {
+   "label": "наївне правило",
+   "n_cand": 29,
+   "chance": 0.034482758620689655,
+   "trivial": 0.07733463035019456,
+   "tr_agree": 0.5056420233463035,
+   "kappa": 0.37254518384042057,
+   "ov3": 0.8724708171206226,
+   "ov3_chance": 0.2884510125889437,
+   "agree": 0.07928015564202334,
+   "agree3": 0.23054474708171208,
+   "kappa_agree": 0.03558299903831075,
+   "agree_ref17": 0.05544747081712062,
+   "agree3_ref17": 0.2203307392996109,
+   "kappa_agree_ref17": 0.03847356083567688,
+   "trivial_ref17": 0.11235408560311284,
+   "share_outside": 0.0,
+   "top_share": 0.4148832684824903,
+   "top_name": "avg_think_time",
+   "reversed_share": 0.0009727626459143969,
+   "kappa_ci95": [
+    0.35448057777794856,
+    0.3898122012738389
+   ],
+   "kappa_modal": 0.35116928308898043,
+   "kappa_gain_over_modal": {
+    "delta": 0.021375900751440136,
+    "ci95": [
+     0.0037730454561079683,
+     0.03924033969998363
+    ]
+   }
+  },
+  "themed": {
+   "label": "обмеження кандидатів",
+   "n_cand": 17,
+   "chance": 0.058823529411764705,
+   "trivial": 0.11235408560311284,
+   "tr_agree": 0.3401264591439689,
+   "kappa": 0.19841295043297835,
+   "ov3": 0.8192120622568093,
+   "ov3_chance": 0.4647058823529412,
+   "agree": 0.1575875486381323,
+   "agree3": 0.30544747081712065,
+   "kappa_agree": 0.10586474698752835,
+   "agree_ref17": 0.1575875486381323,
+   "agree3_ref17": 0.30544747081712065,
+   "kappa_agree_ref17": 0.10586474698752835,
+   "trivial_ref17": 0.11235408560311284,
+   "share_outside": 0.0,
+   "top_share": 0.3025291828793774,
+   "top_name": "opening_acpl",
+   "reversed_share": 0.03842412451361868,
+   "kappa_ci95": [
+    0.18276842359027265,
+    0.21425718908413335
+   ],
+   "kappa_modal": 0.175997529574215,
+   "kappa_gain_over_modal": {
+    "delta": 0.022415420858763357,
+    "ci95": [
+     0.0033566695782471126,
+     0.04272749604128531
+    ]
+   }
+  },
+  "standardised17": {
+   "label": "обмеження і нормування",
+   "n_cand": 17,
+   "chance": 0.058823529411764705,
+   "trivial": 0.11235408560311284,
+   "tr_agree": 0.1406614785992218,
+   "kappa": 0.07800377380936518,
+   "ov3": 0.6584143968871595,
+   "ov3_chance": 0.4647058823529412,
+   "agree": 0.1828793774319066,
+   "agree3": 0.31906614785992216,
+   "kappa_agree": 0.1295507890562826,
+   "agree_ref17": 0.1828793774319066,
+   "agree3_ref17": 0.31906614785992216,
+   "kappa_agree_ref17": 0.1295507890562826,
+   "trivial_ref17": 0.11235408560311284,
+   "share_outside": 0.0,
+   "top_share": 0.0967898832684825,
+   "top_name": "capture_rate",
+   "reversed_share": 0.02091439688715953,
+   "kappa_ci95": [
+    0.06847917635631072,
+    0.08885268553453957
+   ],
+   "kappa_modal": 0.10119165640497474,
+   "kappa_gain_over_modal": {
+    "delta": -0.023187882595609555,
+    "ci95": [
+     -0.03772993199387151,
+     -0.007038590719447661
+    ]
+   }
+  },
+  "standardised": {
+   "label": "правило (2.7)",
+   "n_cand": 10,
+   "chance": 0.1,
+   "trivial": 0.1930933852140078,
+   "tr_agree": 0.1997081712062257,
+   "kappa": 0.09637040857967061,
+   "ov3": 0.8379863813229572,
+   "ov3_chance": 0.7083333333333333,
+   "agree": 0.48249027237354086,
+   "agree3": 0.808852140077821,
+   "kappa_agree": 0.41720639052945474,
+   "agree_ref17": 0.26702334630350194,
+   "agree3_ref17": 0.3939688715953307,
+   "kappa_agree_ref17": 0.22144029896126438,
+   "trivial_ref17": 0.11235408560311284,
+   "share_outside": 0.5034046692607004,
+   "top_share": 0.16488326848249027,
+   "top_name": "capture_rate",
+   "reversed_share": 0.08025291828793775,
+   "kappa_ci95": [
+    0.08554791437329178,
+    0.10934123433469288
+   ],
+   "kappa_modal": 0.08507292416166723,
+   "kappa_gain_over_modal": {
+    "delta": 0.011297484418003378,
+    "ci95": [
+     -0.005909083230841849,
+     0.02843781810307775
+    ]
+   }
+  },
+  "rawfeat": {
+   "label": "сирі ознаки, те саме нормування",
+   "n_cand": 10,
+   "chance": 0.1,
+   "trivial": 0.1930933852140078,
+   "tr_agree": 0.1887645914396887,
+   "kappa": 0.08458453284655854,
+   "ov3": 0.8255836575875486,
+   "ov3_chance": 0.7083333333333333,
+   "agree": 0.7767509727626459,
+   "agree3": 0.9737354085603113,
+   "kappa_agree": 0.7466741900829419,
+   "agree_ref17": 0.41877431906614787,
+   "agree3_ref17": 0.49319066147859925,
+   "kappa_agree_ref17": 0.3794636441495812,
+   "trivial_ref17": 0.11235408560311284,
+   "share_outside": 0.5034046692607004,
+   "top_share": 0.1877431906614786,
+   "top_name": "capture_rate",
+   "reversed_share": 0.01556420233463035,
+   "kappa_ci95": [
+    0.0718882576456701,
+    0.09690910807213449
+   ]
+  }
+ },
+ "cross_rule": {
+  "top1_agreement": 0.5329280155642023,
+  "top3_overlap": 0.9958171206225681,
+  "top1_agreement_full": 0.5520428015564203
+ },
+ "kappa_delta_shap_minus_raw": {
+  "delta": 0.011785875733112072,
+  "ci95": [
+   0.00029221282305697823,
+   0.02430626631439183
+  ],
+  "p_gt_0": 0.979
+ }
+}

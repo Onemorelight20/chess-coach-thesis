@@ -11,6 +11,22 @@ from src.ml import build_shap_reference
 
 MODEL_PREFIX = "xgboost_elo_"
 
+# Quantiles of the first-vs-second margin over blitz split halves
+# (results/rule_improvements.json, abstain_curve): the share of players whose
+# margin is at least this large. Used only to phrase how unusual a margin is.
+# Порогові відриви за квантилями розподілу на blitz (rule_improvements_oof.json, abstain_curve — протокол без витоку; змішана модель, 2026-09-19)
+MARGIN_QUANTILES = ((0.844, 0.10), (0.515, 0.25), (0.257, 0.50))
+
+
+def margin_quantile(margin):
+    """Smallest share of players with a margin at least as large, or None."""
+    if margin is None or not np.isfinite(margin):
+        return None
+    for thr, share in MARGIN_QUANTILES:
+        if margin >= thr:
+            return share
+    return 1.0
+
 
 def _pool_of_path(path):
     """`.../xgboost_elo_blitz.json` -> `blitz`; None for a custom model path."""
@@ -80,12 +96,14 @@ class ELOModel:
         """
         Predict Elo and name the training category.
 
-        The category is NOT the raw `argmin` of the SHAP values. Two corrections
-        are applied (see build_shap_reference.py and subsection 3.3):
-        candidates are limited to features a player can actually train, and each
-        contribution is standardised against players of the same predicted-rating
-        band, so the answer is "where is this player unusual for their level"
-        rather than "which feature has the largest raw contribution". Without a
+        The category is NOT the raw `argmin` of the SHAP values. Three corrections
+        are applied (see build_shap_reference.py and subsection 3.3): candidates
+        are limited to features with a training theme whose contribution the model
+        links to the prediction in the pedagogical direction (the stored list in
+        the pool's reference), and each contribution is standardised against
+        players of the same predicted-rating band, so the answer is "where is this
+        player unusual for their level" rather than "which feature has the largest
+        raw contribution". Without a
         USABLE reference the method falls back to the raw rule and says so in
         `weakness_rule` -- a missing file and a file that no longer matches the
         model's features are handled the same way.
@@ -93,7 +111,7 @@ class ELOModel:
         row = {f: features.get(f, np.nan) for f in self.feature_names}
         x_input = pd.DataFrame([row], columns=self.feature_names)
 
-        predicted_elo = int(self.model.predict(x_input)[0])
+        predicted_elo = int(round(float(self.model.predict(x_input)[0])))
 
         shap_values = self.explainer.shap_values(x_input)[0]
         shap_dict = dict(zip(self.feature_names, [float(v) for v in shap_values]))
@@ -115,17 +133,25 @@ class ELOModel:
             rule = "raw-argmin"
 
         # Report the k weakest, not one. Naming a single category throws away a
-        # reproducible answer: on split halves of the same player the top-1 pick
-        # agrees only 11% of the time, while the top-2 sets overlap 33% and the
-        # top-3 sets 57% -- the halves rank the same problem areas, they just
-        # reorder neighbours. Agreement with the deviation-based reference rises
-        # the same way (0.28 -> 0.41 -> 0.49). See subsection 3.3.
+        # reproducible answer: on split halves of the same player the single top
+        # pick repeats 15% of the time under the deployed rule, while the top-3
+        # sets share at least one feature 75% of the time -- the halves rank the
+        # same problem areas, they just reorder neighbours. Agreement with the
+        # deviation-based reference rises the same way (0.51 -> 0.79 at k=3).
+        # See subsection 3.3.2.
         ranked = sorted(scored, key=scored.get)[:max(1, k)]
         weaknesses = [{"feature": f,
                        "display": DISPLAY_NAMES.get(f, f),
                        "impact": shap_dict[f],
                        "score": float(scored[f])} for f in ranked]
         top = weaknesses[0]
+
+        # Margin between the first and second standardised score. It is the only
+        # per-player signal of reliability the rule has: test-retest kappa rises
+        # monotonically with it (0.056 over all players -> 0.116 for the tenth
+        # with the largest margin, subsection 3.3.5), though it stays low.
+        ordered = sorted(scored.values())
+        margin = float(ordered[1] - ordered[0]) if len(ordered) > 1 else float("nan")
 
         return {
             "predicted_elo": predicted_elo,
@@ -135,6 +161,8 @@ class ELOModel:
             "weakest_display": top["display"],
             "weakest_impact": top["impact"],
             "weakest_score": top["score"],
+            "weakest_margin": margin,
+            "margin_quantile": margin_quantile(margin) if rule == "band-standardised" else None,
             "weakness_rule": rule,
             "is_mock": self.is_mock,
         }

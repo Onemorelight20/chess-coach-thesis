@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "rule": "standardised",
+    "pool": "rapid",
+    "candidates": [
+      "opening_acpl",
+      "middlegame_acpl",
+      "blunder_rate",
+      "mistake_rate",
+      "inaccuracy_rate",
+      "pin_exposure",
+      "center_control_avg",
+      "mobility_avg",
+      "material_volatility",
+      "capture_rate",
+      "check_given_rate"
+    ],
+    "candidate_source": "shap_reference_rapid.pkl"
+  },
+  "experiment_a": {
+    "split_half_agreement": 0.14784784784784785,
+    "chance_agreement": 0.10033558082607132,
+    "cohen_kappa": 0.05505656165123829,
+    "n_categories": 11,
+    "topk_overlap": {
+      "2": 0.45595595595595595,
+      "3": 0.7545545545545546
+    },
+    "n_players": 1998,
+    "n_splits": 19980,
+    "modal_comparison": {
+      "split_half_agreement": 0.18883883883883884,
+      "chance_agreement": 0.14038312085859636,
+      "cohen_kappa": 0.05321643115209573,
+      "n_categories": 11,
+      "kappa_ci95": [
+        0.04070714015056186,
+        0.0667078474497355
+      ]
+    },
+    "kappa_ci95": [
+      0.0445367793159485,
+      0.06518368640584685
+    ],
+    "kappa_gain_over_modal": {
+      "delta": 0.001840130499142556,
+      "ci95": [
+        -0.0144519697745072,
+        0.01841818614192818
+      ],
+      "p_gt_0": 0.586
+    }
+  },
+  "experiment_b": {
+    "top1_accuracy": 0.461961961961962,
+    "top2_accuracy": 0.6496496496496497,
+    "coverage_at_k": {
+      "2": 0.6496496496496497,
+      "3": 0.7617617617617618
+    },
+    "cohen_kappa": 0.41019478661455067,
+    "chance_baseline": 0.09090909090909091,
+    "majority_baseline": 0.17017017017017017,
+    "n_players": 1998,
+    "ref17": {
+      "top1_accuracy": 0.35035035035035034,
+      "top2_accuracy": 0.48398398398398396,
+      "coverage_at_k": {
+        "2": 0.48398398398398396,
+        "3": 0.5605605605605606
+      },
+      "cohen_kappa": 0.3073108322326731,
+      "chance_baseline": 0.058823529411764705,
+      "majority_baseline": 0.13463463463463463,
+      "share_outside_candidates": 0.28928928928928926
+    }
+  }
+}

@@ -47,42 +47,60 @@ BIN_WIDTH = 200
 RATING_MIN, RATING_MAX = 400, 2800
 
 
-def held_out_lichess_bias(pool, n_per_bin=1, max_scan=1_500_000):
-    """Predicted vs actual Elo on Lichess players NEVER used to train `pool`'s model."""
-    known = set(pd.read_parquet(TRAIN_PARQUET_TMPL.format(pool=pool))["player"].unique())
-    print(f"Excluding {len(known)} training players; scanning for unseen {pool} players...")
-    buckets, scanned, kept = scan_and_bucket(
-        LICHESS_PGN, pool, players=10**9, games_per_player=N_GAMES, max_scan=max_scan)
-    unseen = {p: v for p, v in buckets.items() if p not in known}
-    chosen = select_players_stratified(
-        unseen, N_GAMES, RATING_MIN, RATING_MAX, BIN_WIDTH, n_per_bin)
-    print(f"  scanned {scanned:,} games -> {len(chosen)} held-out players across rating bins.")
+def held_out_lichess_bias(pool, n_per_bin=1, max_scan=1_500_000, cache_path=None, refresh=False):
+    """Predicted vs actual Elo on Lichess players NEVER used to train `pool`'s model.
 
-    analyzer = EngineAnalyzer(time_limit=0.05)  # exact live-app settings
+    The engine phase (PGN scan + Stockfish at the live-app time limit) does not
+    depend on the rating model, so its per-game feature rows are cached in
+    `cache_path`; a retrained model is then scored without re-analysing anything.
+    """
+    if cache_path and os.path.exists(cache_path) and not refresh:
+        games_df = pd.read_parquet(cache_path)
+        print(f"Held-out Lichess features loaded from {cache_path}: "
+              f"{games_df['player'].nunique()} players, {len(games_df)} games (engine skipped).")
+    else:
+        known = set(pd.read_parquet(TRAIN_PARQUET_TMPL.format(pool=pool))["player"].unique())
+        print(f"Excluding {len(known)} training players; scanning for unseen {pool} players...")
+        buckets, scanned, kept = scan_and_bucket(
+            LICHESS_PGN, pool, players=10**9, games_per_player=N_GAMES, max_scan=max_scan)
+        unseen = {p: v for p, v in buckets.items() if p not in known}
+        chosen = select_players_stratified(
+            unseen, N_GAMES, RATING_MIN, RATING_MAX, BIN_WIDTH, n_per_bin)
+        print(f"  scanned {scanned:,} games -> {len(chosen)} held-out players across rating bins.")
+
+        analyzer = EngineAnalyzer(time_limit=0.05)  # exact live-app settings
+        fh = open(LICHESS_PGN, encoding="utf-8")
+        game_rows = []
+        for player, entries in chosen:
+            for offset, color, elo, tc in entries[:N_GAMES]:
+                fh.seek(offset)
+                game = chess.pgn.read_game(fh)
+                if game is None:
+                    continue
+                results = analyzer.analyze_game(game)
+                feats = FeatureExtractor(target_player_color=color).extract(
+                    results, increment=parse_increment(tc))
+                game_rows.append({**{f: float(feats.get(f, np.nan)) for f in FEATURE_NAMES},
+                                  "player": player, "target_elo": float(elo)})
+        analyzer.close()
+        fh.close()
+        games_df = pd.DataFrame(game_rows)
+        if games_df.empty:
+            raise RuntimeError("no held-out players with enough games were found; raise --max-scan")
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            games_df.to_parquet(cache_path, index=False)
+            print(f"  held-out features cached -> {cache_path}")
+
     model = ELOModel(pool=pool)
-    fh = open(LICHESS_PGN, encoding="utf-8")
     rows = []
-    for player, entries in chosen:
-        feats_list, true_elos = [], []
-        for offset, color, elo, tc in entries[:N_GAMES]:
-            fh.seek(offset)
-            game = chess.pgn.read_game(fh)
-            if game is None:
-                continue
-            results = analyzer.analyze_game(game)
-            feats_list.append(FeatureExtractor(target_player_color=color).extract(
-                results, increment=parse_increment(tc)))
-            true_elos.append(elo)
-        if not feats_list:
-            continue
-        agg = aggregate_features(feats_list, method="mean")
+    for player, g in games_df.groupby("player", sort=False):
+        agg = aggregate_features(g[FEATURE_NAMES].to_dict("records"), method="mean")
         pred = model.predict_and_explain(agg)
-        actual = float(np.median(true_elos))
-        rows.append({"player": player, "platform": "lichess", "n_games": len(feats_list),
-                    "actual_elo": actual, "predicted_elo": pred["predicted_elo"],
-                    "bias": pred["predicted_elo"] - actual})
-    analyzer.close()
-    fh.close()
+        actual = float(np.median(g["target_elo"]))
+        rows.append({"player": player, "platform": "lichess", "n_games": len(g),
+                     "actual_elo": actual, "predicted_elo": pred["predicted_elo"],
+                     "bias": pred["predicted_elo"] - actual})
     return pd.DataFrame(rows)
 
 
@@ -189,12 +207,19 @@ def main():
     ap.add_argument("--per-bin", type=int, default=1,
                     help="held-out Lichess players per 200-Elo bin")
     ap.add_argument("--max-scan", type=int, default=1_500_000)
+    ap.add_argument("--heldout-cache", default=None,
+                    help="parquet with the held-out Lichess feature rows; default "
+                         "data/crossplatform/heldout_lichess_<pool>.parquet (reused if present)")
+    ap.add_argument("--refresh-heldout", action="store_true",
+                    help="re-scan the PGN and re-run the engine even if the cache exists")
     args = ap.parse_args()
+    heldout_cache = args.heldout_cache or f"data/crossplatform/heldout_lichess_{args.pool}.parquet"
     os.makedirs(args.outdir, exist_ok=True)
     cc_path = args.chesscom_parquet or CHESSCOM_PARQUET_TMPL.format(pool=args.pool)
 
     print("=== Part 1: held-out Lichess players (never seen in training) ===")
-    lichess_df = held_out_lichess_bias(args.pool, args.per_bin, args.max_scan)
+    lichess_df = held_out_lichess_bias(args.pool, args.per_bin, args.max_scan,
+                                       cache_path=heldout_cache, refresh=args.refresh_heldout)
     print(lichess_df[["player", "actual_elo", "predicted_elo", "bias"]].to_string(index=False))
 
     print(f"\n=== Part 2: Chess.com sample (cross-platform, {cc_path}) ===")

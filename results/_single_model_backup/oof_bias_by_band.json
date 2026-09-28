@@ -1,0 +1,10 @@
+{
+  "model": "XGBoost, 29 features, GroupKFold(5) out-of-fold predictions, pool=blitz",
+  "n_rows": 17234,
+  "n_players": 2160,
+  "overall_MAE": 276.8036533801506,
+  "pearson_r": 0.8485191693672128,
+  "spearman_rho": 0.8494751603228301,
+  "slope": 0.713229950430923,
+  "intercept": 461.72896792166466
+}

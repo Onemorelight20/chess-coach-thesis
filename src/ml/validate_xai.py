@@ -5,10 +5,21 @@ app.py does: average the N feature vectors, then explain the aggregated one.
 Experiment A -- test-retest reliability: split each player's games in two and
     measure agreement (Cohen's kappa, cluster bootstrap over players).
 Experiment B -- agreement with a behavioural ground truth built from the player's
-    features over all their games (worst area by population z-score).
+    features over all their games (worst area by population z-score). Reported
+    twice: against the reference built over the rule's OWN candidate set, and
+    against a FIXED reference over the 17 themed features, so that rules with
+    different candidate pools stay comparable (a smaller pool redefines the
+    "correct answer" for every player whose worst area was dropped from it).
+
+Rules (--rule): raw (29 candidates, raw argmin), themed (17 features with a
+training theme), standardised17 (themed + band-standardised contributions),
+standardised (the deployed rule: themed + sign test + standardisation; the
+candidate list is read from the pool's shap_reference so validation measures
+exactly what the app runs). `correction_steps.py` runs all four on one fit.
 
 Usage:
-    python -m src.ml.validate_xai data/dataset_blitz_1600p.parquet --outdir results
+    python -m src.ml.validate_xai data/dataset_blitz_2k.parquet --rule standardised \
+        --suffix _blitz_standardised --outdir results/rules
 """
 
 import argparse
@@ -27,19 +38,31 @@ import xgboost as xgb
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.features.extractor import (FEATURE_NAMES, DISPLAY_NAMES, WEAKNESS_CANDIDATES,
-                                    TRAINABLE_CANDIDATES, FEATURE_ORIENTATION)
+                                    THEMED_CANDIDATES, TRAINABLE_CANDIDATES,
+                                    FEATURE_ORIENTATION)
 from src.ml import build_shap_reference
+from src.ml.candidate_signs import sign_test
+from src.ml.mixed_training import mixed_training_set
 from src.ml import plotstyle
 plotstyle.apply()
 
 RNG = 42
 
 
-def fit_model_and_explainer(X, y):
+def fit_model_and_explainer(X, y, groups):
+    """The deployed configuration: the model is trained on the MIXED set (every
+    single game plus mean vectors of N-game series of the same players,
+    mixed_training.py), exactly as train.py does. Returns the model, its
+    explainer and Xi -- the median-imputed SINGLE-game matrix aligned with X,
+    which the experiments below average into half-vectors before explaining."""
     Xi = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(X), columns=X.columns)
+    frame = Xi.copy()
+    frame["target_elo"] = np.asarray(y, dtype=float)
+    frame["player"] = np.asarray(groups)
+    Xm, ym, _, _ = mixed_training_set(frame, feature_names=list(X.columns))
     model = xgb.XGBRegressor(n_estimators=300, max_depth=5, learning_rate=0.05,
                              subsample=0.8, colsample_bytree=0.8, random_state=RNG)
-    model.fit(Xi, y)
+    model.fit(Xm, ym)
     import shap
     return model, shap.TreeExplainer(model), Xi
 
@@ -49,6 +72,8 @@ def fit_model_and_explainer(X, y):
 # main() from --rule, so both experiments measure the same mechanism.
 CANDS = list(WEAKNESS_CANDIDATES)
 BAND_REF = None          # {"edges", "mean", "std"} or None for the raw rule
+REF_CANDS = list(THEMED_CANDIDATES)   # fixed 17-class reference for experiment B
+RULES = ("raw", "themed", "standardised17", "standardised")
 
 
 def _rank(sv_sub, pred_elo=None, k=1):
@@ -187,12 +212,17 @@ def experiment_a(df, Xi, explainer, min_games=4, seeds=range(10), boot=1000):
     return out
 
 
-def experiment_b(df, Xi, explainer):
-    # Ground truth: per-player z-score x FEATURE_ORIENTATION, so idxmax = weakest.
-    pm = df.groupby("player")[CANDS].mean()
+def _ground_truth(df, cands):
+    """Per-player z-score x FEATURE_ORIENTATION over `cands`; idxmax = weakest."""
+    pm = df.groupby("player")[cands].mean()
     z = (pm - pm.mean()) / pm.std(ddof=0)
-    orient = pd.Series(FEATURE_ORIENTATION)[CANDS]
-    gt = z.mul(orient, axis=1).idxmax(axis=1).rename("gt_weak")  # highest = weakest area
+    orient = pd.Series(FEATURE_ORIENTATION)[cands]
+    return z.mul(orient, axis=1).idxmax(axis=1)
+
+
+def experiment_b(df, Xi, explainer):
+    gt = _ground_truth(df, CANDS).rename("gt_weak")            # rule's own pool
+    gt17 = _ground_truth(df, REF_CANDS).rename("gt_weak_ref17")  # fixed reference
     # Prediction: SHAP over each player's games aggregated the way app.py does.
     rows = df.groupby("player").indices
     players = pd.Index(list(rows), name="player")
@@ -200,88 +230,85 @@ def experiment_b(df, Xi, explainer):
     # `top2_accuracy` below is by definition `coverage_at_k["2"]`.
     ranked = aggregate_weakness(explainer, Xi, [rows[p] for p in players], k=3)
     pred = pd.Series(ranked[:, 0], index=players, name="pred_weak")
-    merged = pd.concat([gt, pred], axis=1).dropna()
-    top1 = float((merged["gt_weak"] == merged["pred_weak"]).mean())
-    # coverage: is GT among the k weakest candidates of the same vector?
-    cover = {}
-    for k in (2, 3):
-        sets = pd.Series(list(ranked[:, :k]), index=players)
-        cover[str(k)] = float(np.mean([gt.loc[p] in sets.loc[p] for p in merged.index]))
-    in_top2 = cover["2"]
-    kappa = cohen_kappa_score(merged["gt_weak"], merged["pred_weak"],
-                              labels=CANDS)
-    # baselines
-    chance = 1.0 / len(CANDS)
-    majority = float(gt.value_counts(normalize=True).iloc[0])
-    return ({"coverage_at_k": cover,
-             "n_players": int(len(merged)),
-             "top1_accuracy": top1, "top2_accuracy": in_top2,
-             "cohen_kappa": float(kappa),
-             "chance_baseline": chance, "majority_baseline": majority},
-            merged, gt)
+    merged = pd.concat([gt, gt17, pred], axis=1).dropna()
+    sets = pd.Series(list(ranked[:, :3]), index=players)
+
+    def score(col, labels):
+        truth = merged[col]
+        cover = {str(k): float(np.mean([truth.loc[p] in sets.loc[p][:k] for p in merged.index]))
+                 for k in (2, 3)}
+        return {"top1_accuracy": float((truth == merged["pred_weak"]).mean()),
+                "top2_accuracy": cover["2"], "coverage_at_k": cover,
+                "cohen_kappa": float(cohen_kappa_score(
+                    truth, merged["pred_weak"], labels=sorted(set(labels) | set(CANDS)))),
+                "chance_baseline": 1.0 / len(labels),
+                "majority_baseline": float(truth.value_counts(normalize=True).iloc[0])}
+
+    out = score("gt_weak", CANDS)
+    out["n_players"] = int(len(merged))
+    ref = score("gt_weak_ref17", REF_CANDS)
+    # Share of players whose fixed-reference weakness lies outside this rule's
+    # pool: the rule cannot name it, so its own-pool agreement is measured on a
+    # redefined answer for them.
+    ref["share_outside_candidates"] = float((~merged["gt_weak_ref17"].isin(CANDS)).mean())
+    out["ref17"] = ref
+    return out, merged, gt
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("parquet")
-    ap.add_argument("--outdir", default="results")
-    ap.add_argument("--rule", default="raw", choices=["raw", "trainable", "standardised"],
-                    help="raw: argmin over all 29 candidates (the original mechanism); "
-                         "trainable: argmin over the 17 trainable ones; "
-                         "standardised: trainable + contributions z-scored within "
-                         "the player's predicted-rating band")
-    ap.add_argument("--suffix", default="", help="appended to output filenames")
-    args = ap.parse_args()
-    os.makedirs(args.outdir, exist_ok=True)
-
-    df = pd.read_parquet(args.parquet)
-    df = df[df["target_elo"].between(400, 3000)].reset_index(drop=True)
-    X, y = df[FEATURE_NAMES], df["target_elo"]
-    print(f"Loaded {len(df):,} rows | {df['player'].nunique()} players\n")
-
-    model, explainer, Xi = fit_model_and_explainer(X, y)
-
+def configure_rule(rule, explainer, Xi, df, pool=None):
+    """Set the module-level CANDS / BAND_REF for `rule`. Returns (cands, source)."""
     global CANDS, BAND_REF
-    if args.rule != "raw":
-        CANDS = [c for c in TRAINABLE_CANDIDATES if c in FEATURE_NAMES]
-    if args.rule == "standardised":
+    BAND_REF, source = None, "fixed"
+    if rule == "raw":
+        CANDS = list(WEAKNESS_CANDIDATES)
+    elif rule in ("themed", "standardised17"):
+        CANDS = list(THEMED_CANDIDATES)
+    elif rule == "standardised":
+        ref = build_shap_reference.load(pool) if pool else None
+        if ref is not None and ref.get("sign_excluded") is not None:
+            CANDS, source = list(ref["candidates"]), f"shap_reference_{pool}.pkl"
+        else:
+            # No stored reference for this pool: apply the same sign test to the
+            # fit at hand, so the rule is still "themed + sign + standardised".
+            agg = Xi.groupby(df["player"].values).mean()[FEATURE_NAMES]
+            sv = explainer.shap_values(agg)
+            CANDS, _ = sign_test(agg, sv, FEATURE_NAMES, THEMED_CANDIDATES)
+            source = "sign test on this fit"
+    else:
+        raise ValueError(rule)
+    if rule.startswith("standardised"):
         agg = Xi.groupby(df["player"].values).mean()[FEATURE_NAMES]
         BAND_REF = build_band_ref(explainer, agg)
-        print(f"Band reference: {len(BAND_REF['mean'])} bands over "
-              f"{len(agg)} aggregated players")
-    print(f"Weakness rule: {args.rule} ({len(CANDS)} candidates)\n")
+    return list(CANDS), source
+
+
+def run_rule(df, Xi, explainer, rule, outdir, suffix, pool=None, boot=1000):
+    """Both experiments for one rule on an already fitted model; saves json/csv/png."""
+    cands, source = configure_rule(rule, explainer, Xi, df, pool)
+    print(f"Weakness rule: {rule} ({len(cands)} candidates, list from {source})"
+          + (f"; band reference: {len(BAND_REF['mean'])} bands" if BAND_REF else ""))
+    df = df.copy()
     df["shap_weak"] = per_game_weakness(explainer, Xi)
 
-    print("== Distribution of single-game SHAP-identified weaknesses ==")
-    print(df["shap_weak"].value_counts().to_string(), "\n")
-
-    a = experiment_a(df, Xi, explainer)
-    print("== Experiment A: test-retest reliability ==")
-    for k, v in a.items():
-        if isinstance(v, dict):
-            continue
-        print(f"  {k:24s}: {v:.3f}" if isinstance(v, float) else f"  {k:24s}: {v}")
-    lift_a = a["split_half_agreement"] / a["chance_agreement"]
-    print(f"  -> agreement is {lift_a:.1f}x chance")
+    a = experiment_a(df, Xi, explainer, boot=boot)
     m, gain = a["modal_comparison"], a["kappa_gain_over_modal"]
-    print(f"  -> kappa {a['cohen_kappa']:.3f} "
-          f"[{a['kappa_ci95'][0]:.3f}; {a['kappa_ci95'][1]:.3f}] aggregated vs "
-          f"{m['cohen_kappa']:.3f} [{m['kappa_ci95'][0]:.3f}; {m['kappa_ci95'][1]:.3f}] modal; "
-          f"delta {gain['delta']:+.3f} [{gain['ci95'][0]:.3f}; {gain['ci95'][1]:.3f}], "
-          f"P(delta>0) = {gain['p_gt_0']:.3f}\n")
-
+    print(f"  A: agreement {a['split_half_agreement']:.3f} (chance {a['chance_agreement']:.3f}), "
+          f"kappa {a['cohen_kappa']:.3f} [{a['kappa_ci95'][0]:.3f}; {a['kappa_ci95'][1]:.3f}] "
+          f"vs modal {m['cohen_kappa']:.3f}; delta {gain['delta']:+.3f} "
+          f"[{gain['ci95'][0]:.3f}; {gain['ci95'][1]:.3f}]; top-3 overlap {a['topk_overlap']['3']:.3f}")
     b, merged, gt = experiment_b(df, Xi, explainer)
-    print("== Experiment B: agreement with behavioural ground truth ==")
-    for k, v in b.items():
-        print(f"  {k:24s}: {v:.3f}" if isinstance(v, float) else f"  {k:24s}: {v}")
-    print(f"  -> top-1 is {b['top1_accuracy']/b['chance_baseline']:.1f}x chance\n")
+    r = b["ref17"]
+    print(f"  B: own reference top-1 {b['top1_accuracy']:.3f} (trivial {b['majority_baseline']:.3f}, "
+          f"kappa {b['cohen_kappa']:.3f}); fixed 17-class reference top-1 {r['top1_accuracy']:.3f} "
+          f"(trivial {r['majority_baseline']:.3f}, kappa {r['cohen_kappa']:.3f}, "
+          f"{r['share_outside_candidates']:.1%} of answers outside the pool)\n")
 
-    with open(os.path.join(args.outdir, f"xai_validation{args.suffix}.json"), "w") as f:
-        json.dump({"experiment_a": a, "experiment_b": b}, f, indent=2)
-    merged.to_csv(os.path.join(args.outdir, f"xai_groundtruth_vs_pred{args.suffix}.csv"))
+    meta = {"rule": rule, "pool": pool, "candidates": cands, "candidate_source": source}
+    with open(os.path.join(outdir, f"xai_validation{suffix}.json"), "w") as f:
+        json.dump({"meta": meta, "experiment_a": a, "experiment_b": b}, f, indent=2)
+    merged.to_csv(os.path.join(outdir, f"xai_groundtruth_vs_pred{suffix}.csv"))
 
-    # figure: GT vs predicted weakness confusion
-    labels = CANDS
+    labels = cands
     conf = pd.crosstab(merged["gt_weak"], merged["pred_weak"]).reindex(
         index=labels, columns=labels, fill_value=0)
     fig, ax = plt.subplots(figsize=(7, 6))
@@ -293,9 +320,43 @@ def main():
         for j in range(len(labels)):
             ax.text(j, i, conf.values[i, j], ha="center", va="center", fontsize=8)
     ax.set_xlabel("Predicted (aggregated SHAP)"); ax.set_ylabel("Ground truth (aggregated)")
-    ax.set_title("Weakness detection: ground truth vs aggregated SHAP")
+    ax.set_title(f"Weakness detection ({rule}): ground truth vs aggregated SHAP")
     fig.colorbar(im, fraction=0.046); fig.tight_layout()
-    fig.savefig(os.path.join(args.outdir, f"fig_xai_confusion{args.suffix}.png")); plt.close(fig)
+    fig.savefig(os.path.join(outdir, f"fig_xai_confusion{suffix}.png")); plt.close(fig)
+    return {"meta": meta, "experiment_a": a, "experiment_b": b}
+
+
+def pool_from_path(path):
+    stem = os.path.basename(path)
+    for p in ("bullet", "blitz", "rapid", "classical"):
+        if f"_{p}_" in stem or stem.startswith(p):
+            return p
+    return None
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("parquet")
+    ap.add_argument("--outdir", default="results")
+    ap.add_argument("--rule", default="raw", choices=RULES,
+                    help="raw: argmin over all 29 features; themed: argmin over the 17 "
+                         "features with a training theme; standardised17: themed + "
+                         "contributions z-scored within the predicted-rating band; "
+                         "standardised: the deployed rule -- themed + sign test + "
+                         "standardisation, candidates read from the pool's shap_reference")
+    ap.add_argument("--pool", default=None, help="pool name (inferred from the parquet name)")
+    ap.add_argument("--suffix", default="", help="appended to output filenames")
+    ap.add_argument("--boot", type=int, default=1000)
+    args = ap.parse_args()
+    os.makedirs(args.outdir, exist_ok=True)
+
+    df = pd.read_parquet(args.parquet)
+    df = df[df["target_elo"].between(400, 3000)].reset_index(drop=True)
+    X, y = df[FEATURE_NAMES], df["target_elo"]
+    print(f"Loaded {len(df):,} rows | {df['player'].nunique()} players\n")
+    model, explainer, Xi = fit_model_and_explainer(X, y, df["player"])
+    pool = args.pool or pool_from_path(args.parquet)
+    run_rule(df, Xi, explainer, args.rule, args.outdir, args.suffix, pool, args.boot)
     print(f"Saved XAI validation tables + figure to '{args.outdir}/'.")
 
 

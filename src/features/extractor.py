@@ -24,20 +24,47 @@ FEATURE_NAMES = [
 # Every feature maps to a Lichess puzzle theme (RecommenderEngine.feature_to_tag).
 WEAKNESS_CANDIDATES = list(FEATURE_NAMES)
 
-# Subset a player can actually train. The rest of FEATURE_NAMES are indicators of
-# strength rather than skills: `avg_move_rank`, `top1_agree`, `engine_match_rate`
-# measure accuracy itself, and the timing features describe pace, not a topic a
-# puzzle can drill. Leaving them in the candidate pool let the mechanism answer
-# "average think time" for 27% of players -- true about the prediction, useless as
-# advice. Restricting the pool is the first of the three corrections in 3.3.
-TRAINABLE_CANDIDATES = [
-    "opening_acpl", "middlegame_acpl", "endgame_acpl",      # фази гри
-    "conversion_acpl", "defense_acpl", "acpl_critical",     # ситуативна гра
-    "blunder_rate", "mistake_rate", "inaccuracy_rate",      # тактичні помилки
-    "hanging_rate", "pin_exposure", "king_danger",          # тактичні патерни
-    "center_control_avg", "mobility_avg",                   # позиційна гра
+# Candidate pool for the weakness rule (2.7): two conditions, applied in order.
+#
+# 1. The feature has a training theme (THEMED_CANDIDATES, 17 of 29). The rest
+#    are indicators of strength rather than skills: `avg_move_rank`,
+#    `top1_agree`, `engine_match_rate` measure accuracy itself, and the timing
+#    features describe pace, not a topic a puzzle can drill. Leaving them in let
+#    the mechanism answer "average think time" for 27% of players.
+#
+# 2. The model links the feature to the prediction in the pedagogical direction:
+#    a worse value must LOWER the contribution. The test is
+#    sign(Spearman(x_j, phi_j)) == -FEATURE_ORIENTATION[j] over the aggregated
+#    vectors of the pool's training players (src/ml/candidate_signs.sign_test).
+#    Six blitz features fail it (SIGN_EXCLUDED): rho(value, Elo) is negative but
+#    rho(value, SHAP) is positive, because at a fixed overall ACPL a high
+#    *endgame* ACPL means the mistakes were not made in the opening -- which is
+#    how stronger players play. The minimum of the standardised contribution then
+#    lands on a player with an unusually GOOD value, and the advice is reversed
+#    (30% of blitz answers before the filter, 4% after).
+#
+# The test depends on the pool's model, so it is evaluated per pool when the
+# reference is built (build_shap_reference.py) and the resulting list is stored
+# in shap_reference_<pool>.pkl. The two lists below are the blitz outcome and
+# serve as the documented default; model.py always prefers the stored list.
+THEMED_CANDIDATES = [
+    "opening_acpl", "middlegame_acpl", "endgame_acpl",      # game phases
+    "conversion_acpl", "defense_acpl", "acpl_critical",     # situational play
+    "blunder_rate", "mistake_rate", "inaccuracy_rate",      # tactical errors
+    "hanging_rate", "pin_exposure", "king_danger",          # tactical patterns
+    "center_control_avg", "mobility_avg",                   # positional play
     "material_volatility", "capture_rate", "check_given_rate",
 ]
+
+# Failed the sign test on blitz (mixed-training model, build_shap_reference.py);
+# they stay in the feature vector for prediction. Other pools keep their own list
+# in shap_reference_<pool>.pkl.
+SIGN_EXCLUDED = [
+    "endgame_acpl", "conversion_acpl", "defense_acpl",
+    "hanging_rate", "king_danger", "material_volatility",
+]
+
+TRAINABLE_CANDIDATES = [c for c in THEMED_CANDIDATES if c not in SIGN_EXCLUDED]
 
 DISPLAY_NAMES = {
     "acpl": "Average Centipawn Loss",

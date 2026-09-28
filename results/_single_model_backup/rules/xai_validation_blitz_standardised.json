@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "rule": "standardised",
+    "pool": "blitz",
+    "candidates": [
+      "opening_acpl",
+      "middlegame_acpl",
+      "blunder_rate",
+      "mistake_rate",
+      "inaccuracy_rate",
+      "pin_exposure",
+      "center_control_avg",
+      "mobility_avg",
+      "material_volatility",
+      "capture_rate",
+      "check_given_rate"
+    ],
+    "candidate_source": "shap_reference_blitz.pkl"
+  },
+  "experiment_a": {
+    "split_half_agreement": 0.14715145900880036,
+    "chance_agreement": 0.09798890905740289,
+    "cohen_kappa": 0.0555929956284974,
+    "n_categories": 11,
+    "topk_overlap": {
+      "2": 0.4493747105141269,
+      "3": 0.7469198703103288
+    },
+    "n_players": 2159,
+    "n_splits": 21590,
+    "modal_comparison": {
+      "split_half_agreement": 0.16632700324224178,
+      "chance_agreement": 0.1388294162055452,
+      "cohen_kappa": 0.029360033345191106,
+      "n_categories": 11,
+      "kappa_ci95": [
+        0.01789619667564713,
+        0.042065673012776354
+      ]
+    },
+    "kappa_ci95": [
+      0.04649599932547128,
+      0.06556526399233573
+    ],
+    "kappa_gain_over_modal": {
+      "delta": 0.026232962283306294,
+      "ci95": [
+        0.012234225268679531,
+        0.03906670229809171
+      ],
+      "p_gt_0": 1.0
+    }
+  },
+  "experiment_b": {
+    "top1_accuracy": 0.5078703703703704,
+    "top2_accuracy": 0.687037037037037,
+    "coverage_at_k": {
+      "2": 0.687037037037037,
+      "3": 0.7893518518518519
+    },
+    "cohen_kappa": 0.45673414427606784,
+    "chance_baseline": 0.09090909090909091,
+    "majority_baseline": 0.17037037037037037,
+    "n_players": 2160,
+    "ref17": {
+      "top1_accuracy": 0.375,
+      "top2_accuracy": 0.487962962962963,
+      "coverage_at_k": {
+        "2": 0.487962962962963,
+        "3": 0.5435185185185185
+      },
+      "cohen_kappa": 0.33143125985313504,
+      "chance_baseline": 0.058823529411764705,
+      "majority_baseline": 0.13425925925925927,
+      "share_outside_candidates": 0.3148148148148148
+    }
+  }
+}

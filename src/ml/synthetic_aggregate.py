@@ -28,9 +28,46 @@ from src.ml.synthetic_validation import (
 )
 
 
+def _plain(feats):
+    return {k: (None if v is None else float(v)) for k, v in feats.items()}
+
+
+def analyse_groups(groups, args, rng, cache_path):
+    """Engine phase (model-independent): clean and treated vectors of every game of
+    every pseudo-player, in the same rng order as the original single-pass loop."""
+    analyzer = EngineAnalyzer(depth=args.depth)
+    meta = {"per_player": args.per_player, "rate": args.rate, "magnitude": args.magnitude,
+            "wp_lo": args.wp_lo, "wp_hi": args.wp_hi, "loss_lo": args.loss_lo, "loss_hi": args.loss_hi,
+            "depth": args.depth, "min_elo": args.min_elo, "elo_bands": args.elo_bands,
+            "event": args.event, "seed": args.seed}
+    records = []
+    for gi, group in enumerate(groups, 1):
+        prepared = []
+        for game, color, elo, _band in group:
+            clean = analyzer.analyze_game(game)
+            initial = analyzer._capped_white_cp(
+                analyzer.engine.analyse(game.board(), analyzer._limit()))
+            prepared.append((game, color, elo, clean, initial))
+        rec_games = [{"color": color, "elo": elo, "clean_feats": _plain(FeatureExtractor(color).extract(clean)),
+                      "treat_feats": {}} for _g, color, elo, clean, _i in prepared]
+        for cat in CATS:
+            for j, (game, color, _elo, clean, initial) in enumerate(prepared):
+                treat, _ = build_treatment(analyzer, game, color, clean, initial, cat,
+                                           args.rate, rng, args.magnitude,
+                                           args.loss_lo, args.loss_hi, args.wp_lo, args.wp_hi)
+                rec_games[j]["treat_feats"][cat] = _plain(FeatureExtractor(color).extract(treat))
+        records.append({"games": rec_games})
+        print(f"  [{gi}/{len(groups)}] player done", flush=True)
+        with open(cache_path, "w") as f:
+            json.dump({"meta": meta, "records": records}, f)
+    analyzer.close()
+    print(f"  engine output cached -> {cache_path} (re-evaluate with --from-cache)\n")
+    return records
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("pgn")
+    ap.add_argument("pgn", nargs="?", default=None)
     ap.add_argument("--players", type=int, default=15)
     ap.add_argument("--per-player", type=int, default=4)
     ap.add_argument("--min-elo", type=int, default=2000)
@@ -47,6 +84,12 @@ def main():
     ap.add_argument("--rule", default="raw", choices=["raw", "standardised"])
     ap.add_argument("--tag", default="")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--features-cache", default=None,
+                    help="where to store the engine output; default results/synthetic_aggregate_features<tag>.json")
+    ap.add_argument("--from-cache", default=None,
+                    help="re-evaluate both detectors on a stored engine output (no Stockfish run)")
+    ap.add_argument("--reference", default=None,
+                    help="alternative shap_reference .pkl for --rule standardised (see synthetic_validation)")
     args = ap.parse_args()
     import src.ml.synthetic_validation as SV
     SV.RULE = getattr(args, "rule", "raw")
@@ -55,25 +98,40 @@ def main():
     rng = random.Random(args.seed)
     bands = parse_bands(args.elo_bands) if args.elo_bands else None
 
-    need = args.players * args.per_player
-    print(f"Streaming {need} '{args.event}' games "
-          f"({'bands ' + args.elo_bands if bands else 'Elo >= ' + str(args.min_elo)})...")
-    games = stream_games(args.pgn, need, args.min_elo, args.event, bands)
-    # Group by adjacent rating: a pseudo-player must not mix a 1000 and a 2800 game,
-    # or the averaged vector describes nobody.
-    games.sort(key=lambda g: g[2])
-    groups = [games[i:i + args.per_player]
-              for i in range(0, len(games) - len(games) % args.per_player, args.per_player)]
-    print(f"  {len(games)} games -> {len(groups)} pseudo-players of {args.per_player}")
-    for i, grp in enumerate(groups, 1):
-        print(f"    player {i}: Elo {grp[0][2]}-{grp[-1][2]}")
-    print()
-    if not groups:
-        print("Not enough games.")
-        return
+    # ---- phase 1 (engine, model-independent) ----
+    cache_path = args.features_cache or os.path.join(args.outdir, f"synthetic_aggregate_features{args.tag}.json")
+    if args.from_cache:
+        cache = json.load(open(args.from_cache))
+        meta, records = cache["meta"], cache["records"]
+        for k in ("rate", "magnitude", "wp_lo", "wp_hi", "loss_lo", "loss_hi", "depth", "min_elo", "elo_bands", "per_player"):
+            if k in meta:
+                setattr(args, k, meta[k])
+        print(f"Loaded {len(records)} pseudo-players from {args.from_cache}; engine skipped.\n")
+    else:
+        need = args.players * args.per_player
+        print(f"Streaming {need} '{args.event}' games "
+              f"({'bands ' + args.elo_bands if bands else 'Elo >= ' + str(args.min_elo)})...")
+        games = stream_games(args.pgn, need, args.min_elo, args.event, bands)
+        # Group by adjacent rating: a pseudo-player must not mix a 1000 and a 2800 game,
+        # or the averaged vector describes nobody.
+        games.sort(key=lambda g: g[2])
+        groups = [games[i:i + args.per_player]
+                  for i in range(0, len(games) - len(games) % args.per_player, args.per_player)]
+        print(f"  {len(games)} games -> {len(groups)} pseudo-players of {args.per_player}")
+        for i, grp in enumerate(groups, 1):
+            print(f"    player {i}: Elo {grp[0][2]}-{grp[-1][2]}")
+        print()
+        if not groups:
+            print("Not enough games.")
+            return
+        records = analyse_groups(groups, args, rng, cache_path)
 
-    analyzer = EngineAnalyzer(depth=args.depth)
+    # ---- phase 2 (model) ----
     model = ELOModel(pool=args.event)
+    if args.reference:
+        import joblib
+        model._shap_reference = joblib.load(args.reference)
+        print(f"Standardisation reference: {args.reference} ({len(model._shap_reference['candidates'])} candidates)")
 
     per_game = {c: [] for c in CATS}     # one entry per treated game
     aggreg = {c: [] for c in CATS}       # one entry per pseudo-player
@@ -83,42 +141,25 @@ def main():
     aggreg_base = {c: [] for c in CATS}
     conf = {k: {gt: {p: 0 for p in CATS} for gt in CATS} for k in ("per_game", "aggregated")}
 
-    for gi, group in enumerate(groups, 1):
-        prepared = []
-        for game, color, elo, _band in group:
-            clean = analyzer.analyze_game(game)
-            initial = analyzer._capped_white_cp(
-                analyzer.engine.analyse(game.board(), analyzer._limit()))
-            prepared.append((game, color, clean, initial))
-
-        clean_feats = [FeatureExtractor(color).extract(clean)
-                       for _game, color, clean, _initial in prepared]
+    for rec in records:
+        clean_feats = [g["clean_feats"] for g in rec["games"]]
         base_pg = [detect(model, f) for f in clean_feats]
         base_agg = detect(model, aggregate_features(clean_feats, "mean"))
         for cat in CATS:
             per_game_base[cat].extend(int(b == cat) for b in base_pg)
             aggreg_base[cat].append(int(base_agg == cat))
-            feats = []
-            for game, color, clean, initial in prepared:
-                treat, _ = build_treatment(analyzer, game, color, clean, initial, cat,
-                                           args.rate, rng, args.magnitude,
-                                           args.loss_lo, args.loss_hi, args.wp_lo, args.wp_hi)
-                f = FeatureExtractor(color).extract(treat)
-                feats.append(f)
+            feats = [g["treat_feats"][cat] for g in rec["games"]]
+            for f in feats:
                 pred = detect(model, f)
                 per_game[cat].append(int(pred == cat))
                 conf["per_game"][cat][pred] += 1
-
             pred_agg = detect(model, aggregate_features(feats, "mean"))
             aggreg[cat].append(int(pred_agg == cat))
             conf["aggregated"][cat][pred_agg] += 1
-        print(f"  [{gi}/{len(groups)}] player done", flush=True)
-
-    analyzer.close()
 
     result = {
-        "n_players": len(groups), "per_player": args.per_player,
-        "n_games": len(groups) * args.per_player,
+        "n_players": len(records), "per_player": args.per_player,
+        "n_games": sum(len(r["games"]) for r in records),
         "chance_baseline": 1.0 / len(CATS),
         "injection": {"magnitude": args.magnitude, "rate": args.rate,
                       "depth": args.depth, "min_elo": args.min_elo,

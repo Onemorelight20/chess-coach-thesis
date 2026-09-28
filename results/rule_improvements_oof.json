@@ -1,0 +1,160 @@
+{
+ "pool": "blitz",
+ "candidates_per_fold": [
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ]
+ ],
+ "n_splits": 21590,
+ "base": {
+  "kappa": 0.07053116075253718,
+  "ov3": 0.7450208429828624,
+  "chance_ov3": 0.6606060606060606,
+  "n_cand": 11
+ },
+ "stability": {
+  "kappa": 0.06625408381752906,
+  "ov3": 0.7501157943492358,
+  "chance_ov3": 0.6606060606060606,
+  "n_cand": 11
+ },
+ "grouped": {
+  "kappa": 0.11282027146694906,
+  "ov3": 1.0,
+  "chance_ov3": 1.0,
+  "n_cand": 5
+ },
+ "fixedelo": {
+  "kappa": 0.06263900582362658,
+  "ov3": 0.7360815192218619,
+  "chance_ov3": 0.6606060606060606,
+  "n_cand": 11
+ },
+ "noopening": {
+  "kappa": 0.07183666167122948,
+  "ov3": 0.7770264011116258,
+  "chance_ov3": 0.7083333333333333,
+  "n_cand": 10
+ },
+ "abstain_curve": [
+  {
+   "quantile": 0.0,
+   "threshold": 1.7758709529580585e-06,
+   "coverage": 1.0,
+   "kappa": 0.07053116075253718,
+   "ov3": 0.7450208429828624
+  },
+  {
+   "quantile": 0.25,
+   "threshold": 0.10632807459443949,
+   "coverage": 0.7499768411301528,
+   "kappa": 0.07713690057828615,
+   "ov3": 0.7462327075098815
+  },
+  {
+   "quantile": 0.5,
+   "threshold": 0.2574939153002648,
+   "coverage": 0.5,
+   "kappa": 0.09605454375819644,
+   "ov3": 0.7559055118110236
+  },
+  {
+   "quantile": 0.75,
+   "threshold": 0.5151550748531379,
+   "coverage": 0.25002315886984716,
+   "kappa": 0.12470724932933053,
+   "ov3": 0.7667654686921082
+  },
+  {
+   "quantile": 0.9,
+   "threshold": 0.8443151926017068,
+   "coverage": 0.1000463177396943,
+   "kappa": 0.15255455722462108,
+   "ov3": 0.7754629629629629
+  }
+ ],
+ "ceiling_deviation_rule": {
+  "kappa": 0.07376908429326623,
+  "agreement": 0.1700787401574803
+ },
+ "validity": {
+  "base_top1": 0.425462962962963,
+  "base_top3": 0.7101851851851851,
+  "trivial": 0.15462962962962962,
+  "grouped_top1": 0.46805555555555556,
+  "grouped_trivial": 0.2953703703703704
+ },
+ "n_games_curve": {
+  "3": {
+   "kappa": 0.049721583758981946,
+   "ov3": 0.7291801760074108
+  },
+  "4": {
+   "kappa": 0.07053116075253718,
+   "ov3": 0.7450208429828624
+  }
+ }
+}

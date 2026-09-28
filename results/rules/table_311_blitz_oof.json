@@ -1,0 +1,339 @@
+{
+ "pool": "blitz",
+ "protocol": "GroupKFold(5) за гравцями; модель, довідники, критерій знака й популяція правила відхилень — лише на навчальних гравцях блоку",
+ "candidates_per_fold": [
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "inaccuracy_rate",
+   "pin_exposure",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ]
+ ],
+ "n_players": 2160,
+ "n_splits": 21590,
+ "rules": {
+  "raw": {
+   "label": "наївне правило",
+   "n_cand": 29,
+   "chance": 0.034482758620689655,
+   "trivial": 0.10231481481481482,
+   "tr_agree": 0.4145900880037054,
+   "kappa": 0.3137685245222096,
+   "ov3": 0.8718851320055582,
+   "ov3_chance": 0.2884510125889437,
+   "agree": 0.056018518518518516,
+   "agree3": 0.14351851851851852,
+   "kappa_agree": 0.014709425589447434,
+   "agree_ref17": 0.06851851851851852,
+   "agree3_ref17": 0.19537037037037036,
+   "kappa_agree_ref17": 0.05317482034827081,
+   "trivial_ref17": 0.13240740740740742,
+   "share_outside": 0.0,
+   "top_share": 0.24583333333333332,
+   "top_name": "avg_think_time",
+   "reversed_share": 0.046296296296296294,
+   "chance_agreement": 0.14715970459622582,
+   "answer_shares": {
+    "avg_think_time": 0.24583333333333332,
+    "opening_acpl": 0.23472222222222222,
+    "think_time_consistency": 0.11481481481481481,
+    "avg_move_rank": 0.09675925925925925,
+    "engine_match_rate": 0.08425925925925926,
+    "capture_rate": 0.05648148148148148,
+    "acpl": 0.04259259259259259,
+    "mobility_avg": 0.040740740740740744,
+    "king_danger": 0.033796296296296297,
+    "middlegame_acpl": 0.011574074074074073,
+    "hanging_rate": 0.009722222222222222,
+    "check_given_rate": 0.008333333333333333,
+    "time_pressure_rate": 0.005555555555555556,
+    "defense_acpl": 0.0032407407407407406,
+    "endgame_acpl": 0.0032407407407407406,
+    "center_control_avg": 0.0023148148148148147,
+    "top3_agree": 0.0023148148148148147,
+    "conversion_acpl": 0.001851851851851852,
+    "wp_blunder_rate": 0.000462962962962963,
+    "material_volatility": 0.000462962962962963,
+    "wp_loss_mean": 0.000462962962962963,
+    "inaccuracy_rate": 0.000462962962962963
+   },
+   "kappa_ci95": [
+    0.2972800175574045,
+    0.3295218875068618
+   ],
+   "kappa_modal": 0.27214501679644065,
+   "kappa_gain_over_modal": {
+    "delta": 0.04162350772576895,
+    "ci95": [
+     0.025163835152474567,
+     0.0579499353438526
+    ]
+   }
+  },
+  "themed": {
+   "label": "обмеження кандидатів",
+   "n_cand": 17,
+   "chance": 0.058823529411764705,
+   "trivial": 0.13240740740740742,
+   "tr_agree": 0.3807781380268643,
+   "kappa": 0.2224223378453538,
+   "ov3": 0.8425660027790643,
+   "ov3_chance": 0.4647058823529412,
+   "agree": 0.1398148148148148,
+   "agree3": 0.3236111111111111,
+   "kappa_agree": 0.09873092291554242,
+   "agree_ref17": 0.1398148148148148,
+   "agree3_ref17": 0.3236111111111111,
+   "kappa_agree_ref17": 0.09873092291554242,
+   "trivial_ref17": 0.13240740740740742,
+   "share_outside": 0.0,
+   "top_share": 0.4060185185185185,
+   "top_name": "opening_acpl",
+   "reversed_share": 0.12222222222222222,
+   "chance_agreement": 0.20449834069218312,
+   "answer_shares": {
+    "opening_acpl": 0.4060185185185185,
+    "capture_rate": 0.1398148148148148,
+    "king_danger": 0.09490740740740741,
+    "mobility_avg": 0.09490740740740741,
+    "middlegame_acpl": 0.06527777777777778,
+    "hanging_rate": 0.052314814814814814,
+    "check_given_rate": 0.04212962962962963,
+    "endgame_acpl": 0.033796296296296297,
+    "conversion_acpl": 0.026851851851851852,
+    "defense_acpl": 0.020370370370370372,
+    "center_control_avg": 0.0125,
+    "inaccuracy_rate": 0.008796296296296297,
+    "blunder_rate": 0.000925925925925926,
+    "mistake_rate": 0.000925925925925926,
+    "material_volatility": 0.000462962962962963
+   },
+   "kappa_ci95": [
+    0.20672922073593433,
+    0.2368850149767062
+   ],
+   "kappa_modal": 0.1938891074178375,
+   "kappa_gain_over_modal": {
+    "delta": 0.02853323042751632,
+    "ci95": [
+     0.011528520802868958,
+     0.04616255825521709
+    ]
+   }
+  },
+  "standardised17": {
+   "label": "обмеження і нормування",
+   "n_cand": 17,
+   "chance": 0.058823529411764705,
+   "trivial": 0.13240740740740742,
+   "tr_agree": 0.12413154238073182,
+   "kappa": 0.058663775591745404,
+   "ov3": 0.610560444650301,
+   "ov3_chance": 0.4647058823529412,
+   "agree": 0.21574074074074073,
+   "agree3": 0.3939814814814815,
+   "kappa_agree": 0.164394601486352,
+   "agree_ref17": 0.21574074074074073,
+   "agree3_ref17": 0.3939814814814815,
+   "kappa_agree_ref17": 0.164394601486352,
+   "trivial_ref17": 0.13240740740740742,
+   "share_outside": 0.0,
+   "top_share": 0.09027777777777778,
+   "top_name": "capture_rate",
+   "reversed_share": 0.027777777777777776,
+   "chance_agreement": 0.0702393472953036,
+   "answer_shares": {
+    "capture_rate": 0.09027777777777778,
+    "king_danger": 0.08425925925925926,
+    "mobility_avg": 0.08425925925925926,
+    "check_given_rate": 0.08101851851851852,
+    "hanging_rate": 0.07685185185185185,
+    "opening_acpl": 0.07175925925925926,
+    "center_control_avg": 0.06481481481481481,
+    "blunder_rate": 0.06296296296296296,
+    "material_volatility": 0.05694444444444444,
+    "middlegame_acpl": 0.053703703703703705,
+    "defense_acpl": 0.05,
+    "inaccuracy_rate": 0.049074074074074076,
+    "acpl_critical": 0.04351851851851852,
+    "pin_exposure": 0.03796296296296296,
+    "mistake_rate": 0.032407407407407406,
+    "conversion_acpl": 0.030555555555555555,
+    "endgame_acpl": 0.02962962962962963
+   },
+   "kappa_ci95": [
+    0.049924227821576204,
+    0.06909530682464342
+   ],
+   "kappa_modal": 0.04625593128149352,
+   "kappa_gain_over_modal": {
+    "delta": 0.012407844310251881,
+    "ci95": [
+     -0.0013519719819408082,
+     0.026037984081218022
+    ]
+   }
+  },
+  "standardised": {
+   "label": "правило (2.7)",
+   "n_cand": 11,
+   "chance": 0.09090909090909091,
+   "trivial": 0.15462962962962962,
+   "tr_agree": 0.1619731357109773,
+   "kappa": 0.07053116075253718,
+   "ov3": 0.7450208429828624,
+   "ov3_chance": 0.6606060606060606,
+   "agree": 0.425462962962963,
+   "agree3": 0.7101851851851851,
+   "kappa_agree": 0.3676659860273942,
+   "agree_ref17": 0.27361111111111114,
+   "agree3_ref17": 0.4398148148148148,
+   "kappa_agree_ref17": 0.23019367816796898,
+   "trivial_ref17": 0.13240740740740742,
+   "share_outside": 0.3819444444444444,
+   "top_share": 0.13564814814814816,
+   "top_name": "capture_rate",
+   "reversed_share": 0.06620370370370371,
+   "chance_agreement": 0.099026990649137,
+   "answer_shares": {
+    "capture_rate": 0.13564814814814816,
+    "mobility_avg": 0.1125,
+    "check_given_rate": 0.10555555555555556,
+    "opening_acpl": 0.10555555555555556,
+    "center_control_avg": 0.09259259259259259,
+    "blunder_rate": 0.08703703703703704,
+    "acpl_critical": 0.07962962962962963,
+    "inaccuracy_rate": 0.0763888888888889,
+    "pin_exposure": 0.07222222222222222,
+    "middlegame_acpl": 0.06944444444444445,
+    "mistake_rate": 0.05277777777777778,
+    "material_volatility": 0.010648148148148148
+   },
+   "kappa_ci95": [
+    0.060496795798423215,
+    0.08145694509527077
+   ],
+   "kappa_modal": 0.06034987296149219,
+   "kappa_gain_over_modal": {
+    "delta": 0.01018128779104499,
+    "ci95": [
+     -0.004920235863340139,
+     0.0241300616775598
+    ]
+   }
+  },
+  "rawfeat": {
+   "label": "сирі ознаки, те саме нормування",
+   "n_cand": 11,
+   "chance": 0.09090909090909091,
+   "trivial": 0.15462962962962962,
+   "tr_agree": 0.14219546086150997,
+   "kappa": 0.056104473105120456,
+   "ov3": 0.7341361741547012,
+   "ov3_chance": 0.6606060606060606,
+   "agree": 0.7037037037037037,
+   "agree3": 0.9481481481481482,
+   "kappa_agree": 0.6730287767316832,
+   "agree_ref17": 0.48333333333333334,
+   "agree3_ref17": 0.6032407407407407,
+   "kappa_agree_ref17": 0.45035699114596284,
+   "trivial_ref17": 0.13240740740740742,
+   "share_outside": 0.3819444444444444,
+   "top_share": 0.11203703703703703,
+   "top_name": "capture_rate",
+   "reversed_share": 0.0032407407407407406,
+   "chance_agreement": 0.09174618844047376,
+   "answer_shares": {
+    "capture_rate": 0.11203703703703703,
+    "check_given_rate": 0.1037037037037037,
+    "mobility_avg": 0.10324074074074074,
+    "pin_exposure": 0.10138888888888889,
+    "inaccuracy_rate": 0.10092592592592593,
+    "mistake_rate": 0.0962962962962963,
+    "center_control_avg": 0.08657407407407407,
+    "acpl_critical": 0.08333333333333333,
+    "middlegame_acpl": 0.06805555555555555,
+    "blunder_rate": 0.06666666666666667,
+    "opening_acpl": 0.05740740740740741,
+    "material_volatility": 0.020370370370370372
+   },
+   "kappa_ci95": [
+    0.045513058063803014,
+    0.06692348271332252
+   ]
+  }
+ },
+ "cross_rule": {
+  "top1_agreement": 0.5092172301991663,
+  "top3_overlap": 0.9910606762389995,
+  "top1_agreement_full": 0.5055555555555555
+ },
+ "kappa_delta_shap_minus_raw": {
+  "delta": 0.014426687647416725,
+  "ci95": [
+   0.0036697318590134063,
+   0.02445683390645381
+  ],
+  "p_gt_0": 0.994
+ }
+}

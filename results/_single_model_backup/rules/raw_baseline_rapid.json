@@ -1,0 +1,69 @@
+{
+ "pool": "rapid",
+ "candidates": [
+  "opening_acpl",
+  "middlegame_acpl",
+  "blunder_rate",
+  "mistake_rate",
+  "inaccuracy_rate",
+  "pin_exposure",
+  "center_control_avg",
+  "mobility_avg",
+  "material_volatility",
+  "capture_rate",
+  "check_given_rate"
+ ],
+ "n_splits": 19980,
+ "n_players": 1998,
+ "shap_rule": {
+  "kappa_testretest": 0.05505656165123829,
+  "agreement_testretest": 0.14784784784784785,
+  "top3_overlap": 0.7545545545545546,
+  "agree_ref17": 0.35035035035035034,
+  "agree3_ref17": 0.5605605605605606,
+  "agree_own": 0.461961961961962,
+  "agree3_own": 0.7617617617617618,
+  "kappa_agree_ref17": 0.3073108322326731,
+  "kappa_agree_own": 0.41019478661455067,
+  "reversed_share": 0.04254254254254254,
+  "top_share": 0.13963963963963963,
+  "kappa_ci95": [
+   0.04453677931594828,
+   0.06518368640584675
+  ]
+ },
+ "raw_rule": {
+  "kappa_testretest": 0.05586680109536135,
+  "agreement_testretest": 0.1440940940940941,
+  "top3_overlap": 0.7539039039039039,
+  "agree_ref17": 0.519019019019019,
+  "agree3_ref17": 0.6786786786786787,
+  "agree_own": 0.6661661661661662,
+  "agree3_own": 0.9279279279279279,
+  "kappa_agree_ref17": 0.4836099896968241,
+  "kappa_agree_own": 0.6310864196642294,
+  "reversed_share": 0.001001001001001001,
+  "top_share": 0.11311311311311312,
+  "kappa_ci95": [
+   0.04528420040933004,
+   0.0667463464208134
+  ]
+ },
+ "chance_top3_overlap": 0.6606060606060606,
+ "cross_rule": {
+  "top1_agreement": 0.6004504504504504,
+  "top3_overlap": 0.9972972972972973,
+  "kappa": 0.5596086189672149,
+  "top1_agreement_full": 0.5645645645645646
+ },
+ "trivial_ref17": 0.13463463463463463,
+ "trivial_own": 0.17017017017017017,
+ "kappa_delta_shap_minus_raw": {
+  "delta": -0.000810239444123062,
+  "ci95": [
+   -0.010167724417838744,
+   0.008624693161831417
+  ],
+  "p_gt_0": 0.432
+ }
+}

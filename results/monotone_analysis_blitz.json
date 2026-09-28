@@ -1,0 +1,144 @@
+{
+ "pool": "blitz",
+ "n_players": 2160,
+ "wrong_signs": {
+  "conditional": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "hanging_rate",
+   "king_danger",
+   "material_volatility"
+  ],
+  "interventional": [
+   "endgame_acpl",
+   "conversion_acpl",
+   "defense_acpl",
+   "hanging_rate",
+   "king_danger",
+   "material_volatility"
+  ],
+  "monotone": []
+ },
+ "monotone_accuracy": {
+  "r2": 0.6905970993934851,
+  "mae": 290.1337245984615
+ },
+ "accuracy_by_n": {
+  "unconstrained": {
+   "1": {
+    "r2": 0.7128048149227555,
+    "mae": 279.24253056333504
+   },
+   "8": {
+    "r2": 0.8959932782599145,
+    "mae": 166.3636560242504
+   }
+  },
+  "monotone": {
+   "1": {
+    "r2": 0.6905970993934851,
+    "mae": 290.1337245984615
+   },
+   "8": {
+    "r2": 0.8854045302625647,
+    "mae": 172.38449942953395
+   }
+  }
+ },
+ "kappa_testretest_17": {
+  "conditional": 0.05094764767216142,
+  "monotone": 0.041570694292289434
+ },
+ "per_category": {
+  "opening_acpl": {
+   "n": 30,
+   "conditional": 0.3,
+   "monotone": 0.43333333333333335
+  },
+  "middlegame_acpl": {
+   "n": 74,
+   "conditional": 0.43243243243243246,
+   "monotone": 0.5405405405405406
+  },
+  "endgame_acpl": {
+   "n": 61,
+   "conditional": 0.0,
+   "monotone": 0.13114754098360656
+  },
+  "conversion_acpl": {
+   "n": 57,
+   "conditional": 0.0,
+   "monotone": 0.15789473684210525
+  },
+  "defense_acpl": {
+   "n": 174,
+   "conditional": 0.0,
+   "monotone": 0.5862068965517241
+  },
+  "acpl_critical": {
+   "n": 83,
+   "conditional": 0.024096385542168676,
+   "monotone": 0.3493975903614458
+  },
+  "blunder_rate": {
+   "n": 51,
+   "conditional": 0.2549019607843137,
+   "monotone": 0.23529411764705882
+  },
+  "mistake_rate": {
+   "n": 95,
+   "conditional": 0.05263157894736842,
+   "monotone": 0.29473684210526313
+  },
+  "inaccuracy_rate": {
+   "n": 149,
+   "conditional": 0.19463087248322147,
+   "monotone": 0.47651006711409394
+  },
+  "hanging_rate": {
+   "n": 108,
+   "conditional": 0.018518518518518517,
+   "monotone": 0.4351851851851852
+  },
+  "pin_exposure": {
+   "n": 211,
+   "conditional": 0.09004739336492891,
+   "monotone": 0.14218009478672985
+  },
+  "king_danger": {
+   "n": 197,
+   "conditional": 0.0,
+   "monotone": 0.04060913705583756
+  },
+  "center_control_avg": {
+   "n": 84,
+   "conditional": 0.5119047619047619,
+   "monotone": 0.6547619047619048
+  },
+  "mobility_avg": {
+   "n": 121,
+   "conditional": 0.5454545454545454,
+   "monotone": 0.6198347107438017
+  },
+  "material_volatility": {
+   "n": 290,
+   "conditional": 0.041379310344827586,
+   "monotone": 0.4517241379310345
+  },
+  "capture_rate": {
+   "n": 198,
+   "conditional": 0.5151515151515151,
+   "monotone": 0.6464646464646465
+  },
+  "check_given_rate": {
+   "n": 177,
+   "conditional": 0.5988700564971752,
+   "monotone": 0.6440677966101694
+  }
+ },
+ "overall_agreement": {
+  "conditional": 0.2037037037037037,
+  "monotone": 0.4166666666666667
+ }
+}

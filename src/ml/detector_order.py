@@ -66,7 +66,7 @@ def main():
     alphas = [float(a) for a in args.alphas.split(",")]
 
     frame = pd.read_parquet(os.path.join("data", f"dataset_{args.pool}_2k.parquet"))
-    _, explainer, features = fit_model_and_explainer(frame[FEATURE_NAMES], frame["target_elo"])
+    _, explainer, features = fit_model_and_explainer(frame[FEATURE_NAMES], frame["target_elo"], frame["player"])
     features = features.copy()
     features["player"] = frame["player"].values
     features = features.reset_index(drop=True)

@@ -1,0 +1,48 @@
+{
+  "experiment_a": {
+    "split_half_agreement": 0.5142996108949416,
+    "chance_agreement": 0.20435493913609593,
+    "cohen_kappa": 0.38466254301498803,
+    "n_categories": 29,
+    "topk_overlap": {
+      "2": 0.7461089494163424,
+      "3": 0.8551556420233463
+    },
+    "n_players": 2056,
+    "n_splits": 20560,
+    "modal_comparison": {
+      "split_half_agreement": 0.5341439688715953,
+      "chance_agreement": 0.253790888204212,
+      "cohen_kappa": 0.36889377196195483,
+      "n_categories": 23,
+      "kappa_ci95": [
+        0.34988413389816886,
+        0.38762844376946126
+      ]
+    },
+    "kappa_ci95": [
+      0.36602495682014086,
+      0.40191579112088904
+    ],
+    "kappa_gain_over_modal": {
+      "delta": 0.015768771053033204,
+      "ci95": [
+        -0.0020260582913735167,
+        0.03326887734327664
+      ],
+      "p_gt_0": 0.958
+    }
+  },
+  "experiment_b": {
+    "coverage_at_k": {
+      "2": 0.186284046692607,
+      "3": 0.23686770428015563
+    },
+    "n_players": 2056,
+    "top1_accuracy": 0.08754863813229571,
+    "top2_accuracy": 0.186284046692607,
+    "cohen_kappa": 0.04339197319056265,
+    "chance_baseline": 0.034482758620689655,
+    "majority_baseline": 0.07976653696498054
+  }
+}

@@ -22,6 +22,7 @@ import xgboost as xgb
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.features.extractor import FEATURE_NAMES, DISPLAY_NAMES, WEAKNESS_CANDIDATES, FEATURE_ORIENTATION
 from src.ml import plotstyle
+from src.ml.mixed_training import mixed_training_set
 plotstyle.apply()
 
 RNG = 42
@@ -29,10 +30,13 @@ BANDS = [0, 1400, 1800, 2200, 4000]
 BAND_LABELS = ["<1400", "1400–1800", "1800–2200", ">2200"]
 
 
-def fit_shap(X, y):
+def fit_shap(X, y, groups):
+    """Deployed configuration (mixed training set); SHAP is then computed per game."""
     Xi = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(X), columns=X.columns)
+    frame = Xi.copy(); frame["target_elo"] = y.values; frame["player"] = groups.values
+    Xm, ym, _, _ = mixed_training_set(frame)
     model = xgb.XGBRegressor(n_estimators=300, max_depth=5, learning_rate=0.05,
-                             subsample=0.8, colsample_bytree=0.8, random_state=RNG).fit(Xi, y)
+                             subsample=0.8, colsample_bytree=0.8, random_state=RNG).fit(Xm, ym)
     import shap
     sv = shap.TreeExplainer(model).shap_values(Xi)
     return Xi, sv
@@ -144,7 +148,7 @@ def main():
     X, y = df[FEATURE_NAMES], df["target_elo"]
     print(f"Loaded {len(df):,} rows | {df['player'].nunique()} players\n")
 
-    Xi, sv = fit_shap(X, y)
+    Xi, sv = fit_shap(X, y, df["player"])
     cand_idx = [FEATURE_NAMES.index(c) for c in WEAKNESS_CANDIDATES]
     df["shap_weak"] = [WEAKNESS_CANDIDATES[i] for i in np.argmin(sv[:, cand_idx], axis=1)]
 

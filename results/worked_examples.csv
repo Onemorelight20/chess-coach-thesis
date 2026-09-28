@@ -1,10 +1,10 @@
-гравець,факт,прогноз,№,напрям,z,тема,задача,рейт.
-Aldo333,838,985,1,king_danger,-1.98,exposedKing,1vYZi,947
-Aldo333,838,985,2,inaccuracy_rate,-1.69,quietMove,5lC41,972
-Aldo333,838,985,3,conversion_acpl,-1.15,crushing,q7cRj,1022
-AB9920,1468,1762,1,endgame_acpl,-1.94,endgame,Nb7Y5,1701
-AB9920,1468,1762,2,mobility_avg,-1.46,advancedPawn,fkO9w,1812
-AB9920,1468,1762,3,hanging_rate,-0.86,trappedPiece,6JivJ,1716
-AAPA23,2315,2359,1,middlegame_acpl,-1.87,middlegame,Xx4MQ,2305
-AAPA23,2315,2359,2,king_danger,-0.87,exposedKing,IlMYF,2432
-AAPA23,2315,2359,3,material_volatility,-0.65,sacrifice,MWRRN,2371
+гравець,факт,прогноз,№,напрям,напрям_укр,z,тема,задача,рейт.,джерело
+Aldo333,838,773,1,acpl_critical,Точність у критичних позиціях,-0.97,crushing,f1JX6,815,database
+Aldo333,838,773,2,center_control_avg,Контроль центру,-0.91,opening,D6k8k,747,database
+Aldo333,838,773,3,pin_exposure,Схильність до зв’язок,-0.74,pin,2MMZS,735,database
+AB9920,1468,1631,1,inaccuracy_rate,Частка неточностей,-1.89,quietMove,XxM13,1682,database
+AB9920,1468,1631,2,mobility_avg,Рухливість фігур,-1.06,advancedPawn,TZHVs,1633,database
+AB9920,1468,1631,3,acpl_critical,Точність у критичних позиціях,-0.45,crushing,HDsFX,1690,database
+AAPA23,2316,2278,1,middlegame_acpl,Точність у міттельшпілі,-1.68,middlegame,9UWLx,2338,database
+AAPA23,2316,2278,2,acpl_critical,Точність у критичних позиціях,-1.31,crushing,BoSgr,2291,database
+AAPA23,2316,2278,3,mistake_rate,Частка помилок,-1.07,advantage,uHhj5,2314,database

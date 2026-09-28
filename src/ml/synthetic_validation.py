@@ -30,7 +30,7 @@ import chess.pgn
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.engine.analyzer import EngineAnalyzer
 from src.features.extractor import (
-    FeatureExtractor, DISPLAY_NAMES,
+    FeatureExtractor, DISPLAY_NAMES, FEATURE_ORIENTATION,
     OPENING_MIN_PIECES, ENDGAME_MAX_PIECES, WINNING_CP, LOSING_CP,
 )
 from src.ml.model import ELOModel
@@ -146,7 +146,10 @@ def build_treatment(analyzer, game, color, clean, initial_eval, cat, rate, rng,
 
 # Which rule ranks the categories. "raw" is the original argmin over the SHAP
 # values; "standardised" first z-scores each contribution against players of the
-# same predicted-rating band, which is what the app now does. Set once from --rule.
+# same predicted-rating band, which is what the app now does; "rawfeat" applies
+# that same level-conditional normalisation to the FEATURE VALUES instead of the
+# contributions, i.e. the same rule without the explanation step -- the control
+# that says whether SHAP earns its place (subsection 3.3.3). Set once from --rule.
 RULE = "raw"
 
 
@@ -166,6 +169,18 @@ def rank_categories(model, features):
             # Un-standardisable candidates keep a place at the END of the
             # ranking instead of vanishing: main() indexes this list by category
             # to report coverage@k, so it has to cover every candidate.
+            rest = [c for c in cands if c not in score]
+            return sorted(score, key=score.get) + sorted(rest, key=lambda c: shap[c])
+    if RULE == "rawfeat" and getattr(model, "_feature_reference", None) is not None:
+        from src.ml import build_shap_reference as B
+        mu, sd = B.stats_at(model._feature_reference, out["predicted_elo"])
+        # Same z-score, same band interpolation, same orientation convention as
+        # validate_oof.rank_rawfeat: worst == lowest score, so argsort agrees with
+        # the SHAP branch above and the two rules stay comparable.
+        score = {c: -((features[c] - mu[c]) / sd[c]) * FEATURE_ORIENTATION[c]
+                 for c in cands
+                 if c in features and c in mu.index and not B._degenerate(sd[c])}
+        if score:
             rest = [c for c in cands if c not in score]
             return sorted(score, key=score.get) + sorted(rest, key=lambda c: shap[c])
     return sorted(cands, key=lambda c: shap[c])
@@ -234,9 +249,46 @@ def bootstrap_ci(hits_by_game, iters=2000, seed=0):
     return (float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5)))
 
 
+def _plain(feats):
+    """Feature dict with plain floats, so it survives a JSON round trip."""
+    return {k: (None if v is None else float(v)) for k, v in feats.items()}
+
+
+def analyse_and_treat(games, cats, args, rng, bands, cache_path):
+    """Engine phase: analyse every game once, plant each category, and store the
+    clean and treated feature vectors. Nothing here depends on the rating model, so
+    the stored file lets any later model or rule be evaluated without Stockfish."""
+    analyzer = EngineAnalyzer(depth=args.depth)
+    meta = {"categories": list(cats), "rate": args.rate, "magnitude": args.magnitude,
+            "wp_lo": args.wp_lo, "wp_hi": args.wp_hi, "loss_lo": args.loss_lo, "loss_hi": args.loss_hi,
+            "depth": args.depth, "min_elo": None if bands else args.min_elo, "elo_bands": args.elo_bands,
+            "event": args.event, "seed": args.seed, "n_games": len(games)}
+    records = []
+    for gi, (game, color, elo, band) in enumerate(games, 1):
+        clean = analyzer.analyze_game(game)
+        initial_eval = analyzer._capped_white_cp(
+            analyzer.engine.analyse(game.board(), analyzer._limit()))
+        rec = {"color": color, "elo": elo, "band": list(band) if band else None,
+               "base_feats": _plain(FeatureExtractor(color).extract(clean)), "treatments": {}}
+        for cat in cats:
+            treat, k = build_treatment(analyzer, game, color, clean, initial_eval,
+                                       cat, args.rate, rng, args.magnitude,
+                                       args.loss_lo, args.loss_hi, args.wp_lo, args.wp_hi)
+            rec["treatments"][cat] = {"feats": _plain(FeatureExtractor(color).extract(treat)),
+                                      "n_injected": int(k)}
+        records.append(rec)
+        print(f"  [{gi}/{len(games)}] {color:5s} Elo {elo} done", flush=True)
+        if gi % 5 == 0 or gi == len(games):
+            with open(cache_path, "w") as f:
+                json.dump({"meta": meta, "records": records}, f)
+    analyzer.close()
+    print(f"  engine output cached -> {cache_path} (re-evaluate with --from-cache)\n")
+    return records
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("pgn")
+    ap.add_argument("pgn", nargs="?", default=None)
     ap.add_argument("--games", type=int, default=60)
     ap.add_argument("--min-elo", type=int, default=2000)
     ap.add_argument("--event", default="blitz")
@@ -258,10 +310,22 @@ def main():
     ap.add_argument("--outdir", default="results")
     ap.add_argument("--cats", default=None,
                     help="comma-separated subset of CATS to inject (default: all seven)")
-    ap.add_argument("--rule", default="raw", choices=["raw", "standardised"],
+    ap.add_argument("--rule", default="raw", choices=["raw", "standardised", "rawfeat"],
                     help="how contributions are ranked; see RULE")
     ap.add_argument("--tag", default="", help="suffix for the output files")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--features-cache", default=None,
+                    help="where to store the engine output (clean + treated feature vectors); "
+                         "default results/synthetic_features<tag>.json")
+    ap.add_argument("--from-cache", default=None,
+                    help="re-evaluate the detector on a stored --features-cache file: the engine "
+                         "phase is model-independent, so a new model or rule needs no Stockfish run")
+    ap.add_argument("--feature-reference", default=None,
+                    help="reference of RAW FEATURE statistics per band, for --rule rawfeat "
+                         "(build with src.ml.build_feature_reference)")
+    ap.add_argument("--reference", default=None,
+                    help="alternative shap_reference .pkl for --rule standardised (e.g. one built with "
+                         "build_shap_reference --no-sign-filter, so all seven injectable categories stay candidates)")
     args = ap.parse_args()
     global RULE
     RULE = args.rule
@@ -273,21 +337,43 @@ def main():
     unknown = [c for c in cats if c not in CATS]
     assert not unknown, f"unknown categories: {unknown}"
 
-    scope = (f"bands {args.elo_bands}" if bands else f"Elo >= {args.min_elo}")
-    print(f"Streaming up to {args.games} clean '{args.event}' games ({scope})...")
-    games = stream_games(args.pgn, args.games, args.min_elo, args.event, bands)
-    print(f"  collected {len(games)} games.")
-    if bands:
-        for b in bands:
-            got = sum(1 for g in games if g[3] == b)
-            print(f"    {b[0]}-{b[1]}: {got}")
-    print()
-    if not games:
-        print("No games matched. Lower --min-elo or change --event.")
-        return
+    # ---- phase 1 (engine, model-independent): clean + treated feature vectors ----
+    cache_path = args.features_cache or os.path.join(args.outdir, f"synthetic_features{args.tag}.json")
+    if args.from_cache:
+        cache = json.load(open(args.from_cache))
+        meta, records = cache["meta"], cache["records"]
+        bands = parse_bands(meta["elo_bands"]) if meta.get("elo_bands") else None
+        cats = [c for c in meta["categories"] if c in cats]
+        for k in ("rate", "magnitude", "wp_lo", "wp_hi", "loss_lo", "loss_hi", "depth", "min_elo", "elo_bands"):
+            if k in meta:
+                setattr(args, k, meta[k])
+        print(f"Loaded {len(records)} analysed games from {args.from_cache}; engine skipped.\n")
+    else:
+        scope = (f"bands {args.elo_bands}" if bands else f"Elo >= {args.min_elo}")
+        print(f"Streaming up to {args.games} clean '{args.event}' games ({scope})...")
+        games = stream_games(args.pgn, args.games, args.min_elo, args.event, bands)
+        print(f"  collected {len(games)} games.")
+        if bands:
+            for b in bands:
+                got = sum(1 for g in games if g[3] == b)
+                print(f"    {b[0]}-{b[1]}: {got}")
+        print()
+        if not games:
+            print("No games matched. Lower --min-elo or change --event.")
+            return
+        records = analyse_and_treat(games, cats, args, rng, bands, cache_path)
 
-    analyzer = EngineAnalyzer(depth=args.depth)
+    # ---- phase 2 (model): rank the categories for every stored vector ----
     model = ELOModel(pool=args.event)  # pool-specific model, matching the injected games' time control
+    if args.feature_reference:
+        import joblib
+        model._feature_reference = joblib.load(args.feature_reference)
+        print(f"Feature-value reference: {args.feature_reference} "
+              f"({len(model._feature_reference['candidates'])} candidates)")
+    if args.reference:
+        import joblib
+        model._shap_reference = joblib.load(args.reference)
+        print(f"Standardisation reference: {args.reference} ({len(model._shap_reference['candidates'])} candidates)")
 
     # rows: injected subset; columns: everything the detector may answer (all seven)
     confusion = {gt: {pred: 0 for pred in CATS} for gt in cats}
@@ -303,43 +389,36 @@ def main():
     rank_treated = {c: [] for c in cats}
     rank_clean = {c: [] for c in cats}
 
-    for gi, (game, color, elo, band) in enumerate(games, 1):
-        clean = analyzer.analyze_game(game)
-        initial_eval = analyzer._capped_white_cp(
-            analyzer.engine.analyse(game.board(), analyzer._limit()))
-        base_feats = FeatureExtractor(color).extract(clean)
+    for rec in records:
+        base_feats = rec["base_feats"]
+        band = tuple(rec["band"]) if rec["band"] else None
         base_rank = rank_categories(model, base_feats)
         baseline_detect[base_rank[0]] += 1
 
         for cat in cats:
-            treat, k = build_treatment(analyzer, game, color, clean, initial_eval,
-                                       cat, args.rate, rng, args.magnitude,
-                                       args.loss_lo, args.loss_hi, args.wp_lo, args.wp_hi)
-            feats = FeatureExtractor(color).extract(treat)
+            feats, k = rec["treatments"][cat]["feats"], rec["treatments"][cat]["n_injected"]
             ranked = rank_categories(model, feats)
             pred = ranked[0]
             rank_treated[cat].append(ranked.index(cat) + 1)
             rank_clean[cat].append(base_rank.index(cat) + 1)
             confusion[cat][pred] += 1
             hits_by_game[cat].append(int(pred == cat))
-            # top-2: re-rank candidates by SHAP, check membership
-            shap = model.predict_and_explain(feats)["shap_values"]
-            top2 = sorted([c for c in CATS if c in shap], key=lambda c: shap[c])[:2]
-            top2_hits[cat].append(int(cat in top2))
+            # top-2 under the SAME rule as top-1 (the ranking already reflects RULE)
+            top2_hits[cat].append(int(cat in ranked[:2]))
             manip[cat].append(feats.get(cat, np.nan) - base_feats.get(cat, np.nan))
             n_inj[cat].append(k)
             if band is not None:
                 by_band[band][cat].append(int(pred == cat))
-        print(f"  [{gi}/{len(games)}] {color:5s} Elo {elo} done", flush=True)
-
-    analyzer.close()
 
     # ---- aggregate ----
-    summary = {"n_games": len(games), "chance_baseline": 1.0 / len(CATS),
+    summary = {"n_games": len(records), "chance_baseline": 1.0 / len(CATS),
                "injection": {"categories": cats, "magnitude": args.magnitude, "rate": args.rate,
                              "wp_lo": args.wp_lo, "wp_hi": args.wp_hi,
                              "cp_lo": args.loss_lo, "cp_hi": args.loss_hi,
-                             "depth": args.depth, "min_elo": args.min_elo},
+                             "depth": args.depth,
+                             # --elo-bands overrides --min-elo, so report what was used
+                             "min_elo": None if bands else args.min_elo,
+                             "elo_bands": args.elo_bands, "rule": RULE},
                "per_category": {}}
     for c in cats:
         sens = float(np.mean(hits_by_game[c])) if hits_by_game[c] else 0.0
