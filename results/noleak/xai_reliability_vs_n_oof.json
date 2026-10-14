@@ -1,0 +1,58 @@
+{
+ "protocol": "GroupKFold(5) за гравцями; імпутація, змішана модель і популяційні статистики правила відхилень – лише на навчальних гравцях блоку",
+ "n_players": 2160,
+ "control_max_abs_diff": 9.71445146547012e-17,
+ "control_fig_3_9_same_pixels": true,
+ "in_sample": [
+  {
+   "n_games": 1,
+   "agreement_single_shap": 0.04045138888888889,
+   "agreement_aggregated_z": 0.10572916666666667,
+   "n_pairs": 17280
+  },
+  {
+   "n_games": 2,
+   "agreement_single_shap": 0.035259379342288094,
+   "agreement_aggregated_z": 0.1322950440018527,
+   "n_pairs": 17272
+  },
+  {
+   "n_games": 3,
+   "agreement_single_shap": 0.035507414272474516,
+   "agreement_aggregated_z": 0.15373030583873956,
+   "n_pairs": 17264
+  },
+  {
+   "n_games": 4,
+   "agreement_single_shap": 0.0361346516007533,
+   "agreement_aggregated_z": 0.17296374764595104,
+   "n_pairs": 16992
+  }
+ ],
+ "oof": [
+  {
+   "n_games": 1,
+   "agreement_single_shap": 0.0412037037037037,
+   "agreement_aggregated_z": 0.10648148148148148,
+   "n_pairs": 17280
+  },
+  {
+   "n_games": 2,
+   "agreement_single_shap": 0.03635942566002779,
+   "agreement_aggregated_z": 0.13212135247799908,
+   "n_pairs": 17272
+  },
+  {
+   "n_games": 3,
+   "agreement_single_shap": 0.03759267840593142,
+   "agreement_aggregated_z": 0.15378822984244672,
+   "n_pairs": 17264
+  },
+  {
+   "n_games": 4,
+   "agreement_single_shap": 0.0382532956685499,
+   "agreement_aggregated_z": 0.1749646892655367,
+   "n_pairs": 16992
+  }
+ ]
+}

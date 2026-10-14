@@ -1,0 +1,1698 @@
+{
+ "protocol": "модель бліцу (train.train_model) і три довідники норм побудовано без гравців, які є цільовими в синтетичних партіях; прогони – з кешу рушія тими самими скриптами",
+ "excluded_players": {
+  "Uradsahonot": {
+   "games_in_training": 8,
+   "synthetic_sets": [
+    "bands"
+   ]
+  },
+  "yasinhema": {
+   "games_in_training": 8,
+   "synthetic_sets": [
+    "bands",
+    "highdose"
+   ]
+  }
+ },
+ "training_set": {
+  "full": [
+   2160,
+   17234
+  ],
+  "noleak": [
+   2158,
+   17218
+  ]
+ },
+ "control_training_max_abs_pred_diff": 0.0,
+ "control_references": {
+  "signfilter": [],
+  "nosign": [],
+  "rawfeat": []
+ },
+ "control_runs": {
+  "synthetic_validation_bands.json": [],
+  "synthetic_validation_bands_std.json": [],
+  "synthetic_validation_bands_signfilter.json": [],
+  "synthetic_validation_rawfeat.json": [],
+  "synthetic_validation_highdose.json": [],
+  "synthetic_aggregate_wide.json": [],
+  "synthetic_aggregate_wide_std.json": [],
+  "rules_synthetic_comparison.json": []
+ },
+ "control_fig_3_10_same_pixels": true,
+ "noleak_model_metrics": {
+  "mae": 278.28047798086726,
+  "rmse": 359.1885880314104,
+  "r2": 0.7145967300356715,
+  "by_n_games": {
+   "1": {
+    "mae": 278.28047798086726,
+    "rmse": 359.1885880314104,
+    "r2": 0.7145967300356715,
+    "n_rows": 17218
+   },
+   "2": {
+    "mae": 232.71800815981777,
+    "rmse": 301.49054953013746,
+    "r2": 0.7989609342160011,
+    "n_rows": 4316
+   },
+   "3": {
+    "mae": 209.8582557699435,
+    "rmse": 270.1305119571706,
+    "r2": 0.8386533035288157,
+    "n_rows": 4316
+   },
+   "5": {
+    "mae": 186.87247558933308,
+    "rmse": 243.80375131860742,
+    "r2": 0.868492045201084,
+    "n_rows": 4314
+   },
+   "8": {
+    "mae": 166.5146559877962,
+    "rmse": 217.0618119289474,
+    "r2": 0.8952838376807248,
+    "n_rows": 4244
+   }
+  },
+  "training": "mixed (single games + N-game series)",
+  "n_rows": 34408,
+  "n_games": 17218,
+  "n_players": 2158
+ },
+ "noleak_sign_excluded": [
+  "endgame_acpl",
+  "conversion_acpl",
+  "defense_acpl",
+  "hanging_rate",
+  "king_danger",
+  "material_volatility"
+ ],
+ "noleak_sign_excluded_equals_SIGN_EXCLUDED": true,
+ "table_3_11_sigma_ratio_full_over_noleak": {
+  "opening_acpl": 0.9996549604718292,
+  "middlegame_acpl": 0.9997453882548741,
+  "endgame_acpl": 0.9997594590824321,
+  "conversion_acpl": 0.9996297354237191,
+  "defense_acpl": 0.9997583194358232,
+  "blunder_rate": 0.9996955016828133,
+  "hanging_rate": 0.9997847724714919
+ },
+ "key_numbers": {
+  "old": {
+   "3.12 базове правило (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.2625,
+     "treated": 0.9,
+     "lift": 0.6375
+    },
+    "middlegame_acpl": {
+     "clean": 0.2,
+     "treated": 0.55,
+     "lift": 0.35000000000000003
+    },
+    "endgame_acpl": {
+     "clean": 0.0125,
+     "treated": 0.025,
+     "lift": 0.0125
+    },
+    "conversion_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "defense_acpl": {
+     "clean": 0.3375,
+     "treated": 0.2875,
+     "lift": -0.050000000000000044
+    },
+    "blunder_rate": {
+     "clean": 0.0375,
+     "treated": 0.0,
+     "lift": -0.0375
+    },
+    "hanging_rate": {
+     "clean": 0.15,
+     "treated": 0.0125,
+     "lift": -0.13749999999999998
+    }
+   },
+   "3.12 загальна чутливість базового правила": 0.25357142857142856,
+   "3.12 ДІ загальної чутливості (за категоріями)": [
+    0.048214285714285716,
+    0.5178571428571429
+   ],
+   "3.12 загальна чутливість за інтервалами рейтингу": {
+    "1000-1400": 0.24285714285714285,
+    "1400-1800": 0.22142857142857142,
+    "1800-2200": 0.2571428571428571,
+    "2200-3000": 0.29285714285714287
+   },
+   "3.10 грубі помилки → точність у дебюті (з 80)": 77,
+   "3.10 висячі фігури → точність у дебюті (з 80)": 53,
+   "3.10 матриця": {
+    "opening_acpl": {
+     "opening_acpl": 72,
+     "middlegame_acpl": 1,
+     "endgame_acpl": 0,
+     "conversion_acpl": 0,
+     "defense_acpl": 4,
+     "blunder_rate": 1,
+     "hanging_rate": 2
+    },
+    "middlegame_acpl": {
+     "opening_acpl": 20,
+     "middlegame_acpl": 44,
+     "endgame_acpl": 0,
+     "conversion_acpl": 1,
+     "defense_acpl": 5,
+     "blunder_rate": 4,
+     "hanging_rate": 6
+    },
+    "endgame_acpl": {
+     "opening_acpl": 21,
+     "middlegame_acpl": 15,
+     "endgame_acpl": 2,
+     "conversion_acpl": 0,
+     "defense_acpl": 22,
+     "blunder_rate": 7,
+     "hanging_rate": 13
+    },
+    "conversion_acpl": {
+     "opening_acpl": 25,
+     "middlegame_acpl": 25,
+     "endgame_acpl": 1,
+     "conversion_acpl": 0,
+     "defense_acpl": 15,
+     "blunder_rate": 9,
+     "hanging_rate": 5
+    },
+    "defense_acpl": {
+     "opening_acpl": 23,
+     "middlegame_acpl": 19,
+     "endgame_acpl": 1,
+     "conversion_acpl": 1,
+     "defense_acpl": 23,
+     "blunder_rate": 3,
+     "hanging_rate": 10
+    },
+    "blunder_rate": {
+     "opening_acpl": 77,
+     "middlegame_acpl": 3,
+     "endgame_acpl": 0,
+     "conversion_acpl": 0,
+     "defense_acpl": 0,
+     "blunder_rate": 0,
+     "hanging_rate": 0
+    },
+    "hanging_rate": {
+     "opening_acpl": 53,
+     "middlegame_acpl": 21,
+     "endgame_acpl": 0,
+     "conversion_acpl": 0,
+     "defense_acpl": 2,
+     "blunder_rate": 3,
+     "hanging_rate": 1
+    }
+   },
+   "3.13 покриття @1/@2/@3 і приріст": {
+    "opening_acpl": {
+     "treated": [
+      0.9,
+      0.9,
+      0.9125
+     ],
+     "lift": [
+      0.6375,
+      0.625,
+      0.6375
+     ]
+    },
+    "middlegame_acpl": {
+     "treated": [
+      0.55,
+      0.8875,
+      0.9625
+     ],
+     "lift": [
+      0.35000000000000003,
+      0.49999999999999994,
+      0.47500000000000003
+     ]
+    },
+    "endgame_acpl": {
+     "treated": [
+      0.025,
+      0.1625,
+      0.4125
+     ],
+     "lift": [
+      0.0125,
+      -0.024999999999999994,
+      -0.0625
+     ]
+    },
+    "conversion_acpl": {
+     "treated": [
+      0.0,
+      0.0375,
+      0.2625
+     ],
+     "lift": [
+      0.0,
+      -0.1,
+      -0.1875
+     ]
+    },
+    "defense_acpl": {
+     "treated": [
+      0.2875,
+      0.3375,
+      0.4125
+     ],
+     "lift": [
+      -0.050000000000000044,
+      -0.125,
+      -0.15000000000000002
+     ]
+    },
+    "blunder_rate": {
+     "treated": [
+      0.0,
+      0.2375,
+      0.8875
+     ],
+     "lift": [
+      -0.0375,
+      0.09999999999999998,
+      0.625
+     ]
+    },
+    "hanging_rate": {
+     "treated": [
+      0.0125,
+      0.0125,
+      0.0625
+     ],
+     "lift": [
+      -0.13749999999999998,
+      -0.39999999999999997,
+      -0.425
+     ]
+    }
+   },
+   "дозовий контроль (чисті / після / приріст)": {
+    "defense_acpl": {
+     "clean": 0.3,
+     "treated": 0.3,
+     "lift": 0.0
+    },
+    "hanging_rate": {
+     "clean": 0.2,
+     "treated": 0.0,
+     "lift": -0.2
+    },
+    "endgame_acpl": {
+     "clean": 0.1,
+     "treated": 0.1,
+     "lift": 0.0
+    },
+    "conversion_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "blunder_rate": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    }
+   },
+   "без критерію знака: загальна чутливість": 0.18035714285714285,
+   "без критерію знака: частки відповідей на чистих партіях": {
+    "opening_acpl": 0.0875,
+    "middlegame_acpl": 0.05,
+    "endgame_acpl": 0.025,
+    "conversion_acpl": 0.05,
+    "defense_acpl": 0.4875,
+    "blunder_rate": 0.125,
+    "hanging_rate": 0.175
+   },
+   "базове: частки відповідей на чистих партіях": {
+    "opening_acpl": 0.2625,
+    "middlegame_acpl": 0.2,
+    "endgame_acpl": 0.0125,
+    "conversion_acpl": 0.0,
+    "defense_acpl": 0.3375,
+    "blunder_rate": 0.0375,
+    "hanging_rate": 0.15
+   },
+   "3.14 без критерію знака (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.0875,
+     "treated": 0.5125,
+     "lift": 0.42499999999999993
+    },
+    "middlegame_acpl": {
+     "clean": 0.05,
+     "treated": 0.2625,
+     "lift": 0.21250000000000002
+    },
+    "endgame_acpl": {
+     "clean": 0.025,
+     "treated": 0.0375,
+     "lift": 0.012499999999999997
+    },
+    "conversion_acpl": {
+     "clean": 0.05,
+     "treated": 0.0,
+     "lift": -0.05
+    },
+    "defense_acpl": {
+     "clean": 0.4875,
+     "treated": 0.35,
+     "lift": -0.1375
+    },
+    "blunder_rate": {
+     "clean": 0.125,
+     "treated": 0.075,
+     "lift": -0.05
+    },
+    "hanging_rate": {
+     "clean": 0.175,
+     "treated": 0.025,
+     "lift": -0.15
+    }
+   },
+   "без критерію знака: покриття @1/@2/@3 і приріст": {
+    "opening_acpl": {
+     "treated": [
+      0.5125,
+      0.725,
+      0.825
+     ],
+     "lift": [
+      0.42499999999999993,
+      0.5375,
+      0.49999999999999994
+     ]
+    },
+    "middlegame_acpl": {
+     "treated": [
+      0.2625,
+      0.7,
+      0.8625
+     ],
+     "lift": [
+      0.21250000000000002,
+      0.48749999999999993,
+      0.43750000000000006
+     ]
+    },
+    "endgame_acpl": {
+     "treated": [
+      0.0375,
+      0.225,
+      0.3875
+     ],
+     "lift": [
+      0.012499999999999997,
+      -0.05000000000000002,
+      -0.09999999999999998
+     ]
+    },
+    "conversion_acpl": {
+     "treated": [
+      0.0,
+      0.0625,
+      0.175
+     ],
+     "lift": [
+      -0.05,
+      -0.024999999999999994,
+      -0.15000000000000002
+     ]
+    },
+    "defense_acpl": {
+     "treated": [
+      0.35,
+      0.4,
+      0.4625
+     ],
+     "lift": [
+      -0.1375,
+      -0.125,
+      -0.17499999999999993
+     ]
+    },
+    "blunder_rate": {
+     "treated": [
+      0.075,
+      0.4125,
+      0.675
+     ],
+     "lift": [
+      -0.05,
+      0.18749999999999997,
+      0.4
+     ]
+    },
+    "hanging_rate": {
+     "treated": [
+      0.025,
+      0.0375,
+      0.2
+     ],
+     "lift": [
+      -0.15,
+      -0.45,
+      -0.325
+     ]
+    }
+   },
+   "правило (2.7): загальна чутливість": 0.20714285714285716,
+   "3.14 правило (2.7) (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.425,
+     "treated": 0.8,
+     "lift": 0.37500000000000006
+    },
+    "middlegame_acpl": {
+     "clean": 0.3625,
+     "treated": 0.5375,
+     "lift": 0.175
+    },
+    "endgame_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "conversion_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "defense_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "blunder_rate": {
+     "clean": 0.2125,
+     "treated": 0.1125,
+     "lift": -0.09999999999999999
+    },
+    "hanging_rate": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    }
+   },
+   "контрольне правило: загальна чутливість": 0.2732142857142857,
+   "контрольне правило: точність у захисті, погіршені / чисті (з 80)": [
+    7,
+    7
+   ],
+   "3.14 парні прирости за категоріями": {
+    "opening_acpl": {
+     "raw": {
+      "delta": 0.6375,
+      "ci95": [
+       0.525,
+       0.7375
+      ]
+     },
+     "standardised": {
+      "delta": 0.425,
+      "ci95": [
+       0.3125,
+       0.5375
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.3125,
+      "ci95": [
+       0.1875,
+       0.4375
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.1125,
+      "ci95": [
+       -0.2625,
+       0.025
+      ],
+      "significant": false
+     }
+    },
+    "middlegame_acpl": {
+     "raw": {
+      "delta": 0.35,
+      "ci95": [
+       0.2375,
+       0.4625
+      ]
+     },
+     "standardised": {
+      "delta": 0.2125,
+      "ci95": [
+       0.1,
+       0.325
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.075,
+      "ci95": [
+       -0.0125,
+       0.175
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.1375,
+      "ci95": [
+       -0.2625,
+       -0.0125
+      ],
+      "significant": true
+     }
+    },
+    "endgame_acpl": {
+     "raw": {
+      "delta": 0.0125,
+      "ci95": [
+       0.0,
+       0.0375
+      ]
+     },
+     "standardised": {
+      "delta": 0.0125,
+      "ci95": [
+       0.0,
+       0.0375
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.0875,
+      "ci95": [
+       0.025,
+       0.1625
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.075,
+      "ci95": [
+       0.0,
+       0.15
+      ],
+      "significant": false
+     }
+    },
+    "conversion_acpl": {
+     "raw": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ]
+     },
+     "standardised": {
+      "delta": -0.05,
+      "ci95": [
+       -0.1,
+       -0.0125
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.2125,
+      "ci95": [
+       0.125,
+       0.3125
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.2625,
+      "ci95": [
+       0.1625,
+       0.3625
+      ],
+      "significant": true
+     }
+    },
+    "defense_acpl": {
+     "raw": {
+      "delta": -0.05,
+      "ci95": [
+       -0.1,
+       -0.0125
+      ]
+     },
+     "standardised": {
+      "delta": -0.1375,
+      "ci95": [
+       -0.2125,
+       -0.0625
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.0,
+      "ci95": [
+       -0.0375,
+       0.0375
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.1375,
+      "ci95": [
+       0.05,
+       0.2375
+      ],
+      "significant": true
+     }
+    },
+    "blunder_rate": {
+     "raw": {
+      "delta": -0.0375,
+      "ci95": [
+       -0.0875,
+       0.0
+      ]
+     },
+     "standardised": {
+      "delta": -0.05,
+      "ci95": [
+       -0.1375,
+       0.0375
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.125,
+      "ci95": [
+       0.025,
+       0.225
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.175,
+      "ci95": [
+       0.075,
+       0.275
+      ],
+      "significant": true
+     }
+    },
+    "hanging_rate": {
+     "raw": {
+      "delta": -0.1375,
+      "ci95": [
+       -0.225,
+       -0.0625
+      ]
+     },
+     "standardised": {
+      "delta": -0.15,
+      "ci95": [
+       -0.25,
+       -0.0625
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.1,
+      "ci95": [
+       -0.025,
+       0.225
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.25,
+      "ci95": [
+       0.0875,
+       0.4125
+      ],
+      "significant": true
+     }
+    }
+   },
+   "3.14 парні прирости за групами": {
+    "усі сім": {
+     "raw": {
+      "delta": 0.1107142857142857,
+      "ci95": [
+       0.0857142857142857,
+       0.13749999999999998
+      ],
+      "categories_positive": 3
+     },
+     "standardised": {
+      "delta": 0.03749999999999999,
+      "ci95": [
+       0.008928571428571428,
+       0.06607142857142857
+      ],
+      "categories_positive": 3
+     },
+     "rawfeat": {
+      "delta": 0.13035714285714284,
+      "ci95": [
+       0.09464285714285713,
+       0.16607142857142856
+      ],
+      "categories_positive": 6
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.09285714285714285,
+      "ci95": [
+       0.04821428571428571,
+       0.1375
+      ],
+      "significant": true
+     },
+     "rawfeat_minus_naive": {
+      "delta": 0.01964285714285714,
+      "ci95": [
+       -0.026785714285714284,
+       0.06607142857142856
+      ],
+      "significant": false
+     }
+    },
+    "три в переліку T": {
+     "raw": {
+      "delta": 0.3166666666666666,
+      "ci95": [
+       0.2583333333333333,
+       0.375
+      ],
+      "categories_positive": 2
+     },
+     "standardised": {
+      "delta": 0.19583333333333333,
+      "ci95": [
+       0.1375,
+       0.2541666666666667
+      ],
+      "categories_positive": 2
+     },
+     "rawfeat": {
+      "delta": 0.17083333333333334,
+      "ci95": [
+       0.1125,
+       0.22916666666666666
+      ],
+      "categories_positive": 3
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.024999999999999998,
+      "ci95": [
+       -0.09583333333333333,
+       0.04166666666666667
+      ],
+      "significant": false
+     },
+     "rawfeat_minus_naive": {
+      "delta": -0.14583333333333331,
+      "ci95": [
+       -0.21260416666666662,
+       -0.075
+      ],
+      "significant": true
+     }
+    },
+    "чотири поза T": {
+     "raw": {
+      "delta": -0.04375,
+      "ci95": [
+       -0.06875,
+       -0.01875
+      ],
+      "categories_positive": 1
+     },
+     "standardised": {
+      "delta": -0.08125,
+      "ci95": [
+       -0.109375,
+       -0.053125
+      ],
+      "categories_positive": 1
+     },
+     "rawfeat": {
+      "delta": 0.1,
+      "ci95": [
+       0.059375,
+       0.14375
+      ],
+      "categories_positive": 3
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.18125,
+      "ci95": [
+       0.128125,
+       0.2375
+      ],
+      "significant": true
+     },
+     "rawfeat_minus_naive": {
+      "delta": 0.14375,
+      "ci95": [
+       0.09375,
+       0.196875
+      ],
+      "significant": true
+     }
+    }
+   },
+   "агрегування: приріст пооб'єктно / агреговано": {
+    "opening_acpl": [
+     0.5875,
+     0.8
+    ],
+    "middlegame_acpl": [
+     0.3125,
+     0.55
+    ],
+    "endgame_acpl": [
+     0.0,
+     -0.05
+    ],
+    "conversion_acpl": [
+     -0.0125,
+     -0.05
+    ],
+    "defense_acpl": [
+     -0.024999999999999967,
+     0.0
+    ],
+    "blunder_rate": [
+     -0.024999999999999998,
+     -0.1
+    ],
+    "hanging_rate": [
+     -0.15,
+     -0.2
+    ]
+   },
+   "агрегування: загальна чутливість пооб'єктно / агреговано": [
+    0.24107142857142858,
+    0.2785714285714286
+   ]
+  },
+  "noleak": {
+   "3.12 базове правило (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.275,
+     "treated": 0.9,
+     "lift": 0.625
+    },
+    "middlegame_acpl": {
+     "clean": 0.1375,
+     "treated": 0.5125,
+     "lift": 0.37499999999999994
+    },
+    "endgame_acpl": {
+     "clean": 0.0125,
+     "treated": 0.025,
+     "lift": 0.0125
+    },
+    "conversion_acpl": {
+     "clean": 0.0125,
+     "treated": 0.0125,
+     "lift": 0.0
+    },
+    "defense_acpl": {
+     "clean": 0.3125,
+     "treated": 0.275,
+     "lift": -0.03749999999999998
+    },
+    "blunder_rate": {
+     "clean": 0.05,
+     "treated": 0.0,
+     "lift": -0.05
+    },
+    "hanging_rate": {
+     "clean": 0.2,
+     "treated": 0.0125,
+     "lift": -0.1875
+    }
+   },
+   "3.12 загальна чутливість базового правила": 0.24821428571428572,
+   "3.12 ДІ загальної чутливості (за категоріями)": [
+    0.051741071428571435,
+    0.5160714285714286
+   ],
+   "3.12 загальна чутливість за інтервалами рейтингу": {
+    "1000-1400": 0.24285714285714285,
+    "1400-1800": 0.21428571428571427,
+    "1800-2200": 0.25,
+    "2200-3000": 0.2857142857142857
+   },
+   "3.10 грубі помилки → точність у дебюті (з 80)": 77,
+   "3.10 висячі фігури → точність у дебюті (з 80)": 53,
+   "3.10 матриця": {
+    "opening_acpl": {
+     "opening_acpl": 72,
+     "middlegame_acpl": 1,
+     "endgame_acpl": 0,
+     "conversion_acpl": 0,
+     "defense_acpl": 5,
+     "blunder_rate": 1,
+     "hanging_rate": 1
+    },
+    "middlegame_acpl": {
+     "opening_acpl": 23,
+     "middlegame_acpl": 41,
+     "endgame_acpl": 0,
+     "conversion_acpl": 1,
+     "defense_acpl": 5,
+     "blunder_rate": 3,
+     "hanging_rate": 7
+    },
+    "endgame_acpl": {
+     "opening_acpl": 23,
+     "middlegame_acpl": 12,
+     "endgame_acpl": 2,
+     "conversion_acpl": 2,
+     "defense_acpl": 19,
+     "blunder_rate": 7,
+     "hanging_rate": 15
+    },
+    "conversion_acpl": {
+     "opening_acpl": 26,
+     "middlegame_acpl": 22,
+     "endgame_acpl": 1,
+     "conversion_acpl": 1,
+     "defense_acpl": 14,
+     "blunder_rate": 8,
+     "hanging_rate": 8
+    },
+    "defense_acpl": {
+     "opening_acpl": 24,
+     "middlegame_acpl": 17,
+     "endgame_acpl": 1,
+     "conversion_acpl": 1,
+     "defense_acpl": 22,
+     "blunder_rate": 2,
+     "hanging_rate": 13
+    },
+    "blunder_rate": {
+     "opening_acpl": 77,
+     "middlegame_acpl": 3,
+     "endgame_acpl": 0,
+     "conversion_acpl": 0,
+     "defense_acpl": 0,
+     "blunder_rate": 0,
+     "hanging_rate": 0
+    },
+    "hanging_rate": {
+     "opening_acpl": 53,
+     "middlegame_acpl": 22,
+     "endgame_acpl": 1,
+     "conversion_acpl": 0,
+     "defense_acpl": 2,
+     "blunder_rate": 1,
+     "hanging_rate": 1
+    }
+   },
+   "3.13 покриття @1/@2/@3 і приріст": {
+    "opening_acpl": {
+     "treated": [
+      0.9,
+      0.9,
+      0.9125
+     ],
+     "lift": [
+      0.625,
+      0.6125,
+      0.625
+     ]
+    },
+    "middlegame_acpl": {
+     "treated": [
+      0.5125,
+      0.8375,
+      0.95
+     ],
+     "lift": [
+      0.37499999999999994,
+      0.4375,
+      0.44999999999999996
+     ]
+    },
+    "endgame_acpl": {
+     "treated": [
+      0.025,
+      0.1625,
+      0.3875
+     ],
+     "lift": [
+      0.0125,
+      -0.012499999999999983,
+      -0.03749999999999998
+     ]
+    },
+    "conversion_acpl": {
+     "treated": [
+      0.0125,
+      0.0625,
+      0.275
+     ],
+     "lift": [
+      0.0,
+      -0.024999999999999994,
+      -0.175
+     ]
+    },
+    "defense_acpl": {
+     "treated": [
+      0.275,
+      0.3375,
+      0.375
+     ],
+     "lift": [
+      -0.03749999999999998,
+      -0.13749999999999996,
+      -0.17500000000000004
+     ]
+    },
+    "blunder_rate": {
+     "treated": [
+      0.0,
+      0.1375,
+      0.8375
+     ],
+     "lift": [
+      -0.05,
+      -0.012499999999999983,
+      0.5625
+     ]
+    },
+    "hanging_rate": {
+     "treated": [
+      0.0125,
+      0.0125,
+      0.1
+     ],
+     "lift": [
+      -0.1875,
+      -0.4125,
+      -0.4125
+     ]
+    }
+   },
+   "дозовий контроль (чисті / після / приріст)": {
+    "defense_acpl": {
+     "clean": 0.3,
+     "treated": 0.3,
+     "lift": 0.0
+    },
+    "hanging_rate": {
+     "clean": 0.2,
+     "treated": 0.0,
+     "lift": -0.2
+    },
+    "endgame_acpl": {
+     "clean": 0.1,
+     "treated": 0.1,
+     "lift": 0.0
+    },
+    "conversion_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "blunder_rate": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    }
+   },
+   "без критерію знака: загальна чутливість": 0.19642857142857142,
+   "без критерію знака: частки відповідей на чистих партіях": {
+    "opening_acpl": 0.1,
+    "middlegame_acpl": 0.0375,
+    "endgame_acpl": 0.0,
+    "conversion_acpl": 0.0125,
+    "defense_acpl": 0.5,
+    "blunder_rate": 0.1375,
+    "hanging_rate": 0.2125
+   },
+   "базове: частки відповідей на чистих партіях": {
+    "opening_acpl": 0.275,
+    "middlegame_acpl": 0.1375,
+    "endgame_acpl": 0.0125,
+    "conversion_acpl": 0.0125,
+    "defense_acpl": 0.3125,
+    "blunder_rate": 0.05,
+    "hanging_rate": 0.2
+   },
+   "3.14 без критерію знака (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.1,
+     "treated": 0.5125,
+     "lift": 0.4125
+    },
+    "middlegame_acpl": {
+     "clean": 0.0375,
+     "treated": 0.4125,
+     "lift": 0.375
+    },
+    "endgame_acpl": {
+     "clean": 0.0,
+     "treated": 0.0125,
+     "lift": 0.0125
+    },
+    "conversion_acpl": {
+     "clean": 0.0125,
+     "treated": 0.025,
+     "lift": 0.0125
+    },
+    "defense_acpl": {
+     "clean": 0.5,
+     "treated": 0.35,
+     "lift": -0.15000000000000002
+    },
+    "blunder_rate": {
+     "clean": 0.1375,
+     "treated": 0.0375,
+     "lift": -0.1
+    },
+    "hanging_rate": {
+     "clean": 0.2125,
+     "treated": 0.025,
+     "lift": -0.1875
+    }
+   },
+   "без критерію знака: покриття @1/@2/@3 і приріст": {
+    "opening_acpl": {
+     "treated": [
+      0.5125,
+      0.7625,
+      0.8625
+     ],
+     "lift": [
+      0.4125,
+      0.5625,
+      0.5125000000000001
+     ]
+    },
+    "middlegame_acpl": {
+     "treated": [
+      0.4125,
+      0.7625,
+      0.8375
+     ],
+     "lift": [
+      0.375,
+      0.5375,
+      0.41250000000000003
+     ]
+    },
+    "endgame_acpl": {
+     "treated": [
+      0.0125,
+      0.2,
+      0.375
+     ],
+     "lift": [
+      0.0125,
+      -0.07500000000000001,
+      -0.07500000000000001
+     ]
+    },
+    "conversion_acpl": {
+     "treated": [
+      0.025,
+      0.0375,
+      0.125
+     ],
+     "lift": [
+      0.0125,
+      -0.049999999999999996,
+      -0.1
+     ]
+    },
+    "defense_acpl": {
+     "treated": [
+      0.35,
+      0.3875,
+      0.5
+     ],
+     "lift": [
+      -0.15000000000000002,
+      -0.175,
+      -0.1875
+     ]
+    },
+    "blunder_rate": {
+     "treated": [
+      0.0375,
+      0.375,
+      0.6625
+     ],
+     "lift": [
+      -0.1,
+      0.1625,
+      0.4125
+     ]
+    },
+    "hanging_rate": {
+     "treated": [
+      0.025,
+      0.075,
+      0.2375
+     ],
+     "lift": [
+      -0.1875,
+      -0.3625,
+      -0.37500000000000006
+     ]
+    }
+   },
+   "правило (2.7): загальна чутливість": 0.21071428571428572,
+   "3.14 правило (2.7) (чисті / після / приріст)": {
+    "opening_acpl": {
+     "clean": 0.4375,
+     "treated": 0.8125,
+     "lift": 0.375
+    },
+    "middlegame_acpl": {
+     "clean": 0.3375,
+     "treated": 0.625,
+     "lift": 0.2875
+    },
+    "endgame_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "conversion_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "defense_acpl": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    },
+    "blunder_rate": {
+     "clean": 0.225,
+     "treated": 0.0375,
+     "lift": -0.1875
+    },
+    "hanging_rate": {
+     "clean": 0.0,
+     "treated": 0.0,
+     "lift": 0.0
+    }
+   },
+   "контрольне правило: загальна чутливість": 0.2714285714285714,
+   "контрольне правило: точність у захисті, погіршені / чисті (з 80)": [
+    8,
+    8
+   ],
+   "3.14 парні прирости за категоріями": {
+    "opening_acpl": {
+     "raw": {
+      "delta": 0.625,
+      "ci95": [
+       0.5125,
+       0.7375
+      ]
+     },
+     "standardised": {
+      "delta": 0.4125,
+      "ci95": [
+       0.3,
+       0.525
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.3,
+      "ci95": [
+       0.175,
+       0.4125
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.1125,
+      "ci95": [
+       -0.2625,
+       0.0375
+      ],
+      "significant": false
+     }
+    },
+    "middlegame_acpl": {
+     "raw": {
+      "delta": 0.375,
+      "ci95": [
+       0.275,
+       0.4875
+      ]
+     },
+     "standardised": {
+      "delta": 0.375,
+      "ci95": [
+       0.2625,
+       0.5
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.0875,
+      "ci95": [
+       0.0,
+       0.1875
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.2875,
+      "ci95": [
+       -0.425,
+       -0.15
+      ],
+      "significant": true
+     }
+    },
+    "endgame_acpl": {
+     "raw": {
+      "delta": 0.0125,
+      "ci95": [
+       0.0,
+       0.0375
+      ]
+     },
+     "standardised": {
+      "delta": 0.0125,
+      "ci95": [
+       0.0,
+       0.0375
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.0875,
+      "ci95": [
+       0.025,
+       0.1625
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.075,
+      "ci95": [
+       0.0,
+       0.15
+      ],
+      "significant": false
+     }
+    },
+    "conversion_acpl": {
+     "raw": {
+      "delta": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ]
+     },
+     "standardised": {
+      "delta": 0.0125,
+      "ci95": [
+       -0.025,
+       0.05
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.1875,
+      "ci95": [
+       0.1,
+       0.2875
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.175,
+      "ci95": [
+       0.075,
+       0.275
+      ],
+      "significant": true
+     }
+    },
+    "defense_acpl": {
+     "raw": {
+      "delta": -0.0375,
+      "ci95": [
+       -0.0875,
+       0.0
+      ]
+     },
+     "standardised": {
+      "delta": -0.15,
+      "ci95": [
+       -0.2375,
+       -0.075
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.0,
+      "ci95": [
+       -0.0375,
+       0.0375
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.15,
+      "ci95": [
+       0.0625,
+       0.25
+      ],
+      "significant": true
+     }
+    },
+    "blunder_rate": {
+     "raw": {
+      "delta": -0.05,
+      "ci95": [
+       -0.1,
+       -0.0125
+      ]
+     },
+     "standardised": {
+      "delta": -0.1,
+      "ci95": [
+       -0.1875,
+       -0.0125
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.125,
+      "ci95": [
+       0.025,
+       0.225
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.225,
+      "ci95": [
+       0.1125,
+       0.35
+      ],
+      "significant": true
+     }
+    },
+    "hanging_rate": {
+     "raw": {
+      "delta": -0.1875,
+      "ci95": [
+       -0.2875,
+       -0.1
+      ]
+     },
+     "standardised": {
+      "delta": -0.1875,
+      "ci95": [
+       -0.2875,
+       -0.0875
+      ]
+     },
+     "rawfeat": {
+      "delta": 0.1125,
+      "ci95": [
+       -0.0125,
+       0.2375
+      ]
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.3,
+      "ci95": [
+       0.1375,
+       0.4625
+      ],
+      "significant": true
+     }
+    }
+   },
+   "3.14 парні прирости за групами": {
+    "усі сім": {
+     "raw": {
+      "delta": 0.10535714285714284,
+      "ci95": [
+       0.08035714285714285,
+       0.13214285714285712
+      ],
+      "categories_positive": 3
+     },
+     "standardised": {
+      "delta": 0.05357142857142856,
+      "ci95": [
+       0.024999999999999998,
+       0.08214285714285714
+      ],
+      "categories_positive": 4
+     },
+     "rawfeat": {
+      "delta": 0.12857142857142856,
+      "ci95": [
+       0.09285714285714285,
+       0.16428571428571428
+      ],
+      "categories_positive": 6
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.075,
+      "ci95": [
+       0.03214285714285714,
+       0.11785714285714284
+      ],
+      "significant": true
+     },
+     "rawfeat_minus_naive": {
+      "delta": 0.02321428571428571,
+      "ci95": [
+       -0.023214285714285708,
+       0.06964285714285713
+      ],
+      "significant": false
+     }
+    },
+    "три в переліку T": {
+     "raw": {
+      "delta": 0.3166666666666666,
+      "ci95": [
+       0.2583333333333333,
+       0.375
+      ],
+      "categories_positive": 2
+     },
+     "standardised": {
+      "delta": 0.22916666666666669,
+      "ci95": [
+       0.15833333333333335,
+       0.2958333333333333
+      ],
+      "categories_positive": 2
+     },
+     "rawfeat": {
+      "delta": 0.17083333333333334,
+      "ci95": [
+       0.1125,
+       0.225
+      ],
+      "categories_positive": 3
+     },
+     "rawfeat_minus_rule27": {
+      "delta": -0.05833333333333333,
+      "ci95": [
+       -0.13333333333333333,
+       0.016666666666666666
+      ],
+      "significant": false
+     },
+     "rawfeat_minus_naive": {
+      "delta": -0.14583333333333331,
+      "ci95": [
+       -0.2208333333333333,
+       -0.075
+      ],
+      "significant": true
+     }
+    },
+    "чотири поза T": {
+     "raw": {
+      "delta": -0.053125,
+      "ci95": [
+       -0.078125,
+       -0.028125
+      ],
+      "categories_positive": 1
+     },
+     "standardised": {
+      "delta": -0.078125,
+      "ci95": [
+       -0.109375,
+       -0.046875
+      ],
+      "categories_positive": 2
+     },
+     "rawfeat": {
+      "delta": 0.096875,
+      "ci95": [
+       0.05625,
+       0.140625
+      ],
+      "categories_positive": 3
+     },
+     "rawfeat_minus_rule27": {
+      "delta": 0.175,
+      "ci95": [
+       0.121875,
+       0.23125
+      ],
+      "significant": true
+     },
+     "rawfeat_minus_naive": {
+      "delta": 0.15,
+      "ci95": [
+       0.1,
+       0.203125
+      ],
+      "significant": true
+     }
+    }
+   },
+   "агрегування: приріст пооб'єктно / агреговано": {
+    "opening_acpl": [
+     0.5875,
+     0.8
+    ],
+    "middlegame_acpl": [
+     0.35,
+     0.55
+    ],
+    "endgame_acpl": [
+     0.0125,
+     -0.15
+    ],
+    "conversion_acpl": [
+     0.0,
+     0.0
+    ],
+    "defense_acpl": [
+     -0.03749999999999998,
+     0.0
+    ],
+    "blunder_rate": [
+     -0.037500000000000006,
+     -0.15
+    ],
+    "hanging_rate": [
+     -0.2,
+     -0.15
+    ]
+   },
+   "агрегування: загальна чутливість пооб'єктно / агреговано": [
+    0.2392857142857143,
+    0.2714285714285714
+   ]
+  }
+ }
+}

@@ -1,0 +1,351 @@
+{
+  "n_games": 80,
+  "cache": "results/synthetic_features_bands.json",
+  "per_category": {
+    "opening_acpl": {
+      "raw": {
+        "delta": 0.6375,
+        "ci95": [
+          0.525,
+          0.7375
+        ]
+      },
+      "standardised": {
+        "delta": 0.425,
+        "ci95": [
+          0.3125,
+          0.5375
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.3125,
+        "ci95": [
+          0.1875,
+          0.4375
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": -0.1125,
+        "ci95": [
+          -0.2625,
+          0.025
+        ],
+        "significant": false
+      }
+    },
+    "middlegame_acpl": {
+      "raw": {
+        "delta": 0.35,
+        "ci95": [
+          0.2375,
+          0.4625
+        ]
+      },
+      "standardised": {
+        "delta": 0.2125,
+        "ci95": [
+          0.1,
+          0.325
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.075,
+        "ci95": [
+          -0.0125,
+          0.175
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": -0.1375,
+        "ci95": [
+          -0.2625,
+          -0.0125
+        ],
+        "significant": true
+      }
+    },
+    "endgame_acpl": {
+      "raw": {
+        "delta": 0.0125,
+        "ci95": [
+          0.0,
+          0.0375
+        ]
+      },
+      "standardised": {
+        "delta": 0.0125,
+        "ci95": [
+          0.0,
+          0.0375
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.0875,
+        "ci95": [
+          0.025,
+          0.1625
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.075,
+        "ci95": [
+          0.0,
+          0.15
+        ],
+        "significant": false
+      }
+    },
+    "conversion_acpl": {
+      "raw": {
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "standardised": {
+        "delta": -0.05,
+        "ci95": [
+          -0.1,
+          -0.0125
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.2125,
+        "ci95": [
+          0.125,
+          0.3125
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.2625,
+        "ci95": [
+          0.1625,
+          0.3625
+        ],
+        "significant": true
+      }
+    },
+    "defense_acpl": {
+      "raw": {
+        "delta": -0.05,
+        "ci95": [
+          -0.1,
+          -0.0125
+        ]
+      },
+      "standardised": {
+        "delta": -0.1375,
+        "ci95": [
+          -0.2125,
+          -0.0625
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.0,
+        "ci95": [
+          -0.0375,
+          0.0375
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.1375,
+        "ci95": [
+          0.05,
+          0.2375
+        ],
+        "significant": true
+      }
+    },
+    "blunder_rate": {
+      "raw": {
+        "delta": -0.0375,
+        "ci95": [
+          -0.0875,
+          0.0
+        ]
+      },
+      "standardised": {
+        "delta": -0.05,
+        "ci95": [
+          -0.1375,
+          0.0375
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.125,
+        "ci95": [
+          0.025,
+          0.225
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.175,
+        "ci95": [
+          0.075,
+          0.275
+        ],
+        "significant": true
+      }
+    },
+    "hanging_rate": {
+      "raw": {
+        "delta": -0.1375,
+        "ci95": [
+          -0.225,
+          -0.0625
+        ]
+      },
+      "standardised": {
+        "delta": -0.15,
+        "ci95": [
+          -0.25,
+          -0.0625
+        ]
+      },
+      "rawfeat": {
+        "delta": 0.1,
+        "ci95": [
+          -0.025,
+          0.225
+        ]
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.25,
+        "ci95": [
+          0.0875,
+          0.4125
+        ],
+        "significant": true
+      }
+    }
+  },
+  "overall": {
+    "усі сім": {
+      "raw": {
+        "delta": 0.1107142857142857,
+        "ci95": [
+          0.0857142857142857,
+          0.13749999999999998
+        ],
+        "categories_positive": 3
+      },
+      "standardised": {
+        "delta": 0.03749999999999999,
+        "ci95": [
+          0.008928571428571428,
+          0.06607142857142857
+        ],
+        "categories_positive": 3
+      },
+      "rawfeat": {
+        "delta": 0.13035714285714284,
+        "ci95": [
+          0.09464285714285713,
+          0.16607142857142856
+        ],
+        "categories_positive": 6
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.09285714285714285,
+        "ci95": [
+          0.04821428571428571,
+          0.1375
+        ],
+        "significant": true
+      },
+      "rawfeat_minus_naive": {
+        "delta": 0.01964285714285714,
+        "ci95": [
+          -0.026785714285714284,
+          0.06607142857142856
+        ],
+        "significant": false
+      }
+    },
+    "три в переліку T": {
+      "raw": {
+        "delta": 0.3166666666666666,
+        "ci95": [
+          0.2583333333333333,
+          0.375
+        ],
+        "categories_positive": 2
+      },
+      "standardised": {
+        "delta": 0.19583333333333333,
+        "ci95": [
+          0.1375,
+          0.2541666666666667
+        ],
+        "categories_positive": 2
+      },
+      "rawfeat": {
+        "delta": 0.17083333333333334,
+        "ci95": [
+          0.1125,
+          0.22916666666666666
+        ],
+        "categories_positive": 3
+      },
+      "rawfeat_minus_rule27": {
+        "delta": -0.024999999999999998,
+        "ci95": [
+          -0.09583333333333333,
+          0.04166666666666667
+        ],
+        "significant": false
+      },
+      "rawfeat_minus_naive": {
+        "delta": -0.14583333333333331,
+        "ci95": [
+          -0.21260416666666662,
+          -0.075
+        ],
+        "significant": true
+      }
+    },
+    "чотири поза T": {
+      "raw": {
+        "delta": -0.04375,
+        "ci95": [
+          -0.06875,
+          -0.01875
+        ],
+        "categories_positive": 1
+      },
+      "standardised": {
+        "delta": -0.08125,
+        "ci95": [
+          -0.109375,
+          -0.053125
+        ],
+        "categories_positive": 1
+      },
+      "rawfeat": {
+        "delta": 0.1,
+        "ci95": [
+          0.059375,
+          0.14375
+        ],
+        "categories_positive": 3
+      },
+      "rawfeat_minus_rule27": {
+        "delta": 0.18125,
+        "ci95": [
+          0.128125,
+          0.2375
+        ],
+        "significant": true
+      },
+      "rawfeat_minus_naive": {
+        "delta": 0.14375,
+        "ci95": [
+          0.09375,
+          0.196875
+        ],
+        "significant": true
+      }
+    }
+  }
+}

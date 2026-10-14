@@ -1,0 +1,159 @@
+{
+ "pool": "bullet",
+ "protocol": "GroupKFold(5) за гравцями; модель, норми внесків, критерій знака й медіани сирих значень – лише на навчальних гравцях блоку",
+ "definition": "зворотна порада: за названою ознакою гравець кращий за медіану навчальних гравців свого інтервалу прогнозованого рейтингу",
+ "n_players": 2056,
+ "candidates_per_fold": [
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "capture_rate",
+   "check_given_rate"
+  ],
+  [
+   "opening_acpl",
+   "middlegame_acpl",
+   "acpl_critical",
+   "blunder_rate",
+   "mistake_rate",
+   "center_control_avg",
+   "mobility_avg",
+   "material_volatility",
+   "capture_rate",
+   "check_given_rate"
+  ]
+ ],
+ "rules": {
+  "themed": {
+   "label": "крок 1: 17 тематичних ознак, без нормування",
+   "reversed_share": 0.3093385214007782,
+   "ci95": [
+    0.2893968871595331,
+    0.33075145914396886
+   ],
+   "reversed_by_feature": {
+    "king_danger": 343,
+    "hanging_rate": 75,
+    "opening_acpl": 70,
+    "conversion_acpl": 60,
+    "inaccuracy_rate": 40,
+    "endgame_acpl": 19,
+    "defense_acpl": 19,
+    "middlegame_acpl": 3,
+    "mistake_rate": 3,
+    "material_volatility": 2,
+    "blunder_rate": 1,
+    "check_given_rate": 1
+   }
+  },
+  "standardised17": {
+   "label": "крок 2: 17 ознак, нормування на рівень (до критерію знака)",
+   "reversed_share": 0.41391050583657585,
+   "ci95": [
+    0.39202334630350194,
+    0.43435068093385215
+   ],
+   "reversed_by_feature": {
+    "king_danger": 169,
+    "hanging_rate": 162,
+    "inaccuracy_rate": 131,
+    "defense_acpl": 106,
+    "pin_exposure": 104,
+    "conversion_acpl": 74,
+    "endgame_acpl": 38,
+    "material_volatility": 38,
+    "acpl_critical": 19,
+    "mistake_rate": 10
+   }
+  },
+  "standardised": {
+   "label": "крок 3: правило (2.7), критерій знака в блоці",
+   "reversed_share": 0.08025291828793775,
+   "ci95": [
+    0.06906614785992218,
+    0.0928988326848249
+   ],
+   "reversed_by_feature": {
+    "acpl_critical": 64,
+    "mistake_rate": 39,
+    "material_volatility": 23,
+    "middlegame_acpl": 16,
+    "check_given_rate": 10,
+    "mobility_avg": 5,
+    "capture_rate": 3,
+    "opening_acpl": 3,
+    "center_control_avg": 1,
+    "blunder_rate": 1
+   }
+  }
+ },
+ "sensitivity_empirical_orientation": {
+  "disputed_signs_per_fold": [
+   {
+    "material_volatility": -1,
+    "king_danger": -1
+   },
+   {
+    "material_volatility": -1,
+    "king_danger": -1
+   },
+   {
+    "material_volatility": -1,
+    "king_danger": -1
+   },
+   {
+    "material_volatility": -1,
+    "king_danger": -1
+   },
+   {
+    "material_volatility": -1,
+    "king_danger": -1
+   }
+  ],
+  "standardised17": 0.3239299610894942,
+  "standardised": 0.08268482490272373
+ },
+ "control_standardised_vs_validate_oof": {
+  "validate_oof": 0.08025291828793775,
+  "here": 0.08025291828793775
+ }
+}

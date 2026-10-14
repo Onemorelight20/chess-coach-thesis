@@ -1,0 +1,217 @@
+{
+  "summary": {
+    "n_games": 20,
+    "chance_baseline": 0.14285714285714285,
+    "injection": {
+      "categories": [
+        "defense_acpl",
+        "hanging_rate",
+        "endgame_acpl",
+        "conversion_acpl",
+        "blunder_rate"
+      ],
+      "magnitude": "winprob",
+      "rate": 1.0,
+      "wp_lo": 0.3,
+      "wp_hi": 1.0,
+      "cp_lo": 120,
+      "cp_hi": 400,
+      "depth": 12,
+      "min_elo": 2000,
+      "elo_bands": null,
+      "rule": "raw"
+    },
+    "per_category": {
+      "defense_acpl": {
+        "sensitivity_top1": 0.3,
+        "sensitivity_top2": 0.3,
+        "ci95": [
+          0.1,
+          0.5
+        ],
+        "mean_feature_delta": 9.342294564377479,
+        "mean_injected_plies": 3.4
+      },
+      "hanging_rate": {
+        "sensitivity_top1": 0.0,
+        "sensitivity_top2": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean_feature_delta": 0.38755795645405733,
+        "mean_injected_plies": 15.95
+      },
+      "endgame_acpl": {
+        "sensitivity_top1": 0.1,
+        "sensitivity_top2": 0.2,
+        "ci95": [
+          0.0,
+          0.25
+        ],
+        "mean_feature_delta": 102.63713369963371,
+        "mean_injected_plies": 3.25
+      },
+      "conversion_acpl": {
+        "sensitivity_top1": 0.0,
+        "sensitivity_top2": 0.1,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean_feature_delta": 118.72587342544833,
+        "mean_injected_plies": 7.45
+      },
+      "blunder_rate": {
+        "sensitivity_top1": 0.0,
+        "sensitivity_top2": 0.05,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean_feature_delta": 0.15471589339634004,
+        "mean_injected_plies": 36.1
+      }
+    },
+    "overall_top1": 0.08,
+    "overall_ci95": [
+      0.0,
+      0.2
+    ],
+    "baseline_detect_profile": {
+      "opening_acpl": 6,
+      "middlegame_acpl": 2,
+      "endgame_acpl": 2,
+      "conversion_acpl": 0,
+      "defense_acpl": 6,
+      "blunder_rate": 0,
+      "hanging_rate": 4
+    },
+    "coverage_at_k": {
+      "defense_acpl": {
+        "treated": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "clean": [
+          0.3,
+          0.35,
+          0.4
+        ]
+      },
+      "hanging_rate": {
+        "treated": [
+          0.0,
+          0.0,
+          0.05
+        ],
+        "clean": [
+          0.2,
+          0.45,
+          0.55
+        ]
+      },
+      "endgame_acpl": {
+        "treated": [
+          0.1,
+          0.2,
+          0.35
+        ],
+        "clean": [
+          0.1,
+          0.2,
+          0.4
+        ]
+      },
+      "conversion_acpl": {
+        "treated": [
+          0.0,
+          0.1,
+          0.3
+        ],
+        "clean": [
+          0.0,
+          0.15,
+          0.45
+        ]
+      },
+      "blunder_rate": {
+        "treated": [
+          0.0,
+          0.05,
+          0.95
+        ],
+        "clean": [
+          0.0,
+          0.0,
+          0.3
+        ]
+      }
+    },
+    "coverage_at_k_overall": {
+      "treated": [
+        0.08,
+        0.13,
+        0.39
+      ],
+      "clean": [
+        0.12,
+        0.23,
+        0.42
+      ],
+      "chance": [
+        0.14285714285714285,
+        0.2857142857142857,
+        0.42857142857142855
+      ]
+    }
+  },
+  "confusion": {
+    "defense_acpl": {
+      "opening_acpl": 6,
+      "middlegame_acpl": 2,
+      "endgame_acpl": 2,
+      "conversion_acpl": 0,
+      "defense_acpl": 6,
+      "blunder_rate": 0,
+      "hanging_rate": 4
+    },
+    "hanging_rate": {
+      "opening_acpl": 14,
+      "middlegame_acpl": 6,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 0,
+      "blunder_rate": 0,
+      "hanging_rate": 0
+    },
+    "endgame_acpl": {
+      "opening_acpl": 6,
+      "middlegame_acpl": 3,
+      "endgame_acpl": 2,
+      "conversion_acpl": 0,
+      "defense_acpl": 2,
+      "blunder_rate": 1,
+      "hanging_rate": 6
+    },
+    "conversion_acpl": {
+      "opening_acpl": 7,
+      "middlegame_acpl": 9,
+      "endgame_acpl": 1,
+      "conversion_acpl": 0,
+      "defense_acpl": 1,
+      "blunder_rate": 1,
+      "hanging_rate": 1
+    },
+    "blunder_rate": {
+      "opening_acpl": 20,
+      "middlegame_acpl": 0,
+      "endgame_acpl": 0,
+      "conversion_acpl": 0,
+      "defense_acpl": 0,
+      "blunder_rate": 0,
+      "hanging_rate": 0
+    }
+  }
+}

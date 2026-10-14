@@ -1,0 +1,181 @@
+{
+ "pool": "blitz",
+ "protocol": "GroupKFold(5) за гравцями; обидві моделі, норми внесків (17 тематичних ознак) і популяція правила відхилень – лише на навчальних гравцях блоку",
+ "n_players": 2160,
+ "n_splits": 21590,
+ "models": {
+  "conditional": {
+   "kappa": 0.058663775591745404,
+   "kappa_ci95": [
+    0.049924227821576204,
+    0.06909530682464342
+   ],
+   "agree_ref17": 0.21574074074074073,
+   "per_category_agree_ref17": {
+    "acpl_critical": {
+     "n": 84,
+     "agree": 0.08333333333333333
+    },
+    "blunder_rate": {
+     "n": 51,
+     "agree": 0.2549019607843137
+    },
+    "capture_rate": {
+     "n": 197,
+     "agree": 0.5076142131979695
+    },
+    "center_control_avg": {
+     "n": 87,
+     "agree": 0.5057471264367817
+    },
+    "check_given_rate": {
+     "n": 179,
+     "agree": 0.6033519553072626
+    },
+    "conversion_acpl": {
+     "n": 60,
+     "agree": 0.0
+    },
+    "defense_acpl": {
+     "n": 172,
+     "agree": 0.0
+    },
+    "endgame_acpl": {
+     "n": 61,
+     "agree": 0.0
+    },
+    "hanging_rate": {
+     "n": 105,
+     "agree": 0.0
+    },
+    "inaccuracy_rate": {
+     "n": 151,
+     "agree": 0.18543046357615894
+    },
+    "king_danger": {
+     "n": 194,
+     "agree": 0.0
+    },
+    "material_volatility": {
+     "n": 286,
+     "agree": 0.10839160839160839
+    },
+    "middlegame_acpl": {
+     "n": 71,
+     "agree": 0.4084507042253521
+    },
+    "mistake_rate": {
+     "n": 96,
+     "agree": 0.15625
+    },
+    "mobility_avg": {
+     "n": 122,
+     "agree": 0.5
+    },
+    "opening_acpl": {
+     "n": 33,
+     "agree": 0.2727272727272727
+    },
+    "pin_exposure": {
+     "n": 211,
+     "agree": 0.0995260663507109
+    }
+   }
+  },
+  "monotone": {
+   "kappa": 0.04957094826876007,
+   "kappa_ci95": [
+    0.04131808442875218,
+    0.05862821203414656
+   ],
+   "agree_ref17": 0.4125,
+   "per_category_agree_ref17": {
+    "acpl_critical": {
+     "n": 84,
+     "agree": 0.17857142857142858
+    },
+    "blunder_rate": {
+     "n": 51,
+     "agree": 0.35294117647058826
+    },
+    "capture_rate": {
+     "n": 197,
+     "agree": 0.6700507614213198
+    },
+    "center_control_avg": {
+     "n": 87,
+     "agree": 0.7126436781609196
+    },
+    "check_given_rate": {
+     "n": 179,
+     "agree": 0.6480446927374302
+    },
+    "conversion_acpl": {
+     "n": 60,
+     "agree": 0.11666666666666667
+    },
+    "defense_acpl": {
+     "n": 172,
+     "agree": 0.5406976744186046
+    },
+    "endgame_acpl": {
+     "n": 61,
+     "agree": 0.11475409836065574
+    },
+    "hanging_rate": {
+     "n": 105,
+     "agree": 0.3619047619047619
+    },
+    "inaccuracy_rate": {
+     "n": 151,
+     "agree": 0.5496688741721855
+    },
+    "king_danger": {
+     "n": 194,
+     "agree": 0.10309278350515463
+    },
+    "material_volatility": {
+     "n": 286,
+     "agree": 0.44755244755244755
+    },
+    "middlegame_acpl": {
+     "n": 71,
+     "agree": 0.5633802816901409
+    },
+    "mistake_rate": {
+     "n": 96,
+     "agree": 0.23958333333333334
+    },
+    "mobility_avg": {
+     "n": 122,
+     "agree": 0.5737704918032787
+    },
+    "opening_acpl": {
+     "n": 33,
+     "agree": 0.36363636363636365
+    },
+    "pin_exposure": {
+     "n": 211,
+     "agree": 0.12796208530805686
+    }
+   }
+  }
+ },
+ "kappa_diff_monotone_minus_conditional": {
+  "diff": -0.00909282732298533,
+  "ci95": [
+   -0.020312776690948765,
+   0.0009491290636791508
+  ]
+ },
+ "control_conditional_vs_validate_oof": {
+  "kappa": [
+   0.058663775591745404,
+   0.058663775591745404
+  ],
+  "agree_ref17": [
+   0.21574074074074073,
+   0.21574074074074073
+  ]
+ }
+}
