@@ -1,0 +1,555 @@
+{
+ "note": "in_sample – розгорнута модель бліцу (гравці є в навчальному наборі); oof – протокол validate_oof.py (GroupKFold(5), модель і норми без гравця)",
+ "in_sample": {
+  "AAPA23": {
+   "n_games": 8,
+   "fact_median_elo": 2315.5,
+   "elo_min": 2298,
+   "elo_max": 2338,
+   "time_controls": [
+    "180+0"
+   ],
+   "predicted_elo": 2278,
+   "phi0": 1603.8939208984375,
+   "phi0_plus_sum_phi": 2278.026611328125,
+   "n_candidates": 11,
+   "top3": [
+    "middlegame_acpl",
+    "acpl_critical",
+    "mistake_rate"
+   ],
+   "margin_s2_minus_s1": 0.3658044545621073,
+   "basic_rule_argmin29": "think_time_consistency",
+   "basic_rule_phi": -32.51780700683594,
+   "candidates_ranked": [
+    {
+     "feature": "middlegame_acpl",
+     "orientation": 1,
+     "x_player": 87.5135426355254,
+     "typical_x": 48.85034075490602,
+     "sd_x": 15.083724685408043,
+     "phi": -26.444683074951172,
+     "mu": 2.163654932232232,
+     "sigma": 17.06501924247052,
+     "s": -1.6764316289772756
+    },
+    {
+     "feature": "acpl_critical",
+     "orientation": 1,
+     "x_player": 113.31666666666668,
+     "typical_x": 65.74178737731151,
+     "sd_x": 31.53278194960844,
+     "phi": -2.2482359409332275,
+     "mu": 0.13075077568701146,
+     "sigma": 1.8151513741364298,
+     "s": -1.3106271744151683
+    },
+    {
+     "feature": "mistake_rate",
+     "orientation": 1,
+     "x_player": 0.09352103918800835,
+     "typical_x": 0.07647400538216681,
+     "sd_x": 0.021543222055930202,
+     "phi": -3.7610785961151123,
+     "mu": 0.6973957163582574,
+     "sigma": 4.185026673425483,
+     "s": -1.065339521199292
+    },
+    {
+     "feature": "pin_exposure",
+     "orientation": 1,
+     "x_player": 0.06143606741950662,
+     "typical_x": 0.07509618753001454,
+     "sd_x": 0.04106166278213802,
+     "phi": -5.56325101852417,
+     "mu": -3.404399109015154,
+     "sigma": 4.407394500286933,
+     "s": -0.489824976949186
+    },
+    {
+     "feature": "mobility_avg",
+     "orientation": -1,
+     "x_player": 31.100536902601334,
+     "typical_x": 31.22821590080309,
+     "sd_x": 2.215744501969308,
+     "phi": 22.19359016418457,
+     "mu": 28.7570019122628,
+     "sigma": 36.57007024265838,
+     "s": -0.1794749560098498
+    },
+    {
+     "feature": "blunder_rate",
+     "orientation": 1,
+     "x_player": 0.027047833904685084,
+     "typical_x": 0.021494894763839072,
+     "sd_x": 0.010254776366853065,
+     "phi": 1.37460196018219,
+     "mu": 1.6532961511013364,
+     "sigma": 3.868435864214152,
+     "s": -0.07204312045012058
+    },
+    {
+     "feature": "capture_rate",
+     "orientation": 1,
+     "x_player": 0.2234573502722323,
+     "typical_x": 0.22822763937004903,
+     "sd_x": 0.02440458795825024,
+     "phi": 68.97376251220703,
+     "mu": 44.62380930061985,
+     "sigma": 56.81264796009084,
+     "s": 0.42860092049735626
+    },
+    {
+     "feature": "opening_acpl",
+     "orientation": 1,
+     "x_player": 13.527836746586747,
+     "typical_x": 20.760892655737283,
+     "sd_x": 5.295279735993558,
+     "phi": 225.2960205078125,
+     "mu": 189.4278597869886,
+     "sigma": 62.65657678637745,
+     "s": 0.572456437304475
+    },
+    {
+     "feature": "center_control_avg",
+     "orientation": -1,
+     "x_player": 2.910984657525039,
+     "typical_x": 2.8008295659783538,
+     "sd_x": 0.17846030479704972,
+     "phi": 29.21626091003418,
+     "mu": 17.469541736662595,
+     "sigma": 16.349399116887135,
+     "s": 0.7184801771239723
+    },
+    {
+     "feature": "inaccuracy_rate",
+     "orientation": 1,
+     "x_player": 0.058861833703031524,
+     "typical_x": 0.09313731187996875,
+     "sd_x": 0.02169558673308537,
+     "phi": 7.467722415924072,
+     "mu": 1.5944031371953247,
+     "sigma": 6.977678292514836,
+     "s": 0.8417297319409569
+    },
+    {
+     "feature": "check_given_rate",
+     "orientation": 1,
+     "x_player": 0.027500504133897964,
+     "typical_x": 0.060878964552493336,
+     "sd_x": 0.025600924539992968,
+     "phi": 38.543548583984375,
+     "mu": 8.477777751609105,
+     "sigma": 22.900121815808305,
+     "s": 1.3129087728965882
+    }
+   ]
+  },
+  "AB9920": {
+   "n_games": 8,
+   "fact_median_elo": 1468.0,
+   "elo_min": 1462,
+   "elo_max": 1475,
+   "time_controls": [
+    "300+0"
+   ],
+   "predicted_elo": 1631,
+   "phi0": 1603.8939208984375,
+   "phi0_plus_sum_phi": 1630.892770767212,
+   "n_candidates": 11,
+   "top3": [
+    "inaccuracy_rate",
+    "mobility_avg",
+    "acpl_critical"
+   ],
+   "margin_s2_minus_s1": 0.829629872215208,
+   "basic_rule_argmin29": "avg_think_time",
+   "basic_rule_phi": -219.2027587890625,
+   "candidates_ranked": [
+    {
+     "feature": "inaccuracy_rate",
+     "orientation": 1,
+     "x_player": 0.12129148716146029,
+     "typical_x": 0.1217416933301668,
+     "sd_x": 0.02581745499039566,
+     "phi": -10.397836685180664,
+     "mu": -3.6251570490240708,
+     "sigma": 3.5825182135818143,
+     "s": -1.890480168525157
+    },
+    {
+     "feature": "mobility_avg",
+     "orientation": -1,
+     "x_player": 28.396289755824426,
+     "typical_x": 30.79716681207147,
+     "sd_x": 2.6975208067224035,
+     "phi": -40.35456085205078,
+     "mu": 15.952650125989008,
+     "sigma": 53.07743342665617,
+     "s": -1.060850296309949
+    },
+    {
+     "feature": "acpl_critical",
+     "orientation": 1,
+     "x_player": 88.49947916666666,
+     "typical_x": 101.77992937367256,
+     "sd_x": 44.269336541578724,
+     "phi": -1.7022109031677246,
+     "mu": -0.919990022107432,
+     "sigma": 1.7242537895834122,
+     "s": -0.45365762614868943
+    },
+    {
+     "feature": "check_given_rate",
+     "orientation": 1,
+     "x_player": 0.06671909327729114,
+     "typical_x": 0.06596803089480248,
+     "sd_x": 0.03076150621896062,
+     "phi": -9.084748268127441,
+     "mu": 2.15343490166725,
+     "sigma": 29.952544173156944,
+     "s": -0.37519961926527085
+    },
+    {
+     "feature": "pin_exposure",
+     "orientation": 1,
+     "x_player": 0.06488877941028343,
+     "typical_x": 0.08573413762659697,
+     "sd_x": 0.04567557258604273,
+     "phi": -6.934694766998291,
+     "mu": -5.342509977479044,
+     "sigma": 4.5078531570932645,
+     "s": -0.3532024522613139
+    },
+    {
+     "feature": "middlegame_acpl",
+     "orientation": 1,
+     "x_player": 63.70379593051701,
+     "typical_x": 74.88813222672232,
+     "sd_x": 24.68685872491124,
+     "phi": -13.877772331237793,
+     "mu": -11.041401088587623,
+     "sigma": 9.458904957986814,
+     "s": -0.29986253749755926
+    },
+    {
+     "feature": "blunder_rate",
+     "orientation": 1,
+     "x_player": 0.028475243584980957,
+     "typical_x": 0.04009733852718769,
+     "sd_x": 0.015721370543683028,
+     "phi": 0.49981582164764404,
+     "mu": -1.6239765940804958,
+     "sigma": 5.954597675952987,
+     "s": 0.35666430064701954
+    },
+    {
+     "feature": "center_control_avg",
+     "orientation": -1,
+     "x_player": 2.826115780801543,
+     "typical_x": 2.712707118416496,
+     "sd_x": 0.21402515233555172,
+     "phi": 23.139190673828125,
+     "mu": 11.978322670055293,
+     "sigma": 30.605035831293268,
+     "s": 0.36467423417818656
+    },
+    {
+     "feature": "mistake_rate",
+     "orientation": 1,
+     "x_player": 0.10990891175162924,
+     "typical_x": 0.11358057703028117,
+     "sd_x": 0.02903504760760789,
+     "phi": -2.8817312717437744,
+     "mu": -4.049399888904813,
+     "sigma": 3.1106227444041257,
+     "s": 0.3753809809503976
+    },
+    {
+     "feature": "capture_rate",
+     "orientation": 1,
+     "x_player": 0.21838222767565268,
+     "typical_x": 0.23522099047478562,
+     "sd_x": 0.028450353937834988,
+     "phi": 75.14659118652344,
+     "mu": 13.128070464624788,
+     "sigma": 69.98013463743028,
+     "s": 0.8862303715650013
+    },
+    {
+     "feature": "opening_acpl",
+     "orientation": 1,
+     "x_player": 23.002256944444444,
+     "typical_x": 36.9601983223889,
+     "sd_x": 9.61669553486989,
+     "phi": 154.4202880859375,
+     "mu": 4.048177073877999,
+     "sigma": 92.92911423094999,
+     "s": 1.6181377844445024
+    }
+   ]
+  },
+  "Aldo333": {
+   "n_games": 8,
+   "fact_median_elo": 838.0,
+   "elo_min": 826,
+   "elo_max": 849,
+   "time_controls": [
+    "300+0"
+   ],
+   "predicted_elo": 773,
+   "phi0": 1603.8939208984375,
+   "phi0_plus_sum_phi": 773.4270629882812,
+   "n_candidates": 11,
+   "top3": [
+    "acpl_critical",
+    "center_control_avg",
+    "pin_exposure"
+   ],
+   "margin_s2_minus_s1": 0.05753110767179781,
+   "basic_rule_argmin29": "avg_think_time",
+   "basic_rule_phi": -544.5225219726562,
+   "candidates_ranked": [
+    {
+     "feature": "acpl_critical",
+     "orientation": 1,
+     "x_player": 116.94494047619047,
+     "typical_x": 169.8800958928184,
+     "sd_x": 62.48331713379274,
+     "phi": -2.423610210418701,
+     "mu": -1.1839304719550514,
+     "sigma": 1.2844678435065928,
+     "s": -0.9651310032638328
+    },
+    {
+     "feature": "center_control_avg",
+     "orientation": -1,
+     "x_player": 2.3036057692307694,
+     "typical_x": 2.3759293406232427,
+     "sd_x": 0.3085960271104153,
+     "phi": -56.8656005859375,
+     "mu": -25.618600619799484,
+     "sigma": 34.42816610920315,
+     "s": -0.907599895592035
+    },
+    {
+     "feature": "pin_exposure",
+     "orientation": 1,
+     "x_player": 0.08023504273504273,
+     "typical_x": 0.10492513333017008,
+     "sd_x": 0.058950464982245675,
+     "phi": -8.900492668151855,
+     "mu": -5.038439500827764,
+     "sigma": 5.193356075119337,
+     "s": -0.743652680744666
+    },
+    {
+     "feature": "inaccuracy_rate",
+     "orientation": 1,
+     "x_player": 0.19662126068376068,
+     "typical_x": 0.13887181423639725,
+     "sd_x": 0.036503258226154904,
+     "phi": -5.493746280670166,
+     "mu": -3.9647677890296023,
+     "sigma": 2.479474675508627,
+     "s": -0.6166542077413704
+    },
+    {
+     "feature": "check_given_rate",
+     "orientation": 1,
+     "x_player": 0.08611111111111111,
+     "typical_x": 0.0842284194270892,
+     "sd_x": 0.04303200963649966,
+     "phi": -23.9929256439209,
+     "mu": -17.93980192347283,
+     "sigma": 35.680077435575775,
+     "s": -0.16964996030004795
+    },
+    {
+     "feature": "mistake_rate",
+     "orientation": 1,
+     "x_player": 0.09846688034188034,
+     "typical_x": 0.16931378832215244,
+     "sd_x": 0.04263575187531267,
+     "phi": -5.029780864715576,
+     "mu": -6.183639346477429,
+     "sigma": 3.33698209110961,
+     "s": 0.34577904533439474
+    },
+    {
+     "feature": "mobility_avg",
+     "orientation": -1,
+     "x_player": 31.414695512820515,
+     "typical_x": 28.72821670708978,
+     "sd_x": 3.205169830920643,
+     "phi": 25.79619789123535,
+     "mu": -28.90126532270377,
+     "sigma": 60.90826408544091,
+     "s": 0.8980302432722529
+    },
+    {
+     "feature": "blunder_rate",
+     "orientation": 1,
+     "x_player": 0.0460042735042735,
+     "typical_x": 0.08702644744435319,
+     "sd_x": 0.030388331315891522,
+     "phi": -6.614477157592773,
+     "mu": -12.685981044405729,
+     "sigma": 5.01007234627112,
+     "s": 1.2118595236118364
+    },
+    {
+     "feature": "capture_rate",
+     "orientation": 1,
+     "x_player": 0.16895032051282052,
+     "typical_x": 0.23810982816447365,
+     "sd_x": 0.04676648210638426,
+     "phi": 89.30154418945312,
+     "mu": -10.246303609571697,
+     "sigma": 69.26336508970162,
+     "s": 1.4372366642900234
+    },
+    {
+     "feature": "opening_acpl",
+     "orientation": 1,
+     "x_player": 49.707824436592816,
+     "typical_x": 85.8933845859902,
+     "sd_x": 25.863007349085947,
+     "phi": -136.42181396484375,
+     "mu": -263.1295400526828,
+     "sigma": 76.20510716787372,
+     "s": 1.6627196102317934
+    },
+    {
+     "feature": "middlegame_acpl",
+     "orientation": 1,
+     "x_player": 47.81111111111111,
+     "typical_x": 108.31102497816889,
+     "sd_x": 33.18040106727968,
+     "phi": 2.7579901218414307,
+     "mu": -15.645709612880614,
+     "sigma": 6.547464096372964,
+     "s": 2.8108133872649974
+    }
+   ]
+  }
+ },
+ "oof": {
+  "AAPA23": {
+   "fold": 3,
+   "n_games": 8,
+   "predicted_elo_oof": 2348.795654296875,
+   "n_candidates": 12,
+   "candidates": [
+    "opening_acpl",
+    "middlegame_acpl",
+    "acpl_critical",
+    "blunder_rate",
+    "mistake_rate",
+    "inaccuracy_rate",
+    "pin_exposure",
+    "center_control_avg",
+    "mobility_avg",
+    "material_volatility",
+    "capture_rate",
+    "check_given_rate"
+   ],
+   "top3": [
+    "acpl_critical",
+    "middlegame_acpl",
+    "mistake_rate"
+   ],
+   "scores": {
+    "acpl_critical": -1.6429632166836077,
+    "middlegame_acpl": -1.3851336106602938,
+    "mistake_rate": -1.1027732972222557,
+    "blunder_rate": -0.9758940776299856,
+    "material_volatility": -0.5736444899185547,
+    "pin_exposure": -0.4049120346839624,
+    "opening_acpl": 0.17367815474838477,
+    "capture_rate": 0.2403249520993388,
+    "mobility_avg": 0.3929949819542973,
+    "center_control_avg": 0.7987311693148746,
+    "check_given_rate": 1.3969654271214098,
+    "inaccuracy_rate": 1.548772345076341
+   },
+   "basic_rule_argmin29": "think_time_consistency"
+  },
+  "Aldo333": {
+   "fold": 4,
+   "n_games": 8,
+   "predicted_elo_oof": 867.32080078125,
+   "n_candidates": 11,
+   "candidates": [
+    "opening_acpl",
+    "middlegame_acpl",
+    "acpl_critical",
+    "blunder_rate",
+    "mistake_rate",
+    "inaccuracy_rate",
+    "pin_exposure",
+    "center_control_avg",
+    "mobility_avg",
+    "capture_rate",
+    "check_given_rate"
+   ],
+   "top3": [
+    "inaccuracy_rate",
+    "center_control_avg",
+    "pin_exposure"
+   ],
+   "scores": {
+    "inaccuracy_rate": -2.143440467058768,
+    "center_control_avg": -0.7249533989141165,
+    "pin_exposure": -0.5524287298356655,
+    "check_given_rate": 0.20417070472400142,
+    "acpl_critical": 0.46630021931106685,
+    "mobility_avg": 0.691775570757481,
+    "opening_acpl": 1.3534124273347787,
+    "middlegame_acpl": 1.6342568484155495,
+    "capture_rate": 1.7016107602369475,
+    "blunder_rate": 1.8477479758635407,
+    "mistake_rate": 2.1702058442486294
+   },
+   "basic_rule_argmin29": "avg_think_time"
+  },
+  "AB9920": {
+   "fold": 5,
+   "n_games": 8,
+   "predicted_elo_oof": 1753.6561279296875,
+   "n_candidates": 11,
+   "candidates": [
+    "opening_acpl",
+    "middlegame_acpl",
+    "acpl_critical",
+    "blunder_rate",
+    "mistake_rate",
+    "inaccuracy_rate",
+    "pin_exposure",
+    "center_control_avg",
+    "mobility_avg",
+    "capture_rate",
+    "check_given_rate"
+   ],
+   "top3": [
+    "mobility_avg",
+    "inaccuracy_rate",
+    "middlegame_acpl"
+   ],
+   "scores": {
+    "mobility_avg": -1.0349091963868413,
+    "inaccuracy_rate": -0.7465742747525884,
+    "middlegame_acpl": -0.3483597793048085,
+    "acpl_critical": -0.32211003587106757,
+    "check_given_rate": -0.14298308621009712,
+    "mistake_rate": 0.003933044172683811,
+    "center_control_avg": 0.03109972619935153,
+    "pin_exposure": 0.0501440031633878,
+    "blunder_rate": 0.15153608833883658,
+    "capture_rate": 0.6512654243731539,
+    "opening_acpl": 1.2553878439069526
+   },
+   "basic_rule_argmin29": "avg_think_time"
+  }
+ }
+}

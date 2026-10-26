@@ -160,11 +160,12 @@ def rating_adjusted_gap(lichess_df, cc_df, levels=(800, 1500, 2200)):
     Comparing raw group means is misleading here: bias falls steeply with rating
     (regression to the mean, 3.4), and the two samples are not matched on rating
     -- in `rapid` the Chess.com players average 206 Elo above the Lichess control,
-    which drags that group's mean bias down and hides the gap entirely (raw +49,
-    p = 0.39). So fit bias ~ platform * rating and read the vertical distance
-    between the two fitted lines at fixed rating levels. The interaction term is
-    kept because the slopes genuinely differ (p < 0.01 in every pool), i.e. the
-    gap itself depends on playing strength.
+    which drags that group's mean bias down and masks much of the gap (raw +105,
+    p = 0.044, against +179 once rating is controlled for). So fit bias ~ platform
+    * rating and read the vertical distance between the two fitted lines at fixed
+    rating levels. The interaction term is kept because the slopes genuinely
+    differ (p = 0.007 / 0.019 / 0.022 in bullet / blitz / rapid), i.e. the gap
+    itself depends on playing strength.
     """
     df = pd.concat([lichess_df.assign(cc=0.0), cc_df.assign(cc=1.0)], ignore_index=True)
     y = df["bias"].to_numpy(float)
@@ -284,16 +285,14 @@ def main():
     print(json.dumps(recal_summary, indent=2))
 
     # Isotonic is FIXED for every pool rather than picked per pool by lower MAE.
-    # Picking by MAE is not defensible here: the isotonic-vs-linear gap is 2-5% of
-    # the error and its bootstrap CI spans zero in all three pools, so the "winner"
-    # follows the CV seed -- over 20 random splits the choice flips 18/20 (bullet)
-    # and 16/20 (rapid). Only blitz is stable (20/20 isotonic). Meanwhile the linear
-    # fit leaves clear curvature in its residuals in EVERY pool (quartile means
-    # +22/+31/-174/+121 bullet, +66/-159/-2/+94 blitz, +87/-166/+41/+28 rapid), so
-    # assuming linearity is the one thing the data does contradict. Averaged over
-    # pools the two are indistinguishable (MAE 280.2 vs 279.6), which makes fixing
-    # the flexible-but-monotone method free. `mae_linear` stays in the summary as
-    # the reported robustness check.
+    # With the mixed-trained model the linear fit has the lower MAE in all three
+    # pools, but only by 2-4% of the raw error, and that "winner" follows how the
+    # players fall into the CV blocks. Meanwhile the linear fit leaves systematic
+    # curvature in its residuals in blitz and rapid (quadratic term |t| ~ 2.3; in
+    # bullet t = 0.7), so assuming linearity is what the data contradicts.
+    # Averaged over pools the cost of the flexible-but-monotone method is small
+    # (MAE 270.5 vs 260.7). `mae_linear` stays in the summary as the reported
+    # robustness check.
     winner = "isotonic"
     print(f"-> recalibration method (fixed for all pools): {winner}")
 

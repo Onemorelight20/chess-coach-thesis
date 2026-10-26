@@ -16,26 +16,35 @@ CENTER_SQUARES = [chess.D4, chess.E4, chess.D5, chess.E5]
 
 class EngineAnalyzer:
     def __init__(self, engine_path: str = None, time_limit: float = 0.1,
-                 depth: int = None, eval_cap: int = EVAL_CAP, multipv: int = 5):
+                 depth: int = None, eval_cap: int = EVAL_CAP, multipv: int = 5,
+                 nodes: int = None):
         """
         Stockfish wrapper.
 
-        time_limit -- seconds per position (used when depth is None).
+        time_limit -- seconds per position (used when depth and nodes are None).
         depth      -- fixed search depth; reproducible across machines.
         eval_cap   -- centipawn clip applied to every evaluation.
         multipv    -- candidate moves ranked per position.
+        nodes      -- fixed node budget per position. With one thread and the hash
+                      cleared before every game (analyze_game does it) the analysis
+                      is identical on every run, unlike the time limit, whose node
+                      count depends on CPU load. The app's budget is chosen by
+                      src/ml/node_budget.py to match the time-limited training data.
         """
         if engine_path is None:
             engine_path = os.getenv("STOCKFISH_PATH", "stockfish")
         self.engine = chess.engine.SimpleEngine.popen_uci(engine_path)
         self.time_limit = time_limit
         self.depth = depth
+        self.nodes = nodes
         self.eval_cap = eval_cap
         self.multipv = multipv
 
     def _limit(self):
         if self.depth is not None:
             return chess.engine.Limit(depth=self.depth)
+        if self.nodes is not None:
+            return chess.engine.Limit(nodes=self.nodes)
         return chess.engine.Limit(time=self.time_limit)
 
     def _cap(self, cp: int) -> int:
@@ -126,6 +135,11 @@ class EngineAnalyzer:
         loss vs the best move, the rank of the move played, and whether the
         position was critical (top-two gap >= 100 cp).
         """
+        if self.nodes is not None:
+            # A node-limited search is deterministic only from the same hash state:
+            # without this, a game's analysis would depend on the games analysed
+            # before it, and a different selection or order would change it.
+            self.engine.configure({"Clear Hash": None})
         board = game.board()
         results = []
         ply = 0
